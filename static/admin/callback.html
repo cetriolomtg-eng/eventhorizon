@@ -2,9 +2,87 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Decap CMS OAuth</title>
-  <script src="https://unpkg.com/decap-cms@^3.3.0/dist/decap-cms.js"></script>
+  <title>Decap CMS OAuth Callback</title>
 </head>
 <body>
+  <script>
+    console.log('🔄 Callback page loaded');
+    console.log('🔗 URL:', window.location.href);
+    console.log('🔍 Search params:', window.location.search);
+    
+    // Estrai parametri dall'URL se presenti
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const token = params.get('token');
+    const error = params.get('error');
+    
+    console.log('📋 Extracted params:', { code, token, error });
+    
+    if (error) {
+      console.error('❌ OAuth error:', error);
+      if (window.opener) {
+        window.opener.postMessage({
+          type: 'authorization:github:error',
+          error: error
+        }, '*');
+      }
+      window.close();
+      return;
+    }
+    
+    if (token) {
+      console.log('✅ Token found in URL:', token);
+      if (window.opener) {
+        // Invia in diversi formati che Decap CMS potrebbe riconoscere
+        window.opener.postMessage({
+          type: 'authorization:github:success',
+          token: token,
+          provider: 'github'
+        }, '*');
+        
+        window.opener.postMessage({
+          type: 'oauth-callback',
+          token: token,
+          provider: 'github'
+        }, '*');
+        
+        // Formato stringa originale
+        window.opener.postMessage(`authorization:github:success:${token}`, '*');
+      }
+      window.close();
+      return;
+    }
+    
+    if (code) {
+      console.log('📝 Authorization code found:', code);
+      // Se abbiamo solo il code, dovremmo scambiarlo per un token
+      // Ma questo dovrebbe essere gestito dal worker
+      if (window.opener) {
+        window.opener.postMessage({
+          type: 'authorization:github:code',
+          code: code
+        }, '*');
+      }
+      window.close();
+      return;
+    }
+    
+    // Se non abbiamo parametri, controlla se siamo in un messaggio postMessage
+    window.addEventListener('message', (event) => {
+      console.log('📨 Callback received message:', event.origin, event.data);
+      
+      if (event.origin === 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev') {
+        if (window.opener) {
+          window.opener.postMessage(event.data, '*');
+        }
+        window.close();
+      }
+    });
+    
+    console.log('⏳ Waiting for OAuth completion...');
+  </script>
+  
+  <!-- Carica Decap CMS per la gestione OAuth -->
+  <script src="https://unpkg.com/decap-cms@^3.3.0/dist/decap-cms.js"></script>
 </body>
 </html>
