@@ -76,26 +76,8 @@
             console.log('✅ config.yml content length:', configText.length);
             console.log('📋 config.yml first 200 chars:', configText.substring(0, 200));
             
-            // Prova a inizializzare manualmente Decap CMS
-            if (window.CMS && window.CMS.init) {
-              console.log('🚀 Tentativo inizializzazione manuale di Decap CMS...');
-              try {
-                window.CMS.init();
-                console.log('✅ CMS.init() chiamato con successo');
-                
-                // Verifica dopo l'inizializzazione
-                setTimeout(() => {
-                  const config = window.CMS.getConfig && window.CMS.getConfig();
-                  console.log('📋 Config dopo init:', config);
-                  
-                  const rootContent = document.getElementById('nc-root').innerHTML;
-                  console.log('🎯 #nc-root content length dopo init:', rootContent.length);
-                }, 2000);
-                
-              } catch (error) {
-                console.error('❌ Errore durante CMS.init():', error);
-              }
-            }
+            // Skip seconda inizializzazione - viene gestita sopra
+            console.log('⏩ Skip inizializzazione duplicata - già gestita');
           })
           .catch(error => {
             console.error('❌ Error loading config.yml:', error);
@@ -125,25 +107,49 @@
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   
   <script>
-    // Forza l'inizializzazione di Decap CMS dopo che si è caricato
-    console.log('🔄 Script Decap CMS caricato, tentativo inizializzazione immediata...');
+    // Inizializzazione singola di Decap CMS
+    console.log('🔄 Script Decap CMS caricato');
     
-    function tryInitCMS() {
+    let cmsInitialized = false;
+    
+    function initCMSOnce() {
+      if (cmsInitialized) {
+        console.log('⚠️ CMS già inizializzato, skip');
+        return;
+      }
+      
       if (window.CMS) {
-        console.log('🚀 Decap CMS disponibile, inizializzazione...');
+        console.log('🚀 Inizializzazione unica di Decap CMS...');
         try {
+          cmsInitialized = true;
           window.CMS.init();
-          console.log('✅ CMS.init() eseguito immediatamente');
+          console.log('✅ CMS.init() eseguito con successo');
+          
+          // Verifica dopo 3 secondi
+          setTimeout(() => {
+            const config = window.CMS.getConfig && window.CMS.getConfig();
+            console.log('📋 Config finale:', config);
+            const rootContent = document.getElementById('nc-root');
+            if (rootContent) {
+              console.log('🎯 #nc-root finale content length:', rootContent.innerHTML.length);
+              if (rootContent.innerHTML.length > 1000) {
+                console.log('🎉 SUCCESSO! Decap CMS si è caricato completamente!');
+              }
+            }
+          }, 3000);
+          
         } catch (error) {
-          console.error('❌ Errore init immediato:', error);
+          console.error('❌ Errore init CMS:', error);
+          cmsInitialized = false;
         }
       } else {
         console.log('⏳ CMS non ancora disponibile, riprovo...');
-        setTimeout(tryInitCMS, 100);
+        setTimeout(initCMSOnce, 100);
       }
     }
     
-    tryInitCMS();
+    // Attendi un momento prima di inizializzare per evitare conflitti
+    setTimeout(initCMSOnce, 500);
   </script>
 </body>
 </html>
