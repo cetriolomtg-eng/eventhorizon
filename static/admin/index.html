@@ -110,11 +110,22 @@
                     articlesSection.classList.add('hidden');
                 });
 
-                viewArticlesBtn.addEventListener('click', () => {
+                viewArticlesBtn.addEventListener('click', async () => {
                     viewArticlesBtn.classList.add('active');
                     viewItemsBtn.classList.remove('active');
                     articlesSection.classList.remove('hidden');
                     itemsSection.classList.add('hidden');
+                    
+                    // Inizializza editor se non ancora fatto
+                    if (!editor.editor) {
+                        try {
+                            await editor.initialize('a_content', 'preview', 'editorToolbar');
+                            console.log('✅ Editor inizializzato con successo');
+                        } catch (error) {
+                            console.error('❌ Errore inizializzazione editor:', error);
+                            ui.showToast('Errore inizializzazione editor: ' + error.message, 'error');
+                        }
+                    }
                 });
 
                 // Items List
@@ -255,8 +266,7 @@
                             media.initialize()
                         ]);
                         
-                        // Inizializza l'editor dopo il caricamento del contenuto
-                        await editor.initialize('a_content', 'preview', 'editorToolbar');
+                        // L'editor verrà inizializzato quando si accede alla sezione articoli
                         
                         renderItems();
                         renderArticles();
