@@ -95,44 +95,8 @@
           console.log('✅ Nessun pulsante login - potrebbe essere autenticato');
         }
         
-        // Forza l'inizializzazione con config inline se la config non è caricata
-        if (window.CMS && (!window.CMS.getConfig || !window.CMS.getConfig())) {
-          console.log('🔧 Config non caricata, inizializzazione manuale...');
-          try {
-            window.CMS.init({
-              config: {
-                backend: {
-                  name: 'github',
-                  repo: 'eventhorizon-mtg/eventhorizon-mtg.github.io',
-                  branch: 'main',
-                  base_url: 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev',
-                  auth_endpoint: '/auth'
-                },
-                media_folder: 'static/uploads',
-                public_folder: '/uploads',
-                collections: [
-                  {
-                    name: 'test',
-                    label: 'Test Collection',
-                    folder: 'data/archive/items',
-                    create: true,
-                    format: 'yaml',
-                    extension: 'yml',
-                    slug: '{{slug}}',
-                    fields: [
-                      { label: 'Data', name: 'date', widget: 'date', format: 'YYYY-MM-DD', required: true },
-                      { label: 'Titolo', name: 'title', widget: 'string', required: true },
-                      { label: 'Tipo', name: 'kind', widget: 'select', options: ['video', 'content'], required: true }
-                    ]
-                  }
-                ]
-              }
-            });
-            console.log('✅ Config inline applicata');
-          } catch (error) {
-            console.error('❌ Errore config inline:', error);
-          }
-        }
+        // Non forzare config inline - lascia che usi solo config.yml
+        console.log('� Lasciando che Decap CMS usi solo config.yml per evitare conflitti');
         
       }, 3000);
     });
