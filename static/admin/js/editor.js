@@ -40,13 +40,10 @@ class MarkdownEditor {
     }
 
     async setupCodeMirror() {
-        // Load CodeMirror dynamically
-        await Promise.all([
-            this.loadScript('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js'),
-            this.loadStyle('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css'),
-            this.loadScript('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/markdown/markdown.min.js'),
-            this.loadStyle('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css')
-        ]);
+        // CodeMirror è già caricato nel <head>, verifica disponibilità
+        if (typeof CodeMirror === 'undefined') {
+            throw new Error('CodeMirror non disponibile');
+        }
 
         // Initialize CodeMirror
         this.cm = CodeMirror.fromTextArea(this.editor, {

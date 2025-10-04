@@ -81,27 +81,41 @@
                 // Setup Auth
                 const loginBtn = document.getElementById('loginBtn');
                 const logoutBtn = document.getElementById('logoutBtn');
-                
+
+                if (!loginBtn || !logoutBtn) {
+                    console.error('❌ Elementi login/logout non trovati nel DOM');
+                    return;
+                }
+
                 loginBtn.addEventListener('click', () => auth.login());
                 logoutBtn.addEventListener('click', () => auth.logout());
 
                 auth.onAuthStateChanged(user => {
                     console.log('🔐 Auth state changed:', user);
+                    const who = document.getElementById('who');
+                    const lockedOverlay = document.getElementById('lockedOverlay');
+                    const adminMain = document.getElementById('adminMain');
+
+                    if (!who || !lockedOverlay || !adminMain) {
+                        console.error('❌ Elementi UI critici mancanti nel DOM');
+                        return;
+                    }
+
                     if (user) {
                         console.log('✅ Utente autenticato:', user.login);
-                        document.getElementById('who').textContent = user.login;
+                        who.textContent = user.login;
                         loginBtn.hidden = true;
                         logoutBtn.hidden = false;
-                        document.getElementById('lockedOverlay').classList.add('hidden');
-                        document.getElementById('adminMain').classList.remove('hidden');
+                        lockedOverlay.classList.add('hidden');
+                        adminMain.classList.remove('hidden');
                         loadContent();
                     } else {
                         console.log('❌ Utente non autenticato');
-                        document.getElementById('who').textContent = '';
+                        who.textContent = '';
                         loginBtn.hidden = false;
                         logoutBtn.hidden = true;
-                        document.getElementById('lockedOverlay').classList.remove('hidden');
-                        document.getElementById('adminMain').classList.add('hidden');
+                        lockedOverlay.classList.remove('hidden');
+                        adminMain.classList.add('hidden');
                     }
                 });
 
@@ -111,30 +125,34 @@
                 const viewItemsBtn = document.getElementById('viewItemsBtn');
                 const viewArticlesBtn = document.getElementById('viewArticlesBtn');
 
-                viewItemsBtn.addEventListener('click', () => {
-                    viewItemsBtn.classList.add('active');
-                    viewArticlesBtn.classList.remove('active');
-                    itemsSection.classList.remove('hidden');
-                    articlesSection.classList.add('hidden');
-                });
+                if (viewItemsBtn && viewArticlesBtn && itemsSection && articlesSection) {
+                    viewItemsBtn.addEventListener('click', () => {
+                        viewItemsBtn.classList.add('active');
+                        viewArticlesBtn.classList.remove('active');
+                        itemsSection.classList.remove('hidden');
+                        articlesSection.classList.add('hidden');
+                    });
 
-                viewArticlesBtn.addEventListener('click', async () => {
-                    viewArticlesBtn.classList.add('active');
-                    viewItemsBtn.classList.remove('active');
-                    articlesSection.classList.remove('hidden');
-                    itemsSection.classList.add('hidden');
-                    
-                    // Inizializza editor se non ancora fatto
-                    if (!editor.editor) {
-                        try {
-                            await editor.initialize('a_content', 'preview', 'editorToolbar');
-                            console.log('✅ Editor inizializzato con successo');
-                        } catch (error) {
-                            console.error('❌ Errore inizializzazione editor:', error);
-                            ui.showToast('Errore inizializzazione editor: ' + error.message, 'error');
+                    viewArticlesBtn.addEventListener('click', async () => {
+                        viewArticlesBtn.classList.add('active');
+                        viewItemsBtn.classList.remove('active');
+                        articlesSection.classList.remove('hidden');
+                        itemsSection.classList.add('hidden');
+
+                        // Inizializza editor se non ancora fatto
+                        if (!editor.editor) {
+                            try {
+                                await editor.initialize('a_content', 'preview', 'editorToolbar');
+                                console.log('✅ Editor inizializzato con successo');
+                            } catch (error) {
+                                console.error('❌ Errore inizializzazione editor:', error);
+                                ui.showToast('Errore inizializzazione editor: ' + error.message, 'error');
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    console.warn('⚠️ Elementi view switching non trovati');
+                }
 
                 // Items List
                 const itemsList = document.getElementById('list');
@@ -143,6 +161,11 @@
                 const itemFilterDraft = document.getElementById('itemFilterDraft');
 
                 const renderItems = () => {
+                    if (!itemsList || !itemSearchInput || !itemFilterType || !itemFilterDraft) {
+                        console.warn('⚠️ Elementi items list non trovati');
+                        return;
+                    }
+
                     const searchTerm = itemSearchInput.value.toLowerCase();
                     const typeFilter = itemFilterType.value;
                     const draftFilter = itemFilterDraft.value;
@@ -171,9 +194,9 @@
 
                 const debouncedRenderItems = debounce(renderItems, 300);
 
-                itemSearchInput.addEventListener('input', debouncedRenderItems);
-                itemFilterType.addEventListener('change', renderItems);
-                itemFilterDraft.addEventListener('change', renderItems);
+                if (itemSearchInput) itemSearchInput.addEventListener('input', debouncedRenderItems);
+                if (itemFilterType) itemFilterType.addEventListener('change', renderItems);
+                if (itemFilterDraft) itemFilterDraft.addEventListener('change', renderItems);
 
                 // Item Form
                 const itemForm = {
@@ -222,7 +245,8 @@
 
                 // Save Item
                 const saveBtn = document.getElementById('saveBtn');
-                saveBtn.addEventListener('click', async () => {
+                if (saveBtn) {
+                    saveBtn.addEventListener('click', async () => {
                     try {
                         ui.showLoading('saveBtn');
                         
@@ -251,7 +275,10 @@
                     } finally {
                         ui.hideLoading('saveBtn');
                     }
-                });
+                    });
+                } else {
+                    console.warn('⚠️ Pulsante save non trovato');
+                }
 
                 // Articles List
                 const articlesList = document.getElementById('articlesList');
@@ -268,29 +295,33 @@
                     console.log('📂 Caricamento contenuto iniziato');
                     try {
                         ui.showLoading('adminMain');
-                        
+
                         await Promise.all([
                             items.initialize(),
                             articles.initialize(),
-                            media.initialize()
+                            media.initialize() // Media manager inizializzerà lazy quando necessario
                         ]);
-                        
+
                         console.log('📂 Moduli inizializzati');
-                        
+
                         // L'editor verrà inizializzato quando si accede alla sezione articoli
-                        
+
                         renderItems();
                         renderArticles();
-                        
+
                         console.log('📂 Rendering completato');
-                        
-                        document.getElementById('viewRow').classList.remove('hidden');
-                        document.getElementById('actionsRow').classList.remove('hidden');
-                        document.getElementById('articleActionsRow').classList.remove('hidden');
-                        
-                        // Mostra la sezione archivio di default
-                        document.getElementById('itemsSection').classList.remove('hidden');
-                        
+
+                        // Mostra elementi UI con controllo null-safety
+                        const viewRow = document.getElementById('viewRow');
+                        const actionsRow = document.getElementById('actionsRow');
+                        const articleActionsRow = document.getElementById('articleActionsRow');
+                        const itemsSection = document.getElementById('itemsSection');
+
+                        if (viewRow) viewRow.classList.remove('hidden');
+                        if (actionsRow) actionsRow.classList.remove('hidden');
+                        if (articleActionsRow) articleActionsRow.classList.remove('hidden');
+                        if (itemsSection) itemsSection.classList.remove('hidden');
+
                         console.log('✅ Admin UI completamente caricata');
                     } catch (error) {
                         console.error('❌ Errore caricamento contenuto:', error);

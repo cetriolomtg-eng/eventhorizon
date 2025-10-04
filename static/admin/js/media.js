@@ -15,9 +15,12 @@ class MediaManager {
      * Inizializza le aree di drop e il browser media
      */
     initialize(galleryContainerId) {
-        this.galleryContainer = document.getElementById(galleryContainerId);
-        this.setupGalleryBrowser();
         this.loadCachedMedia();
+
+        if (galleryContainerId) {
+            this.galleryContainer = document.getElementById(galleryContainerId);
+            this.setupGalleryBrowser();
+        }
     }
 
     /**
