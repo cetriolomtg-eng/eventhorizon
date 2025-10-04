@@ -15,9 +15,8 @@ export const config = {
 
   // OAuth & API
   auth: {
-    workerBase: "https://eventhorizon-oauth.cetriolo-mtg.workers.dev",
+    workerBase: "https://auth.eventhorizon-mtg.workers.dev",
     authEndpoint: "auth",
-    appId: process.env.GITHUB_APP_ID || "", // Inject from env
     scope: "repo",
     apiVersion: "2022-11-28"
   },

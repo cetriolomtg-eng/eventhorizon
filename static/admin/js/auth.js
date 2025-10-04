@@ -3,11 +3,11 @@
  * @module auth
  */
 
-import { config, UI_TEXTS } from './config.js';
-import { Toast } from './ui.js';
-import { storage } from './utils.js';
+import { config } from './config.js';
+import { ui } from './ui.js';
+import { Storage } from './utils.js';
 
-export class AuthManager {
+class AuthManager {
   constructor() {
     this.token = null;
     this.user = null;
@@ -28,8 +28,10 @@ export class AuthManager {
   /**
    * Aggiunge listener per cambi di stato auth
    */
-  addListener(callback) {
+  onAuthStateChanged(callback) {
     this.listeners.add(callback);
+    // Chiama subito con lo stato corrente
+    callback(this.user);
   }
   
   /**
@@ -45,7 +47,7 @@ export class AuthManager {
   notifyListeners() {
     this.listeners.forEach(callback => {
       try {
-        callback(this.isAuthenticated(), this.user);
+        callback(this.user);
       } catch (err) {
         console.error('Error in auth listener:', err);
       }
@@ -58,6 +60,16 @@ export class AuthManager {
   isAuthenticated() {
     return !!this.token;
   }
+
+  /**
+   * Recupera token
+   */
+  async getToken() {
+    if (!this.token) {
+      throw new Error('User not authenticated');
+    }
+    return this.token;
+  }
   
   /**
    * Avvia flusso login
@@ -69,9 +81,14 @@ export class AuthManager {
     }
     
     try {
-      const { workerBase, authEndpoint, appId, scope } = config.auth;
+      // Usa valori di default se non configurati
+      const workerBase = config.auth?.workerBase || 'https://auth.eventhorizon-mtg.workers.dev';
+      const authEndpoint = config.auth?.authEndpoint || 'auth';
+      const scope = config.auth?.scope || 'repo';
+      const clientId = config.auth?.clientId;
+      
       const origin = location.origin;
-      const url = `${workerBase}/${authEndpoint}?origin=${encodeURIComponent(origin)}&scope=${scope}${appId?`&client_id=${encodeURIComponent(appId)}`:""}`;
+      const url = `${workerBase}/${authEndpoint}?origin=${encodeURIComponent(origin)}&scope=${scope}${clientId?`&client_id=${encodeURIComponent(clientId)}`:""}`;
       
       // Apri popup centrato
       const width = 600;
@@ -87,7 +104,7 @@ export class AuthManager {
       
     } catch (error) {
       console.error('Error starting OAuth flow:', error);
-      Toast.error(UI_TEXTS.errors.AUTH_ERROR);
+      ui.showToast('Errore durante il login', 'error');
     }
   }
   
@@ -98,6 +115,71 @@ export class AuthManager {
     try {
       this.token = null;
       this.user = null;
+      Storage.remove('github_token');
+      Storage.remove('github_user');
+      this.notifyListeners();
+      ui.showToast('Logout effettuato', 'success');
+    } catch (error) {
+      console.error('Error during logout:', error);
+      ui.showToast('Errore durante il logout', 'error');
+    }
+  }
+
+  /**
+   * Gestisce callback OAuth
+   */
+  async handleCallback(event) {
+    // Verifica origine
+    const workerBase = config.auth?.workerBase || 'https://auth.eventhorizon-mtg.workers.dev';
+    if (!event.origin.startsWith(workerBase)) return;
+    
+    try {
+      const { token, user } = event.data;
+      
+      if (token && user) {
+        this.token = token;
+        this.user = user;
+        
+        // Salva in storage
+        Storage.set('github_token', token);
+        Storage.set('github_user', user);
+        
+        // Chiudi popup
+        if (this.popup) {
+          this.popup.close();
+          this.popup = null;
+        }
+        
+        this.notifyListeners();
+        ui.showToast('Login effettuato', 'success');
+      }
+      
+    } catch (error) {
+      console.error('Error handling OAuth callback:', error);
+      ui.showToast('Errore durante il login', 'error');
+    }
+  }
+
+  /**
+   * Verifica sessione esistente
+   */
+  async checkSession() {
+    try {
+      const token = Storage.get('github_token');
+      const user = Storage.get('github_user');
+      
+      if (token && user) {
+        this.token = token;
+        this.user = user;
+        this.notifyListeners();
+      }
+    } catch (error) {
+      console.error('Error checking session:', error);
+    }
+  }
+}
+
+export const auth = new AuthManager();
       storage.remove(config.storage.token);
       this.notifyListeners();
       Toast.info('Logout effettuato');
