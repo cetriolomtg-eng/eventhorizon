@@ -248,20 +248,44 @@
                 };
 
                 const loadItemIntoForm = (item) => {
-                    itemForm.date.value = formatDate(item.date);
-                    itemForm.title.value = item.title || '';
-                    itemForm.slug.value = item.slug || '';
-                    itemForm.kind.value = item.kind || '';
-                    itemForm.overline.value = item.overline || '';
-                    itemForm.author.value = item.author || '';
-                    itemForm.id.value = item.id || '';
-                    itemForm.thumb.value = item.thumb || '';
-                    itemForm.desc.value = item.desc || '';
-                    itemForm.tags.value = (item.tags || []).join(', ');
-                    itemForm.draft.checked = item.draft || false;
-                    itemForm.updated.value = item.updated ? formatDate(item.updated, 'YYYY-MM-DDTHH:mm') : '';
-                    itemForm.card.value = item.card || '';
-                    itemForm.raw.value = jsyaml.dump(item);
+                    if (!item) {
+                        console.error('❌ loadItemIntoForm: item è null/undefined');
+                        return;
+                    }
+
+                    console.log('📝 Caricamento item nel form:', item);
+
+                    try {
+                        // Data - formato YYYY-MM-DD per input type="date"
+                        if (item.date) {
+                            const dateStr = new Date(item.date).toISOString().split('T')[0];
+                            if (itemForm.date) itemForm.date.value = dateStr;
+                        }
+
+                        if (itemForm.title) itemForm.title.value = item.title || '';
+                        if (itemForm.slug) itemForm.slug.value = item.slug || '';
+                        if (itemForm.kind) itemForm.kind.value = item.kind || '';
+                        if (itemForm.overline) itemForm.overline.value = item.overline || '';
+                        if (itemForm.author) itemForm.author.value = item.author || '';
+                        if (itemForm.id) itemForm.id.value = item.id || '';
+                        if (itemForm.thumb) itemForm.thumb.value = item.thumb || '';
+                        if (itemForm.desc) itemForm.desc.value = item.desc || '';
+                        if (itemForm.tags) itemForm.tags.value = (item.tags || []).join(', ');
+                        if (itemForm.draft) itemForm.draft.checked = item.draft || false;
+
+                        if (item.updated && itemForm.updated) {
+                            const updatedStr = new Date(item.updated).toISOString().slice(0, 16);
+                            itemForm.updated.value = updatedStr;
+                        }
+
+                        if (itemForm.card) itemForm.card.value = item.card || '';
+                        if (itemForm.raw) itemForm.raw.value = jsyaml.dump(item);
+
+                        console.log('✅ Item caricato nel form con successo');
+                    } catch (error) {
+                        console.error('❌ Errore caricamento item nel form:', error);
+                        ui.showToast('Errore caricamento item: ' + error.message, 'error');
+                    }
                 };
 
                 // Validate Item Form
@@ -305,21 +329,27 @@
 
                             ui.showLoading('saveBtn');
 
+                            const title = itemForm.title?.value?.trim() || '';
+                            const slug = itemForm.slug?.value?.trim() || slugify(title);
+                            const id = itemForm.id?.value?.trim() || slug;
+
                             const formData = {
-                                date: itemForm.date.value,
-                                title: itemForm.title.value.trim(),
-                                slug: itemForm.slug.value || slugify(itemForm.title.value),
-                                kind: itemForm.kind.value,
-                                overline: itemForm.overline.value.trim(),
-                                author: itemForm.author.value.trim(),
-                                id: itemForm.id.value || itemForm.slug.value || slugify(itemForm.title.value),
-                                thumb: itemForm.thumb.value.trim(),
-                                desc: itemForm.desc.value.trim(),
-                                tags: itemForm.tags.value.split(',').map(t => t.trim()).filter(Boolean),
-                                draft: itemForm.draft.checked,
-                                updated: itemForm.updated.value,
-                                card: itemForm.card.value.trim()
+                                date: itemForm.date?.value || '',
+                                title: title,
+                                slug: slug,
+                                kind: itemForm.kind?.value || '',
+                                overline: itemForm.overline?.value?.trim() || '',
+                                author: itemForm.author?.value?.trim() || '',
+                                id: id,
+                                thumb: itemForm.thumb?.value?.trim() || '',
+                                desc: itemForm.desc?.value?.trim() || '',
+                                tags: (itemForm.tags?.value || '').split(',').map(t => t.trim()).filter(Boolean),
+                                draft: itemForm.draft?.checked || false,
+                                updated: itemForm.updated?.value || '',
+                                card: itemForm.card?.value?.trim() || ''
                             };
+
+                            console.log('💾 FormData preparato:', formData);
 
                             await items.saveItem(formData);
 
@@ -478,6 +508,13 @@
                         }
                     });
                     currentArticlePath = null;
+
+                    // Disabilita bottone elimina
+                    const deleteArticleBtn = document.getElementById('deleteArticleBtn');
+                    if (deleteArticleBtn) {
+                        deleteArticleBtn.disabled = true;
+                    }
+
                     if (editor.editor) {
                         editor.cm.setValue('');
                     }
@@ -496,6 +533,12 @@
                     if (articleForm.featured) articleForm.featured.checked = fm.featured || false;
 
                     currentArticlePath = article.path;
+
+                    // Abilita bottone elimina
+                    const deleteArticleBtn = document.getElementById('deleteArticleBtn');
+                    if (deleteArticleBtn) {
+                        deleteArticleBtn.disabled = false;
+                    }
 
                     // Carica contenuto nell'editor
                     if (editor.cm) {

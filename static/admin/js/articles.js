@@ -76,7 +76,15 @@ class ArticlesManager {
     }
 
     generateFrontmatter(data) {
-        return `---\n${jsyaml.dump(data)}---\n`;
+        // Opzioni safe per evitare encoding issues
+        const yamlOptions = {
+            indent: 2,
+            lineWidth: -1, // No line wrapping
+            noRefs: true,
+            sortKeys: false
+        };
+        const yaml = jsyaml.dump(data, yamlOptions);
+        return `---\n${yaml}---\n`;
     }
 
     async saveArticle(filename, frontmatter, content) {

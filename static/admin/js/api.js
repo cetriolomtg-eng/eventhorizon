@@ -1,6 +1,31 @@
 import { config } from './config.js';
 import { auth } from './auth.js';
 
+// Helper: UTF-8 safe base64 encoding
+function utf8ToBase64(str) {
+    try {
+        // Modern browsers support TextEncoder
+        const bytes = new TextEncoder().encode(str);
+        const binString = Array.from(bytes, (byte) => String.fromCodePoint(byte)).join('');
+        return btoa(binString);
+    } catch (e) {
+        // Fallback per browser vecchi
+        return btoa(unescape(encodeURIComponent(str)));
+    }
+}
+
+// Helper: base64 to UTF-8 decoding
+function base64ToUtf8(str) {
+    try {
+        const binString = atob(str);
+        const bytes = Uint8Array.from(binString, (m) => m.codePointAt(0));
+        return new TextDecoder().decode(bytes);
+    } catch (e) {
+        // Fallback
+        return decodeURIComponent(escape(atob(str)));
+    }
+}
+
 // Helper: Retry with exponential backoff
 async function withRetry(fn, maxRetries = 3, initialDelay = 1000) {
     let lastError;
@@ -113,7 +138,7 @@ class GitHubAPI {
         const endpoint = `/repos/${repoFullName}/contents/${path}`;
         const body = {
             message: `Update ${path}`,
-            content: btoa(content),
+            content: utf8ToBase64(content), // UTF-8 safe encoding
             branch: config.repo.branch
         };
 
