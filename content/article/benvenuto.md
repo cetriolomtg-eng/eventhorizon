@@ -5,6 +5,7 @@ draft = false
 description = "Che cos'è la sezione Articoli e come verrà usata sul sito."
 tags = ["benvenuto"]
 cover = "images/bg_image.webp"
+cms_visible = true
 +++
 
 ## Benvenuto!

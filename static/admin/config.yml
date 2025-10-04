@@ -17,10 +17,15 @@ collections:
     extension: md
     slug: "{{slug}}"
     filter:
-      field: cms_exclude
+      field: cms_visible
       value: true
-      # Nascondi file con cms_exclude = true (es. _index.md)
+      # Mostra solo file con cms_visible = true (esclude _index.md)
     fields:
+      - label: "CMS Visible"
+        name: cms_visible
+        widget: hidden
+        default: true
+
       - label: "Titolo"
         name: title
         widget: string
