@@ -77,11 +77,16 @@ class MarkdownEditor {
 
     setupPreview() {
         // Initialize marked with options
-        marked.setOptions({
+        if (!window.marked) {
+            throw new Error('marked library not loaded');
+        }
+
+        // Configure marked options
+        window.marked.setOptions({
             highlight: (code, lang) => {
-                if (Prism && lang) {
+                if (window.Prism && lang) {
                     try {
-                        return Prism.highlight(code, Prism.languages[lang], lang);
+                        return window.Prism.highlight(code, window.Prism.languages[lang], lang);
                     } catch (e) {
                         return code;
                     }
@@ -183,7 +188,7 @@ class MarkdownEditor {
 
     updatePreview() {
         const content = this.cm.getValue();
-        const html = marked(content);
+        const html = window.marked.parse(content);
         this.preview.innerHTML = html;
     }
 
