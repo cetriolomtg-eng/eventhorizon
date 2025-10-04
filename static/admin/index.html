@@ -1,266 +1,31 @@
-<!doctype html><!doctype html>
-
-<html><html>
-
-<head><head>
-
-  <meta charset="utf-8" />  <meta charset="utf-8" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <meta name="viewport" content="width=device-width, initial-scale=        // Verifica         // VERIFICA TOKEN GITHUB - strategia dalla deep analysis
-
-  <title>Content Manager</title>        const storedUser = localStorage.getItem('netlify-cms-user');
-
-</head>        if (storedUser) {
-
-<body>          const userData = JSON.parse(storedUser);
-
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>          console.log('🔍 Verifica token GitHub...');
-
-  <script src="./js/debug-tool.js"></script>          
-
-            // Test GitHub API con il token
-
-  <script>          fetch('https://api.github.com/user', {
-
-    console.log('🔍 Decap CMS - Clean Implementation');            headers: {
-
-                  'Authorization': `token ${userData.token}`,
-
-    // Check existing authentication              'Accept': 'application/vnd.github.v3+json'
-
-    const existingUser = localStorage.getItem('netlify-cms-user');            }
-
-    if (existingUser) {          })
-
-      console.log('👤 Existing token found:', JSON.parse(existingUser));          .then(response => {
-
-    }            console.log('👤 GitHub API /user response:', response.status);
-
-                if (response.ok) {
-
-    // OAuth message handler              return response.json();
-
-    window.addEventListener('message', (event) => {            } else {
-
-      if (event.origin === 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev') {              throw new Error(`GitHub API error: ${response.status}`);
-
-        if (typeof event.data === 'string' && event.data.startsWith('authorization:github:success:')) {            }
-
-          const token = event.data.slice('authorization:github:success:'.length);          })
-
-          console.log('✅ Token received:', token);          .then(userInfo => {
-
-                      console.log('✅ GitHub user info:', userInfo.login, userInfo.name);
-
-          // Save in the EXACT format Decap CMS expects            console.log('🔍 Token permissions OK');
-
-          localStorage.setItem('netlify-cms-user', JSON.stringify({            
-
-            token: token,            // Verifica repository access
-
-            login: 'eventhorizon-mtg',            return fetch('https://api.github.com/repos/eventhorizon-mtg/eventhorizon-mtg.github.io', {
-
-            name: 'Event Horizon MTG',              headers: {
-
-            avatar_url: 'https://github.com/eventhorizon-mtg.png',                'Authorization': `token ${userData.token}`,
-
-            backendName: 'github'                'Accept': 'application/vnd.github.v3+json'
-
-          }));              }
-
-                      });
-
-          window.location.reload();          })
-
-        }          .then(response => {
-
-      }            console.log('📁 Repository access:', response.status);
-
-    });            if (response.ok) {
-
-                  console.log('✅ Repository access OK');
-
-    // Advanced CMS initialization with deep analysis insights            } else {
-
-    window.addEventListener('load', () => {              console.log('❌ Repository access DENIED');
-
-                  }
-
-      function initializeCMS() {          })
-
-        console.log('🚀 Initializing Decap CMS...');          .catch(error => {
-
-                    console.error('❌ Token validation error:', error);
-
-        // Validate token first          });
-
-        const storedUser = localStorage.getItem('netlify-cms-user');        }
-
-        if (storedUser) {        
-
-          const userData = JSON.parse(storedUser);        // Forza inizializzazione dopo controlli
-
-          console.log('🔍 Validating GitHub token...');        console.log('🔄 Forzando inizializzazione esplicita...');
-
-                  setTimeout(() => {
-
-          // Test GitHub API access          if (window.CMS && typeof window.CMS.init === 'function') {
-
-          fetch('https://api.github.com/user', {            try {
-
-            headers: {              window.CMS.init();
-
-              'Authorization': `token ${userData.token}`,              console.log('✅ Init() chiamato con successo');
-
-              'Accept': 'application/vnd.github.v3+json'            } catch (e) {
-
-            }              console.error('❌ Errore durante init():', e);
-
-          })            }
-
-          .then(response => {          }
-
-            console.log('👤 GitHub API response:', response.status);        }, 1000);
-
-            if (response.ok) {        
-
-              return response.json();      }, 3000);
-
-            }    });ecap CMS è completamente inizializzato
-
-            throw new Error(`GitHub API error: ${response.status}`);        console.log('🔄 Verifica inizializzazione completa...');
-
-          })        
-
-          .then(userInfo => {        // Prova a forzare l'inizializzazione se non è ancora completa
-
-            console.log('✅ GitHub user:', userInfo.login);        if (window.CMS && !window.CMS.getConfig()) {
-
-                      console.log('🔄 Tentativo re-inizializzazione CMS...');
-
-            // Test repository access          try {
-
-            return fetch(`https://api.github.com/repos/eventhorizon-mtg/eventhorizon-mtg.github.io`, {            window.CMS.init();
-
-              headers: {          } catch (e) {
-
-                'Authorization': `token ${userData.token}`,            console.error('❌ Errore re-init:', e);
-
-                'Accept': 'application/vnd.github.v3+json'          }
-
-              }        }
-
-            });        
-
-          })        console.log('💡 Lasciando che Decap CMS usi solo config.yml per evitare conflitti');
-
-          .then(response => {        
-
-            console.log('📁 Repository access:', response.status === 200 ? 'OK' : 'DENIED');      }, 3000); />
-
-              <title>Content Manager</title>
-
-            // Force CMS initialization</head>
-
-            if (window.CMS) {<body>
-
-              console.log('🔄 Forcing CMS init...');  <!-- Include the script that builds the page and powers Decap CMS -->
-
-              try {  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-
-                window.CMS.init();  
-
-                console.log('✅ CMS initialized successfully');  <!-- Advanced debugging tool for studying Decap CMS internals -->
-
-              } catch (e) {  <script src="./js/debug-tool.js"></script>
-
-                console.error('❌ CMS init error:', e);  
-
-              }  <script>
-
-            }    console.log('🔍 Decap CMS - diagnosi problema token');
-
-          })    
-
-          .catch(error => {    // NON rimuovere il token se esiste - lasciamo che Decap CMS lo usi
-
-            console.error('❌ Token validation failed:', error);    const existingUser = localStorage.getItem('netlify-cms-user');
-
-          });    if (existingUser) {
-
-        } else {      console.log('👤 Token esistente trovato:', JSON.parse(existingUser));
-
-          console.log('❌ No authentication token found');    }
-
-        }    
-
-      }    // Intercetta tutte le chiamate fetch per vedere cosa fa Decap CMS
-
-          const originalFetch = window.fetch;
-
-      // Initialize after delay to ensure CMS is loaded    window.fetch = function(...args) {
-
-      setTimeout(initializeCMS, 2000);      const url = args[0];
-
-            const options = args[1] || {};
-
-      // Monitor CMS state      
-
-      function checkCMSState() {      console.log('🌐 Fetch call:', url, options.method || 'GET');
-
-        setTimeout(() => {      if (options.headers) {
-
-          console.log('📊 CMS State Check:');        console.log('📋 Headers:', options.headers);
-
-          console.log('- CMS loaded:', !!window.CMS);      }
-
-          console.log('- Config available:', !!(window.CMS && window.CMS.getConfig && window.CMS.getConfig()));      
-
-          console.log('- User authenticated:', !!localStorage.getItem('netlify-cms-user'));      return originalFetch.apply(this, args)
-
-                  .then(response => {
-
-          // Check UI state          console.log('✅ Response:', url, response.status);
-
-          const loginButton = document.querySelector('button');          return response;
-
-          const hasLoginUI = loginButton && loginButton.textContent &&         })
-
-                            loginButton.textContent.toLowerCase().includes('login');        .catch(error => {
-
-                    console.error('❌ Fetch error:', url, error);
-
-          console.log('- Login UI visible:', !!hasLoginUI);          throw error;
-
-                  });
-
-          if (!hasLoginUI && window.CMS && window.CMS.getConfig && window.CMS.getConfig()) {    };
-
-            console.log('🎉 SUCCESS: Decap CMS fully loaded and authenticated!');    
-
-          }    // Gestione OAuth semplificata
-
-              window.addEventListener('message', (event) => {
-
-        }, 5000);      if (event.origin === 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev') {
-
-      }        if (typeof event.data === 'string' && event.data.startsWith('authorization:github:success:')) {
-
-                const token = event.data.slice('authorization:github:success:'.length);
-
-      checkCMSState();          console.log('✅ Token ricevuto:', token);
-
-    });          
-
-  </script>          // Salva nel formato ESATTO che Decap CMS si aspetta
-
-</body>          localStorage.setItem('netlify-cms-user', JSON.stringify({
-
-</html>            token: token,
-            login: 'eventhorizon-mtg', // Username GitHub corretto
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Manager</title>
+</head>
+<body>
+  <!-- Include the script that builds the page and powers Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  
+  <script>
+    console.log('🔍 Decap CMS - versione pulita');
+    
+    // Gestione OAuth semplificata
+    window.addEventListener('message', (event) => {
+      if (event.origin === 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev') {
+        if (typeof event.data === 'string' && event.data.startsWith('authorization:github:success:')) {
+          const token = event.data.slice('authorization:github:success:'.length);
+          console.log('✅ Token ricevuto:', token);
+          
+          // Salva nel formato ESATTO che Decap CMS si aspetta
+          localStorage.setItem('netlify-cms-user', JSON.stringify({
+            token: token,
+            login: 'eventhorizon-mtg', // Username GitHub reale (dalla nostra analisi)
             name: 'Event Horizon MTG',
             avatar_url: 'https://github.com/eventhorizon-mtg.png',
-            backendName: 'github'
+            backendName: 'github' // Campo critico scoperto nell'analisi
           }));
           
           // Ricarica senza timeout per evitare conflitti
@@ -269,73 +34,36 @@
       }
     });
     
-    // Debug di Decap CMS dopo il caricamento - con retry logic
+    // Inizializzazione Decap CMS con forced init (dalla nostra deep analysis)
     window.addEventListener('load', () => {
-      
-      function checkCMSStatus(attempt = 1, maxAttempts = 10) {
-        console.log(`🔍 Check CMS Status - Tentativo ${attempt}/${maxAttempts}`);
-        
-        setTimeout(() => {
+      setTimeout(() => {
         console.log('🔍 Stato Decap CMS:');
         console.log('- window.CMS:', !!window.CMS);
+        console.log('- Token presente:', !!localStorage.getItem('netlify-cms-user'));
         
-        const storedUser = localStorage.getItem('netlify-cms-user');
-        console.log('- localStorage token:', !!storedUser);
-        if (storedUser) {
-          console.log('- Token details:', JSON.parse(storedUser));
-        }
-        
-        if (window.CMS) {
+        // Forza inizializzazione se necessario
+        if (window.CMS && typeof window.CMS.init === 'function') {
+          console.log('🚀 Forzando inizializzazione CMS...');
           try {
-            const config = window.CMS.getConfig ? window.CMS.getConfig() : null;
-            console.log('- CMS config:', config || 'N/A');
-            
-            if (!config) {
-              console.log('🔍 Tentativo caricamento config manuale...');
-              fetch('./config.yml')
-                .then(response => {
-                  console.log('📄 Config.yml fetch response:', response.status, response.statusText);
-                  return response.text();
-                })
-                .then(yamlText => {
-                  console.log('📝 Config.yml content length:', yamlText.length);
-                  console.log('📝 Config.yml primi 200 chars:', yamlText.substring(0, 200));
-                })
-                .catch(error => {
-                  console.error('❌ Errore caricamento config.yml:', error);
-                });
-            }
+            window.CMS.init();
+            console.log('✅ CMS inizializzato con successo');
           } catch (e) {
-            console.error('❌ Errore getConfig:', e);
+            console.error('❌ Errore inizializzazione CMS:', e);
           }
         }
         
-        // Controlla se ci sono errori visibili nell'interfaccia
-        const errorElements = document.querySelectorAll('[class*="error"], [class*="Error"]');
-        if (errorElements.length > 0) {
-          console.log('❌ Errori UI trovati:', errorElements.length);
-          errorElements.forEach((el, i) => {
-            console.log(`Error ${i}:`, el.textContent);
-          });
-        }
-        
-        // Controlla se c'è il pulsante di login (significa che non è autenticato)
-        const loginButtons = document.querySelectorAll('button, a');
-        let hasLoginButton = false;
-        loginButtons.forEach(btn => {
-          if (btn.textContent && btn.textContent.toLowerCase().includes('login')) {
-            hasLoginButton = true;
+        // Check finale dello stato
+        setTimeout(() => {
+          const config = window.CMS && window.CMS.getConfig ? window.CMS.getConfig() : null;
+          console.log('📊 CMS config disponibile:', !!config);
+          
+          const hasLoginButton = !!document.querySelector('button[type="button"]');
+          console.log('🔐 Login UI visibile:', hasLoginButton);
+          
+          if (!hasLoginButton && config) {
+            console.log('🎉 SUCCESS: Decap CMS completamente caricato!');
           }
-        });
-        
-        if (hasLoginButton) {
-          console.log('🔐 Pulsante login ancora presente - autenticazione fallita');
-        } else {
-          console.log('✅ Nessun pulsante login - potrebbe essere autenticato');
-        }
-        
-        // Non forzare config inline - lascia che usi solo config.yml
-        console.log('� Lasciando che Decap CMS usi solo config.yml per evitare conflitti');
+        }, 2000);
         
       }, 3000);
     });
