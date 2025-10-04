@@ -9,6 +9,59 @@ media_folder: static/uploads
 public_folder: /uploads
 
 collections:
+  - name: articles
+    label: "Articoli"
+    folder: content/article
+    create: true
+    format: toml-frontmatter
+    extension: md
+    slug: "{{slug}}"
+    fields:
+      - label: "Titolo"
+        name: title
+        widget: string
+        required: true
+
+      - label: "Data Pubblicazione"
+        name: date
+        widget: datetime
+        required: true
+        format: "YYYY-MM-DDTHH:mm:ss.SSSZ"
+        date_format: "DD/MM/YYYY"
+        time_format: "HH:mm"
+
+      - label: "Bozza"
+        name: draft
+        widget: boolean
+        required: false
+        default: false
+        hint: "Imposta su true per nascondere l'articolo"
+
+      - label: "Descrizione"
+        name: description
+        widget: text
+        required: false
+        hint: "Breve descrizione per SEO e anteprima"
+
+      - label: "Tags"
+        name: tags
+        widget: list
+        required: false
+        hint: "Lista di tag (es. commander, tutorial, regole)"
+
+      - label: "Immagine Copertina"
+        name: cover
+        widget: image
+        required: false
+        media_folder: "/static/images/articles"
+        public_folder: "/images/articles"
+        hint: "Immagine di copertina dell'articolo"
+
+      - label: "Contenuto"
+        name: body
+        widget: markdown
+        required: true
+
   - name: items
     label: "Archivio Items"
     folder: data/archive/items
@@ -35,9 +88,7 @@ collections:
         required: true
         options:
           - { label: "Video", value: "video" }
-          - { label: "Portale", value: "portal" }
-          - { label: "Articolo", value: "article" }
-          - { label: "Guida", value: "guide" }
+          - { label: "Content", value: "content" }
 
       - label: "Data"
         name: date
@@ -61,11 +112,21 @@ collections:
         widget: text
         required: true
 
-      - label: "Thumbnail"
+      - label: "Immagine Card Homepage"
         name: thumb
         widget: image
         required: false
-        hint: "Percorso immagine (es. /images/cards/fblthp_placeholder.webp)"
+        media_folder: "/static/images/cards"
+        public_folder: "/images/cards"
+        hint: "Immagine visualizzata nella card in homepage (es. /images/cards/nome.webp)"
+
+      - label: "Immagine Thumbnail Archive"
+        name: archive_thumb
+        widget: image
+        required: false
+        media_folder: "/static/images/thumbs"
+        public_folder: "/images/thumbs"
+        hint: "Immagine thumbnail visualizzata in pagina archive (opzionale)"
 
       - label: "Tags"
         name: tags
@@ -90,10 +151,26 @@ collections:
 
           - label: "Classe Pulsante"
             name: btn_class
-            widget: string
+            widget: select
             required: false
             default: "btn--base"
-            hint: "Classe CSS (es. btn--base, btn--yt primary, btn--scry)"
+            options:
+              - { label: "Base (Indigo)", value: "btn--base" }
+              - { label: "YouTube (Rosso)", value: "btn--yt" }
+              - { label: "Scryfall (Indigo scuro)", value: "btn--scry" }
+              - { label: "EDH (Teal)", value: "btn--edh" }
+              - { label: "Teal", value: "btn--teal" }
+              - { label: "Moxfield (Arancione)", value: "btn--mox" }
+              - { label: "Archidekt (Teal scuro)", value: "btn--archi" }
+              - { label: "Gold (Oro)", value: "btn--gold" }
+              - { label: "Alphab (Indigo chiaro)", value: "btn--alphab" }
+              - { label: "Acid (Verde acido)", value: "btn--acid" }
+              - { label: "Pink (Rosa)", value: "btn--pink" }
+              - { label: "Orange (Arancione)", value: "btn--orange" }
+              - { label: "Indigo Stroke (Bordo indigo)", value: "btn--indigostroke" }
+              - { label: "Teal Stroke (Bordo teal)", value: "btn--tealstroke" }
+              - { label: "Disabled (Disabilitato)", value: "btn--disabled1" }
+            hint: "Stile del pulsante/pill"
 
           - label: "Ordine"
             name: sort_order
