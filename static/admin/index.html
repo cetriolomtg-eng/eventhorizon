@@ -10,16 +10,35 @@
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   
   <script>
-    console.log('🔍 Decap CMS - versione pulita');
+    console.log('🔍 Decap CMS - diagnosi problema token');
     
-    // Pulizia token precedenti che potrebbero essere corrotti
+    // NON rimuovere il token se esiste - lasciamo che Decap CMS lo usi
     const existingUser = localStorage.getItem('netlify-cms-user');
     if (existingUser) {
-      console.log('🧹 Rimozione token precedente per reset pulito');
-      localStorage.removeItem('netlify-cms-user');
-      localStorage.removeItem('github_token');
-      sessionStorage.removeItem('netlify-cms-user');
+      console.log('👤 Token esistente trovato:', JSON.parse(existingUser));
     }
+    
+    // Intercetta tutte le chiamate fetch per vedere cosa fa Decap CMS
+    const originalFetch = window.fetch;
+    window.fetch = function(...args) {
+      const url = args[0];
+      const options = args[1] || {};
+      
+      console.log('🌐 Fetch call:', url, options.method || 'GET');
+      if (options.headers) {
+        console.log('📋 Headers:', options.headers);
+      }
+      
+      return originalFetch.apply(this, args)
+        .then(response => {
+          console.log('✅ Response:', url, response.status);
+          return response;
+        })
+        .catch(error => {
+          console.error('❌ Fetch error:', url, error);
+          throw error;
+        });
+    };
     
     // Gestione OAuth semplificata
     window.addEventListener('message', (event) => {
@@ -39,6 +58,37 @@
           window.location.reload();
         }
       }
+    });
+    
+    // Debug di Decap CMS dopo il caricamento
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        console.log('🔍 Stato Decap CMS:');
+        console.log('- window.CMS:', !!window.CMS);
+        console.log('- localStorage token:', !!localStorage.getItem('netlify-cms-user'));
+        
+        if (window.CMS) {
+          console.log('- CMS config:', window.CMS.getConfig ? window.CMS.getConfig() : 'N/A');
+        }
+        
+        // Controlla se ci sono errori visibili nell'interfaccia
+        const errorElements = document.querySelectorAll('[class*="error"], [class*="Error"]');
+        if (errorElements.length > 0) {
+          console.log('❌ Errori UI trovati:', errorElements.length);
+          errorElements.forEach((el, i) => {
+            console.log(`Error ${i}:`, el.textContent);
+          });
+        }
+        
+        // Controlla se c'è il pulsante di login (significa che non è autenticato)
+        const loginButton = document.querySelector('[href*="login"], [class*="login"], button:contains("Login")');
+        if (loginButton) {
+          console.log('🔐 Pulsante login ancora presente - autenticazione fallita');
+        } else {
+          console.log('✅ Nessun pulsante login - potrebbe essere autenticato');
+        }
+        
+      }, 3000);
     });
   </script>
 </body>
