@@ -1,0 +1,226 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EventHorizon Admin - Decap CMS</title>
+  <style>
+    body {
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      color: #666;
+    }
+    
+    .error {
+      background: #fee;
+      border: 1px solid #fcc;
+      border-radius: 4px;
+      padding: 20px;
+      margin: 20px;
+      color: #c33;
+    }
+  </style>
+</head>
+<body>
+  <div id="loading" class="loading">
+    🔄 Caricamento Decap CMS...
+  </div>
+  
+  <div id="error" class="error" style="display: none;">
+    <h3>❌ Errore di inizializzazione</h3>
+    <p>Controlla la console per maggiori dettagli.</p>
+  </div>
+  <script>
+    console.log('🔍 Decap CMS Admin page loading...');
+    
+    // Debug del processo di inizializzazione di Decap CMS
+    window.addEventListener('load', () => {
+      console.log('✅ Page loaded');
+      
+      // Intercetta e converti i messaggi OAuth per Decap CMS
+      window.addEventListener('message', (event) => {
+        console.log('📨 Window message received:', event.origin, event.data);
+        
+        // Se è un messaggio dal nostro worker OAuth
+        if (event.origin === 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev') {
+          // Converti il formato del messaggio per Decap CMS
+          if (typeof event.data === 'string' && event.data.startsWith('authorization:github:success:')) {
+            const token = event.data.slice('authorization:github:success:'.length);
+            console.log('🔄 Converting OAuth message for Decap CMS, token:', token);
+            
+            // Formato che Decap CMS potrebbe aspettarsi
+            const decapMessage = {
+              type: 'authorization:github:success',
+              token: token,
+              provider: 'github'
+            };
+            
+            console.log('📤 Sending converted message to Decap CMS:', decapMessage);
+            
+            // Reinvia il messaggio nel formato Decap CMS
+            setTimeout(() => {
+              window.postMessage(decapMessage, '*');
+              
+              // Prova anche altri formati
+              window.postMessage({
+                type: 'oauth-callback',
+                token: token,
+                provider: 'github'
+              }, '*');
+              
+              // Se disponibile, prova a chiamare direttamente l'API di Decap CMS
+              if (window.CMS && window.CMS.getConfig) {
+                console.log('🔑 Trying to authenticate with Decap CMS directly');
+                try {
+                  // Potrebbe esserci un metodo per autenticare direttamente
+                  if (window.CMS.authenticate) {
+                    window.CMS.authenticate({ token: token, provider: 'github' });
+                  }
+                } catch (e) {
+                  console.log('⚠️ Direct CMS authentication failed:', e);
+                }
+              }
+            }, 100);
+          }
+        }
+      });
+      
+      setTimeout(() => {
+        console.log('Body HTML length:', document.body.innerHTML.length);
+        console.log('Body has children:', document.body.children.length);
+        
+        if (document.getElementById('nc-root')) {
+          console.log('✅ #nc-root exists');
+          console.log('#nc-root HTML length:', document.getElementById('nc-root').innerHTML.length);
+          
+          // Controlla se ci sono elementi di login
+          const loginElements = document.querySelectorAll('[data-testid="login-button"], .nc-loginButton, button[type="button"]');
+          console.log('🔐 Login elements found:', loginElements.length);
+          
+          // Controlla se ci sono errori visibili
+          const errorElements = document.querySelectorAll('.nc-error, [class*="error"], [class*="Error"]');
+          console.log('❌ Error elements found:', errorElements.length);
+          if (errorElements.length > 0) {
+            errorElements.forEach((el, i) => {
+              console.log(`Error ${i}:`, el.textContent);
+            });
+          }
+          
+        } else {
+          console.log('❌ #nc-root NOT found');
+        }
+        
+        // Debug dello stato di Decap CMS
+        if (window.CMS) {
+          console.log('✅ Decap CMS object available');
+          console.log('CMS config:', window.CMS.getConfig ? window.CMS.getConfig() : 'Config not available');
+        } else {
+          console.log('❌ Decap CMS object NOT available');
+        }
+      }, 3000);
+    });
+    
+    // Override console per catturare errori di Decap CMS
+    const originalError = console.error;
+    console.error = function(...args) {
+      if (args[0] && args[0].toString().includes('CMS') || args[0] && args[0].toString().includes('oauth')) {
+        console.log('🚨 DECAP CMS ERROR:', ...args);
+      }
+      originalError.apply(console, args);
+    };
+  </script>
+  <!-- Include the script that builds the page and powers Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  
+  <script>
+    // Inizializzazione manuale di Decap CMS dopo il caricamento
+    window.addEventListener('load', () => {
+      console.log('🔧 Manual Decap CMS initialization...');
+      
+      // Attendi che Decap CMS sia disponibile
+      const initializeCMS = () => {
+        if (window.CMS) {
+          console.log('📋 Initializing CMS with manual config...');
+          
+          // Configurazione manual di Decap CMS
+          window.CMS.init({
+            config: {
+              backend: {
+                name: 'github',
+                repo: 'eventhorizon-mtg/eventhorizon-mtg.github.io',
+                branch: 'main',
+                base_url: 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev',
+                auth_endpoint: '/auth'
+              },
+              media_folder: 'static/uploads',
+              public_folder: '/uploads',
+              collections: [
+                {
+                  name: 'archive_items',
+                  label: 'Archivio — Items',
+                  folder: 'data/archive/items',
+                  create: true,
+                  format: 'yaml',
+                  extension: 'yml',
+                  slug: '{{slug}}',
+                  fields: [
+                    {
+                      label: 'Data',
+                      name: 'date',
+                      widget: 'date',
+                      format: 'YYYY-MM-DD',
+                      required: true
+                    },
+                    {
+                      label: 'Titolo',
+                      name: 'title',
+                      widget: 'string',
+                      required: true
+                    },
+                    {
+                      label: 'ID',
+                      name: 'id',
+                      widget: 'string',
+                      required: false
+                    },
+                    {
+                      label: 'Slug',
+                      name: 'slug',
+                      widget: 'string',
+                      required: false
+                    },
+                    {
+                      label: 'Tipo',
+                      name: 'kind',
+                      widget: 'select',
+                      options: ['video', 'content'],
+                      required: true
+                    }
+                  ]
+                }
+              ]
+            }
+          });
+          
+          console.log('✅ Decap CMS initialized manually');
+        } else {
+          console.log('⏳ Waiting for Decap CMS to load...');
+          setTimeout(initializeCMS, 500);
+        }
+      };
+      
+      setTimeout(initializeCMS, 1000);
+    });
+  </script>
+</body>
+</html>

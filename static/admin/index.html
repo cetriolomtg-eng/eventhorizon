@@ -3,120 +3,111 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Content Manager</title>
+  <title>EventHorizon Admin - Decap CMS</title>
   <style>
-    /* Force visibility */
-    * {
-      visibility: visible !important;
-      opacity: 1 !important;
-    }
     body {
-      background: #f5f5f5 !important;
+      background: #f5f5f5;
       margin: 0;
       padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-size: 18px;
+      color: #666;
+    }
+    
+    .error {
+      background: #fee;
+      border: 1px solid #fcc;
+      border-radius: 4px;
+      padding: 20px;
+      margin: 20px;
+      color: #c33;
     }
   </style>
 </head>
 <body>
+  <div id="loading" class="loading">
+    🔄 Caricamento Decap CMS...
+  </div>
+  
+  <div id="error" class="error" style="display: none;">
+    <h3>❌ Errore di inizializzazione</h3>
+    <p>Controlla la console per maggiori dettagli.</p>
+  </div>
+
   <script>
     console.log('🔍 Decap CMS Admin page loading...');
     
-    // Debug del processo di inizializzazione di Decap CMS
+    let authToken = null;
+    
+    // Intercetta messaggi OAuth
+    window.addEventListener('message', (event) => {
+      console.log('📨 Window message received:', event.origin, event.data);
+      
+      // Se è un messaggio dal nostro worker OAuth
+      if (event.origin === 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev') {
+        if (typeof event.data === 'string' && event.data.startsWith('authorization:github:success:')) {
+          authToken = event.data.slice('authorization:github:success:'.length);
+          console.log('✅ Token OAuth ricevuto:', authToken);
+          
+          // Nascondi il loading
+          document.getElementById('loading').style.display = 'none';
+          
+          // Salva il token e ricarica
+          console.log('💾 Salvataggio token in localStorage...');
+          localStorage.setItem('netlify-cms-user', JSON.stringify({
+            token: authToken,
+            login: 'github-user',
+            name: 'GitHub User'
+          }));
+          
+          // Ricarica per applicare l'autenticazione
+          setTimeout(() => {
+            console.log('🔄 Ricaricamento pagina per applicare autenticazione...');
+            window.location.reload();
+          }, 1000);
+        }
+      }
+    });
+    
+    function showError(message) {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('error').style.display = 'block';
+      document.getElementById('error').innerHTML = `
+        <h3>❌ Errore</h3>
+        <p>${message}</p>
+        <button onclick="window.location.reload()">🔄 Ricarica</button>
+      `;
+    }
+    
+    // Controlla se abbiamo già un token salvato
+    const savedUser = localStorage.getItem('netlify-cms-user');
+    if (savedUser) {
+      console.log('👤 Token trovato in localStorage:', JSON.parse(savedUser));
+    }
+    
+    // Inizializza dopo il caricamento di Decap CMS
     window.addEventListener('load', () => {
       console.log('✅ Page loaded');
       
-      // Intercetta e converti i messaggi OAuth per Decap CMS
-      window.addEventListener('message', (event) => {
-        console.log('📨 Window message received:', event.origin, event.data);
-        
-        // Se è un messaggio dal nostro worker OAuth
-        if (event.origin === 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev') {
-          // Converti il formato del messaggio per Decap CMS
-          if (typeof event.data === 'string' && event.data.startsWith('authorization:github:success:')) {
-            const token = event.data.slice('authorization:github:success:'.length);
-            console.log('🔄 Converting OAuth message for Decap CMS, token:', token);
-            
-            // Formato che Decap CMS potrebbe aspettarsi
-            const decapMessage = {
-              type: 'authorization:github:success',
-              token: token,
-              provider: 'github'
-            };
-            
-            console.log('📤 Sending converted message to Decap CMS:', decapMessage);
-            
-            // Reinvia il messaggio nel formato Decap CMS
-            setTimeout(() => {
-              window.postMessage(decapMessage, '*');
-              
-              // Prova anche altri formati
-              window.postMessage({
-                type: 'oauth-callback',
-                token: token,
-                provider: 'github'
-              }, '*');
-              
-              // Se disponibile, prova a chiamare direttamente l'API di Decap CMS
-              if (window.CMS && window.CMS.getConfig) {
-                console.log('🔑 Trying to authenticate with Decap CMS directly');
-                try {
-                  // Potrebbe esserci un metodo per autenticare direttamente
-                  if (window.CMS.authenticate) {
-                    window.CMS.authenticate({ token: token, provider: 'github' });
-                  }
-                } catch (e) {
-                  console.log('⚠️ Direct CMS authentication failed:', e);
-                }
-              }
-            }, 100);
-          }
-        }
-      });
-      
       setTimeout(() => {
-        console.log('Body HTML length:', document.body.innerHTML.length);
-        console.log('Body has children:', document.body.children.length);
-        
-        if (document.getElementById('nc-root')) {
-          console.log('✅ #nc-root exists');
-          console.log('#nc-root HTML length:', document.getElementById('nc-root').innerHTML.length);
-          
-          // Controlla se ci sono elementi di login
-          const loginElements = document.querySelectorAll('[data-testid="login-button"], .nc-loginButton, button[type="button"]');
-          console.log('🔐 Login elements found:', loginElements.length);
-          
-          // Controlla se ci sono errori visibili
-          const errorElements = document.querySelectorAll('.nc-error, [class*="error"], [class*="Error"]');
-          console.log('❌ Error elements found:', errorElements.length);
-          if (errorElements.length > 0) {
-            errorElements.forEach((el, i) => {
-              console.log(`Error ${i}:`, el.textContent);
-            });
-          }
-          
-        } else {
-          console.log('❌ #nc-root NOT found');
-        }
-        
-        // Debug dello stato di Decap CMS
         if (window.CMS) {
-          console.log('✅ Decap CMS object available');
-          console.log('CMS config:', window.CMS.getConfig ? window.CMS.getConfig() : 'Config not available');
+          console.log('✅ Decap CMS disponibile');
+          document.getElementById('loading').style.display = 'none';
         } else {
-          console.log('❌ Decap CMS object NOT available');
+          console.error('❌ Decap CMS non disponibile');
+          showError('Decap CMS non si è caricato correttamente');
         }
       }, 3000);
     });
-    
-    // Override console per catturare errori di Decap CMS
-    const originalError = console.error;
-    console.error = function(...args) {
-      if (args[0] && args[0].toString().includes('CMS') || args[0] && args[0].toString().includes('oauth')) {
-        console.log('🚨 DECAP CMS ERROR:', ...args);
-      }
-      originalError.apply(console, args);
-    };
   </script>
+
   <!-- Include the script that builds the page and powers Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
