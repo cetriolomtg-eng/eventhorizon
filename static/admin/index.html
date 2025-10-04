@@ -78,10 +78,47 @@
     window.addEventListener('load', () => {
       console.log('🚀 Window load event - CMS dovrebbe auto-inizializzarsi');
 
-      // Verifica presenza CMS dopo 2 secondi
+      // Attendi che il CMS sia pronto e forza il login se abbiamo un token
       setTimeout(() => {
         if (window.CMS) {
           console.log('✅ window.CMS disponibile');
+
+          // Se abbiamo un token salvato, prova a forzare l'autenticazione
+          const savedUser = localStorage.getItem('netlify-cms-user');
+          if (savedUser) {
+            const userData = JSON.parse(savedUser);
+            console.log('🔐 Tentativo di autenticazione manuale con token salvato...');
+
+            try {
+              // Prova a impostare manualmente l'utente autenticato
+              // Decap CMS potrebbe usare chiavi diverse
+              const authData = {
+                token: userData.token,
+                backendName: 'github'
+              };
+
+              // Salva in tutti i formati possibili che Decap potrebbe cercare
+              localStorage.setItem('decap-cms-user', JSON.stringify(userData));
+              localStorage.setItem('netlify-cms-user', JSON.stringify(userData));
+
+              // Salva anche il formato "vecchio" di Netlify CMS
+              localStorage.setItem('netlify-cms-auth', JSON.stringify({
+                github: {
+                  token: userData.token
+                }
+              }));
+
+              console.log('💾 Token salvato in formati multipli - ricarico...');
+
+              // Ricarica una sola volta per applicare
+              if (!sessionStorage.getItem('cms-reload-done')) {
+                sessionStorage.setItem('cms-reload-done', 'true');
+                window.location.reload();
+              }
+            } catch (e) {
+              console.error('❌ Errore durante autenticazione manuale:', e);
+            }
+          }
         } else {
           console.error('❌ window.CMS NON trovato!');
         }
