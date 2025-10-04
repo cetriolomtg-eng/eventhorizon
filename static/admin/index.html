@@ -5,75 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Admin · Event Horizon CMS</title>
-
-  <!-- Custom Styles -->
-  <style>
-    :root {
-      --primary-color: #6c5ce7;
-      --background-color: #0e0f1a;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-  </style>
 </head>
 <body>
-  <!-- Decap CMS mount point -->
-  <div id="nc-root"></div>
-
-  <!-- Decap CMS - loaded AFTER DOM is ready -->
-  <script>
-    // Debug: verifica che tutto sia caricato
-    console.log('🔍 DOM ready, nc-root exists:', !!document.getElementById('nc-root'));
-
-    // Aspetta che il DOM sia pronto prima di caricare Decap CMS
-    window.addEventListener('DOMContentLoaded', function() {
-      console.log('✅ DOMContentLoaded fired');
-
-      // Verifica che config.yml sia accessibile
-      fetch('/admin/config.yml')
-        .then(r => {
-          console.log('📄 config.yml response:', r.status);
-          return r.text();
-        })
-        .then(text => {
-          console.log('📄 config.yml loaded, length:', text.length);
-
-          // Carica Decap CMS
-          const script = document.createElement('script');
-          script.src = 'https://unpkg.com/decap-cms@^3.3.0/dist/decap-cms.js';
-          script.onload = () => {
-            console.log('✅ Decap CMS script loaded');
-
-            // Aspetta un attimo e poi inizializza manualmente
-            setTimeout(() => {
-              console.log('🚀 Checking if CMS needs manual init...');
-              console.log('DecapCMS available:', typeof window.DecapCMS !== 'undefined');
-              console.log('CMS available:', typeof window.CMS !== 'undefined');
-
-              // Prova a inizializzare manualmente se esiste
-              if (window.DecapCMS && window.DecapCMS.init) {
-                console.log('🎯 Initializing DecapCMS manually...');
-                window.DecapCMS.init();
-              } else if (window.CMS && window.CMS.init) {
-                console.log('🎯 Initializing CMS manually...');
-                window.CMS.init();
-              } else {
-                console.log('ℹ️ CMS should auto-initialize');
-              }
-            }, 500);
-          };
-          script.onerror = (e) => console.error('❌ Decap CMS script error:', e);
-          document.body.appendChild(script);
-        })
-        .catch(err => {
-          console.error('❌ config.yml not found:', err);
-          document.getElementById('nc-root').innerHTML = '<div style="padding:20px;color:red;">Errore: config.yml non trovato. Verifica il deploy.</div>';
-        });
-    });
-  </script>
+  <!-- Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.3.0/dist/decap-cms.js"></script>
 </body>
 </html>
