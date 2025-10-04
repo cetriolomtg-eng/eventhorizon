@@ -45,7 +45,27 @@
           // Carica Decap CMS
           const script = document.createElement('script');
           script.src = 'https://unpkg.com/decap-cms@^3.3.0/dist/decap-cms.js';
-          script.onload = () => console.log('✅ Decap CMS script loaded');
+          script.onload = () => {
+            console.log('✅ Decap CMS script loaded');
+
+            // Aspetta un attimo e poi inizializza manualmente
+            setTimeout(() => {
+              console.log('🚀 Checking if CMS needs manual init...');
+              console.log('DecapCMS available:', typeof window.DecapCMS !== 'undefined');
+              console.log('CMS available:', typeof window.CMS !== 'undefined');
+
+              // Prova a inizializzare manualmente se esiste
+              if (window.DecapCMS && window.DecapCMS.init) {
+                console.log('🎯 Initializing DecapCMS manually...');
+                window.DecapCMS.init();
+              } else if (window.CMS && window.CMS.init) {
+                console.log('🎯 Initializing CMS manually...');
+                window.CMS.init();
+              } else {
+                console.log('ℹ️ CMS should auto-initialize');
+              }
+            }, 500);
+          };
           script.onerror = (e) => console.error('❌ Decap CMS script error:', e);
           document.body.appendChild(script);
         })
