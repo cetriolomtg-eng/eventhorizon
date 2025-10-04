@@ -3,7 +3,10 @@
     "allow": [
       "Bash(git checkout:*)",
       "Bash(curl:*)",
-      "Bash(python -m http.server:*)"
+      "Bash(python -m http.server:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nSwitch to Decap CMS\n\n- Backup custom CMS in _backup_custom/\n- Setup Decap CMS with professional UI\n- Configure collections for items and articles  \n- Full OAuth integration with Cloudflare Worker\n- Media library support\n- Markdown editor with preview\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
