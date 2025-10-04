@@ -83,14 +83,23 @@ class AuthManager {
     }
     
     try {
-      // Usa valori di default se non configurati
-      const workerBase = config.auth?.workerBase || 'https://auth.eventhorizon-mtg.workers.dev';
-      const authEndpoint = config.auth?.authEndpoint || 'auth';
-      const scope = config.auth?.scope || 'repo';
       const clientId = config.auth?.clientId;
+      if (!clientId) {
+        throw new Error('Client ID non configurato');
+      }
       
-      const origin = location.origin;
-      const url = `${workerBase}/${authEndpoint}?origin=${encodeURIComponent(origin)}&scope=${scope}${clientId?`&client_id=${encodeURIComponent(clientId)}`:""}`;
+      const scope = config.auth?.scope || 'repo';
+      const redirectUri = `${location.origin}/admin/callback.html`;
+      const state = Math.random().toString(36).substring(7);
+      
+      // Salva state per verifica
+      Storage.set('oauth_state', state);
+      
+      const authUrl = new URL(config.auth.authUrl);
+      authUrl.searchParams.append('client_id', clientId);
+      authUrl.searchParams.append('redirect_uri', redirectUri);
+      authUrl.searchParams.append('scope', scope);
+      authUrl.searchParams.append('state', state);
       
       // Apri popup centrato
       const width = 600;
@@ -99,7 +108,7 @@ class AuthManager {
       const top = (window.innerHeight - height) / 2;
       
       this.popup = window.open(
-        url,
+        authUrl.toString(),
         'github-oauth',
         `width=${width},height=${height},left=${left},top=${top}`
       );
@@ -132,8 +141,7 @@ class AuthManager {
   async handleCallback(event) {
     try {
       // Verifica origine
-      const workerBase = config.auth?.workerBase || 'https://auth.eventhorizon-mtg.workers.dev';
-      if (!event.origin.startsWith(workerBase)) {
+      if (event.origin !== location.origin) {
         console.log('Ignoring message from unauthorized origin:', event.origin);
         return;
       }
@@ -144,29 +152,44 @@ class AuthManager {
         return;
       }
       
-      // Gestisci sia il formato oggetto che stringa
-      let token;
-      if (typeof event.data === 'string') {
-        if (!event.data.startsWith('authorization:github:success:')) {
-          console.log('Ignoring message with invalid format:', event.data);
-          return;
-        }
-        token = event.data.slice('authorization:github:success:'.length);
-      } else if (typeof event.data === 'object') {
-        token = event.data.token;
-      } else {
-        console.log('Ignoring message with invalid data type:', typeof event.data);
+      const data = event.data;
+      if (typeof data !== 'object' || !data.code || !data.state) {
+        console.log('Invalid callback data:', data);
         return;
       }
       
-      // Valida token
-      if (!token || token.length < 10) {
-        throw new Error('Invalid OAuth token');
+      // Verifica state
+      const savedState = Storage.get('oauth_state');
+      if (data.state !== savedState) {
+        throw new Error('Invalid state parameter');
+      }
+      
+      // Scambia il codice per un token usando il backend
+      const response = await fetch('https://github.com/login/oauth/access_token', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          client_id: config.auth.clientId,
+          code: data.code,
+          redirect_uri: `${location.origin}/admin/callback.html`
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      
+      const tokenData = await response.json();
+      if (!tokenData.access_token) {
+        throw new Error('No access token in response');
       }
       
       // Salva token
-      this.token = token;
-      Storage.set(config.storage.token, token);
+      this.token = tokenData.access_token;
+      Storage.set(config.storage.token, this.token);
       
       // Carica dati utente
       await this.fetchUserData();

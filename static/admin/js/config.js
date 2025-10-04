@@ -15,8 +15,8 @@ export const config = {
 
   // OAuth & API
   auth: {
-    workerBase: "https://auth.eventhorizon-mtg.workers.dev",
-    authEndpoint: "auth",
+    clientId: "Iv1.6670215d53bece67",
+    authUrl: "https://github.com/login/oauth/authorize",
     scope: "repo",
     apiVersion: "2022-11-28"
   },
