@@ -15,13 +15,10 @@ export const config = {
 
   // OAuth & API
   auth: {
-    clientId: "Iv1.6670215d53bece67",
-    authUrl: "https://github.com/login/oauth/authorize",
-    tokenUrl: "https://corsproxy.io/?https://github.com/login/oauth/access_token",
+    workerBase: "https://auth.eventhorizon-mtg.workers.dev",
+    authEndpoint: "auth",
     scope: "repo",
-    apiVersion: "2022-11-28",
-    redirectBase: "https://eventhorizon-mtg.github.io",
-    clientSecret: null // Questo deve essere tenuto segreto e gestito lato server
+    apiVersion: "2022-11-28"
   },
 
   // UI Settings

@@ -7,8 +7,6 @@ import { config } from './config.js';
 import { ui } from './ui.js';
 import { Storage } from './utils.js';
 
-const storage = Storage;
-
 class AuthManager {
   constructor() {
     this.token = null;
@@ -83,23 +81,13 @@ class AuthManager {
     }
     
     try {
-      const clientId = config.auth?.clientId;
-      if (!clientId) {
-        throw new Error('Client ID non configurato');
-      }
-      
+      // Usa valori di default se non configurati
+      const workerBase = config.auth?.workerBase || 'https://auth.eventhorizon-mtg.workers.dev';
+      const authEndpoint = config.auth?.authEndpoint || 'auth';
       const scope = config.auth?.scope || 'repo';
-      const redirectUri = `${config.auth.redirectBase}/admin/callback.html`;
-      const state = Math.random().toString(36).substring(7);
       
-      // Salva state per verifica
-      Storage.set('oauth_state', state);
-      
-      const authUrl = new URL(config.auth.authUrl);
-      authUrl.searchParams.append('client_id', clientId);
-      authUrl.searchParams.append('redirect_uri', redirectUri);
-      authUrl.searchParams.append('scope', scope);
-      authUrl.searchParams.append('state', state);
+      const origin = location.origin;
+      const url = `${workerBase}/${authEndpoint}?origin=${encodeURIComponent(origin)}&scope=${scope}`;
       
       // Apri popup centrato
       const width = 600;
@@ -108,10 +96,114 @@ class AuthManager {
       const top = (window.innerHeight - height) / 2;
       
       this.popup = window.open(
-        authUrl.toString(),
+        url,
         'github-oauth',
         `width=${width},height=${height},left=${left},top=${top}`
       );
+      
+      if (!this.popup) {
+        throw new Error('Popup blocked - please enable popups for this site');
+      }
+      
+    } catch (err) {
+      console.error('Login failed:', err);
+      ui.showError('Login failed: ' + err.message);
+    }
+  }
+  
+  /**
+   * Gestisce callback OAuth
+   */
+  handleCallback(event) {
+    // Ignora messaggi da altre origini
+    if (event.origin !== location.origin) return;
+    
+    const { type, token, error } = event.data;
+    
+    if (type === 'oauth-callback') {
+      if (this.popup) {
+        this.popup.close();
+        this.popup = null;
+      }
+      
+      if (error) {
+        console.error('OAuth error:', error);
+        ui.showError('Authentication failed: ' + error);
+        return;
+      }
+      
+      if (!token) {
+        console.error('No token received');
+        ui.showError('Authentication failed: No token received');
+        return;
+      }
+      
+      this.token = token;
+      Storage.set('github_token', token);
+      
+      this.fetchUserData()
+        .catch(err => {
+          console.error('Error fetching user data:', err);
+          ui.showError('Error loading user data: ' + err.message);
+        });
+    }
+  }
+  
+  /**
+   * Verifica sessione esistente
+   */
+  async checkSession() {
+    const token = Storage.get('github_token');
+    if (!token) return;
+    
+    this.token = token;
+    
+    try {
+      await this.fetchUserData();
+    } catch (err) {
+      console.error('Session check failed:', err);
+      this.logout();
+    }
+  }
+  
+  /**
+   * Effettua logout
+   */
+  logout() {
+    this.token = null;
+    this.user = null;
+    Storage.remove('github_token');
+    this.notifyListeners();
+  }
+  
+  /**
+   * Recupera dati utente da GitHub
+   */
+  async fetchUserData() {
+    if (!this.token) {
+      throw new Error('Not authenticated');
+    }
+    
+    const workerBase = config.auth?.workerBase || 'https://auth.eventhorizon-mtg.workers.dev';
+    const userEndpoint = config.auth?.userEndpoint || 'user';
+    
+    const response = await fetch(`${workerBase}/${userEndpoint}`, {
+      headers: {
+        'Authorization': `Bearer ${this.token}`
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch user data: ' + response.status);
+    }
+    
+    const data = await response.json();
+    this.user = data;
+    this.notifyListeners();
+  }
+}
+
+export const auth = new AuthManager();
       
     } catch (error) {
       console.error('Error starting OAuth flow:', error);
@@ -139,44 +231,31 @@ class AuthManager {
    * Gestisce callback OAuth
    */
   async handleCallback(event) {
+    // Verifica origine
+    const workerBase = config.auth?.workerBase || 'https://auth.eventhorizon-mtg.workers.dev';
+    if (!event.origin.startsWith(workerBase)) {
+      return;
+    }
+    
     try {
-      // Verifica origine
-      if (event.origin !== location.origin) {
-        console.log('Ignoring message from unauthorized origin:', event.origin);
+      // Estrai token dal messaggio
+      let token;
+      if (typeof event.data === 'string' && event.data.startsWith('authorization:github:success:')) {
+        token = event.data.slice('authorization:github:success:'.length);
+      } else if (typeof event.data === 'object' && event.data.token) {
+        token = event.data.token;
+      } else {
         return;
       }
       
-      // Validazione source (deve essere il popup aperto da noi)
-      if (this.popup && event.source !== this.popup) {
-        console.warn('OAuth message from unauthorized source');
-        return;
+      // Valida token
+      if (!token || token.length < 10) {
+        throw new Error('Token non valido');
       }
       
-      const data = event.data;
-      if (typeof data !== 'object' || !data.code || !data.state) {
-        console.log('Invalid callback data:', data);
-        return;
-      }
-      
-      // Verifica state
-      const savedState = Storage.get('oauth_state');
-      if (data.state !== savedState) {
-        throw new Error('Invalid state parameter');
-      }
-      
-      // Scambia il codice per un token usando il proxy CORS
-      const response = await fetch(config.auth.tokenUrl, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Origin': config.auth.redirectBase
-        },
-        body: JSON.stringify({
-          client_id: config.auth.clientId,
-          code: data.code,
-          redirect_uri: `${config.auth.redirectBase}/admin/callback.html`
-        })
+      // Salva token
+      this.token = token;
+      Storage.set(config.storage.token, token);
       });
       
       if (!response.ok) {
