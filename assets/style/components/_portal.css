@@ -16,7 +16,10 @@
 .portal::before{
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
   background-image: url('/images/woe-279.webp');
   background-size: cover;
   background-position: center;
@@ -24,21 +27,25 @@
   opacity: 0.3;
   z-index: 0;
   /* Effetto parallax subtile */
-  transform: translateY(calc(var(--portal-parallax, 0px) * -1)) translateZ(0);
+  transform: translate3d(-50%, calc(var(--portal-parallax, 0px) * -1), 0);
   will-change: transform;
 }
 
-/* Gradient overlay per migliore leggibilità */
+/* Gradient overlay per migliore leggibilita */
 .portal::after{
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
   background: linear-gradient(
     180deg,
     rgba(243,242,247,0.68) 0%,
     rgba(243,242,247,0.82) 100%
   );
   z-index: 1;
+  transform: translate3d(-50%, 0, 0);
 }
 .portal__inner{
   position: relative;
