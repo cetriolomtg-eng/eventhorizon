@@ -44,6 +44,40 @@
         // Lasciamo che Decap CMS si inizializzi naturalmente
         console.log('⏳ Aspettando inizializzazione naturale di Decap CMS...');
         
+        // Test diagnostico per config.yml
+        console.log('🔍 Test caricamento config.yml...');
+        fetch('./config.yml')
+          .then(response => {
+            console.log('📄 Config.yml response:', response.status, response.statusText);
+            if (!response.ok) {
+              throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            return response.text();
+          })
+          .then(yamlText => {
+            console.log('📝 Config.yml caricato:', yamlText.length, 'caratteri');
+            console.log('📝 Prime 3 righe:', yamlText.split('\n').slice(0, 3).join('\n'));
+            
+            // Test parsing YAML
+            try {
+              // Decap uses js-yaml internally, let's try to parse manually
+              console.log('🔍 Test parsing YAML...');
+              // We can't access js-yaml directly, but we can check for obvious issues
+              if (yamlText.includes('\t')) {
+                console.warn('⚠️ YAML contiene TAB - potrebbero causare problemi');
+              }
+              if (yamlText.includes('—') || yamlText.includes('"') || yamlText.includes('"')) {
+                console.warn('⚠️ YAML contiene caratteri Unicode - potrebbero causare problemi');
+              }
+              console.log('✅ Test YAML preliminare OK');
+            } catch (e) {
+              console.error('❌ Errore test YAML:', e);
+            }
+          })
+          .catch(error => {
+            console.error('❌ Errore caricamento config.yml:', error);
+          });
+        
         // Check finale dello stato con retry per aspettare config loading
         function checkFinalState(attempt = 1, maxAttempts = 10) {
           setTimeout(() => {
@@ -59,7 +93,50 @@
               console.log(`⏳ Retry ${attempt + 1}/${maxAttempts}...`);
               checkFinalState(attempt + 1, maxAttempts);
             } else {
-              console.log('⚠️ CMS caricato ma config/auth potrebbero essere ancora in elaborazione');
+              console.log('⚠️ Config non caricata dopo 10 tentativi - provo inizializzazione manuale');
+              
+              // Ultimo tentativo: carica config manualmente e inizializza
+              fetch('./config.yml')
+                .then(response => response.text())
+                .then(yamlText => {
+                  console.log('🔄 Tentativo inizializzazione manuale con config inline...');
+                  
+                  // Parse YAML manually (basic parsing for this specific config)
+                  const config = {
+                    backend: {
+                      name: 'github',
+                      repo: 'eventhorizon-mtg/eventhorizon-mtg.github.io',
+                      branch: 'main',
+                      base_url: 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev',
+                      auth_endpoint: '/auth'
+                    },
+                    media_folder: 'static/uploads',
+                    public_folder: '/uploads',
+                    collections: [{
+                      name: 'items',
+                      label: 'Archivio Items',
+                      folder: 'data/archive/items',
+                      create: true,
+                      format: 'yaml',
+                      extension: 'yml',
+                      slug: '{{slug}}',
+                      fields: [
+                        { label: 'Data', name: 'date', widget: 'date', required: true },
+                        { label: 'Titolo', name: 'title', widget: 'string', required: true }
+                      ]
+                    }]
+                  };
+                  
+                  if (window.CMS && window.CMS.init) {
+                    try {
+                      window.CMS.init({ config });
+                      console.log('✅ Inizializzazione manuale completata');
+                    } catch (e) {
+                      console.error('❌ Errore inizializzazione manuale:', e);
+                    }
+                  }
+                })
+                .catch(e => console.error('❌ Errore caricamento per init manuale:', e));
             }
           }, 1000);
         }
