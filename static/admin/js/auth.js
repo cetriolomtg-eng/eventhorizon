@@ -7,8 +7,6 @@ import { config } from './config.js';
 import { ui } from './ui.js';
 import { Storage } from './utils.js';
 
-const storage = Storage;
-
 class AuthManager {
   constructor() {
     this.token = null;
@@ -74,47 +72,39 @@ class AuthManager {
   }
   
   /**
-   * Avvia flusso login
+   * Avvia flusso login via Cloudflare Worker
    */
   async login() {
     if (this.popup) {
       this.popup.focus();
       return;
     }
-    
+
     try {
-      const clientId = config.auth?.clientId;
-      if (!clientId) {
-        throw new Error('Client ID non configurato');
-      }
-      
+      const workerBase = config.auth?.workerBase || 'https://auth.eventhorizon-mtg.workers.dev';
+      const authEndpoint = config.auth?.authEndpoint || 'auth';
       const scope = config.auth?.scope || 'repo';
-      const redirectUri = `${location.origin}/admin/callback.html`;
-      const state = Math.random().toString(36).substring(7);
-      
-      // Salva state per verifica
-      Storage.set('oauth_state', state);
-      
-      const authUrl = new URL(config.auth.authUrl);
-      authUrl.searchParams.append('client_id', clientId);
-      authUrl.searchParams.append('redirect_uri', redirectUri);
-      authUrl.searchParams.append('scope', scope);
-      authUrl.searchParams.append('state', state);
-      
+
+      const origin = location.origin;
+      const url = `${workerBase}/${authEndpoint}?origin=${encodeURIComponent(origin)}&scope=${encodeURIComponent(scope)}`;
+
       // Apri popup centrato
       const width = 600;
       const height = 700;
       const left = (window.innerWidth - width) / 2;
       const top = (window.innerHeight - height) / 2;
-      
+
       this.popup = window.open(
-        authUrl.toString(),
+        url,
         'github-oauth',
         `width=${width},height=${height},left=${left},top=${top}`
       );
-      
+
+      if (!this.popup) {
+        throw new Error('Popup bloccato: abilita i popup per questo sito');
+      }
     } catch (error) {
-      console.error('Error starting OAuth flow:', error);
+      console.error('Errore avvio OAuth:', error);
       ui.showToast('Errore durante il login', 'error');
     }
   }
@@ -140,72 +130,45 @@ class AuthManager {
    */
   async handleCallback(event) {
     try {
-      // Verifica origine
-      if (event.origin !== location.origin) {
-        console.log('Ignoring message from unauthorized origin:', event.origin);
-        return;
-      }
-      
-      // Validazione source (deve essere il popup aperto da noi)
-      if (this.popup && event.source !== this.popup) {
-        console.warn('OAuth message from unauthorized source');
-        return;
-      }
-      
-      const data = event.data;
-      if (typeof data !== 'object' || !data.code || !data.state) {
-        console.log('Invalid callback data:', data);
-        return;
-      }
-      
-      // Verifica state
-      const savedState = Storage.get('oauth_state');
-      if (data.state !== savedState) {
-        throw new Error('Invalid state parameter');
-      }
-      
-      // Scambia il codice per un token usando il backend
-      const response = await fetch('https://github.com/login/oauth/access_token', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          client_id: config.auth.clientId,
-          code: data.code,
-          redirect_uri: `${location.origin}/admin/callback.html`
-        })
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error: ${response.status}`);
-      }
-      
-      const tokenData = await response.json();
-      if (!tokenData.access_token) {
-        throw new Error('No access token in response');
-      }
-      
-      // Salva token
-      this.token = tokenData.access_token;
-      Storage.set(config.storage.token, this.token);
-      
-      // Carica dati utente
-      await this.fetchUserData();
-      
-      // Chiudi popup
+      // Accetta messaggi dal nostro dominio (callback.html) o dal Worker
+      let workerOrigin = null;
+      try {
+        workerOrigin = config.auth?.workerBase ? new URL(config.auth.workerBase).origin : null;
+      } catch {}
+      const isAllowedOrigin = (event.origin === location.origin) || (workerOrigin && event.origin === workerOrigin);
+      if (!isAllowedOrigin) return;
+
+      // Payload atteso dal worker (via callback.html relay): { type: 'oauth-callback', token, error }
+      const payload = event.data || {};
+      const { type, token, error } = payload;
+      if (type !== 'oauth-callback') return; // ignora altri messaggi generici
+
+      // Chiudi eventuale popup
       if (this.popup) {
         this.popup.close();
         this.popup = null;
       }
-      
-      // Notifica
+
+      if (error) {
+        console.error('OAuth error:', error);
+        ui.showToast('Errore durante il login', 'error');
+        return;
+      }
+
+      if (!token) {
+        console.error('Token non ricevuto dal worker');
+        ui.showToast('Errore: token non ricevuto', 'error');
+        return;
+      }
+
+      // Salva token e carica utente
+      this.token = token;
+      Storage.set(config.storage.token, token);
+      await this.fetchUserData();
       this.notifyListeners();
       ui.showToast('Login effettuato', 'success');
-      
     } catch (error) {
-      console.error('Error handling OAuth callback:', error);
+      console.error('Errore gestione callback OAuth:', error);
       ui.showToast('Errore durante il login', 'error');
     }
   }
@@ -251,8 +214,22 @@ class AuthManager {
       this.user = null;
       return;
     }
-    
+
     try {
+      // Se è configurato un endpoint user del worker, usiamolo per evitare CORS/versioning
+      const workerBase = config.auth?.workerBase;
+      const userEndpoint = config.auth?.userEndpoint;
+
+      if (workerBase && userEndpoint) {
+        const resp = await fetch(`${workerBase}/${userEndpoint}`, {
+          headers: { 'Authorization': `Bearer ${this.token}` }
+        });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        this.user = await resp.json();
+        return;
+      }
+
+      // Fallback: chiamata diretta API GitHub
       const response = await fetch('https://api.github.com/user', {
         headers: {
           'Accept': 'application/vnd.github+json',
@@ -260,13 +237,9 @@ class AuthManager {
           'X-GitHub-Api-Version': config.auth.apiVersion
         }
       });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-      
+
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       this.user = await response.json();
-      
     } catch (error) {
       console.error('Error fetching user data:', error);
       this.user = null;
