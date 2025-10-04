@@ -2,67 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=        // Verifica         // VERIFICA TOKEN GITHUB - strategia dalla deep analysis
-        const storedUser = localStorage.getItem('netlify-cms-user');
-        if (storedUser) {
-          const userData = JSON.parse(storedUser);
-          console.log('🔍 Verifica token GitHub...');
-          
-          // Test GitHub API con il token
-          fetch('https://api.github.com/user', {
-            headers: {
-              'Authorization': `token ${userData.token}`,
-              'Accept': 'application/vnd.github.v3+json'
-            }
-          })
-          .then(response => {
-            console.log('👤 GitHub API /user response:', response.status);
-            if (response.ok) {
-              return response.json();
-            } else {
-              throw new Error(`GitHub API error: ${response.status}`);
-            }
-          })
-          .then(userInfo => {
-            console.log('✅ GitHub user info:', userInfo.login, userInfo.name);
-            console.log('🔍 Token permissions OK');
-            
-            // Verifica repository access
-            return fetch('https://api.github.com/repos/eventhorizon-mtg/eventhorizon-mtg.github.io', {
-              headers: {
-                'Authorization': `token ${userData.token}`,
-                'Accept': 'application/vnd.github.v3+json'
-              }
-            });
-          })
-          .then(response => {
-            console.log('📁 Repository access:', response.status);
-            if (response.ok) {
-              console.log('✅ Repository access OK');
-            } else {
-              console.log('❌ Repository access DENIED');
-            }
-          })
-          .catch(error => {
-            console.error('❌ Token validation error:', error);
-          });
-        }
-        
-        // Forza inizializzazione dopo controlli
-        console.log('🔄 Forzando inizializzazione esplicita...');
-        setTimeout(() => {
-          if (window.CMS && typeof window.CMS.init === 'function') {
-            try {
-              window.CMS.init();
-              console.log('✅ Init() chiamato con successo');
-            } catch (e) {
-              console.error('❌ Errore durante init():', e);
-            }
-          }
-        }, 1000);
-        
-      }, 3000);
-    });ecap CMS è completamente inizializzato
+  <meta name="viewport" content="width=device-width, initial-scale=        // Verifica se Decap CMS è completamente inizializzato
         console.log('🔄 Verifica inizializzazione completa...');
         
         // Prova a forzare l'inizializzazione se non è ancora completa
