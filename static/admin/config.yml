@@ -1,10 +1,9 @@
 backend:
   name: github
   repo: eventhorizon-mtg/eventhorizon-mtg.github.io
-  branch: main  # Branch principale (corretto da "test")
+  branch: main
   base_url: https://eventhorizon-oauth.cetriolo-mtg.workers.dev
-  auth_endpoint: auth
-  app_id: Ov23liuGRKkJ7ujGpqXE  # Public GitHub App Client ID
+  auth_endpoint: /auth
 
 media_folder: "static/uploads"
 public_folder: "/uploads"
@@ -96,3 +95,77 @@ collections:
       - { label: "Bozza", name: "draft", widget: "boolean", required: false, default: false }
       - { label: "Autore", name: "author", widget: "string", required: false }
       - { label: "Aggiornato", name: "updated", widget: "datetime", required: false }
+      - { label: "Card", name: "card", widget: "string", required: false }
+
+  # ========================================
+  # ARTICOLI
+  # ========================================
+  - name: "articles"
+    label: "📰 Articoli"
+    label_singular: "Articolo"
+    folder: "content/article"
+    format: "frontmatter"
+    extension: "md"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{title}} - {{date}}"
+
+    fields:
+      - label: "Titolo"
+        name: "title"
+        widget: "string"
+        required: true
+
+      - label: "Data"
+        name: "date"
+        widget: "datetime"
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        required: true
+
+      - label: "Autore"
+        name: "author"
+        widget: "string"
+        required: false
+
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        required: false
+        allow_add: true
+        default: []
+
+      - label: "Categorie"
+        name: "categories"
+        widget: "list"
+        required: false
+        allow_add: true
+        default: []
+
+      - label: "Bozza"
+        name: "draft"
+        widget: "boolean"
+        default: false
+        required: false
+
+      - label: "In Evidenza"
+        name: "featured"
+        widget: "boolean"
+        default: false
+        required: false
+
+      - label: "Contenuto"
+        name: "body"
+        widget: "markdown"
+        required: true
+
+# Editor Settings
+editor:
+  preview: true
+
+# Site Settings
+locale: it
+display_url: https://eventhorizon-mtg.github.io
+site_url: https://eventhorizon-mtg.github.io
