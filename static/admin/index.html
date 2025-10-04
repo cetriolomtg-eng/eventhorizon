@@ -46,10 +46,9 @@
     window.addEventListener('load', () => {
       if (window.CMS) {
         console.log('🚀 Inizializzazione con config inline...');
-        
+
         window.CMS.init({
           config: {
-            load_config_file: false,  // ⚡ IMPEDISCE caricamento config.yml automatico
             backend: {
               name: 'github',
               repo: 'eventhorizon-mtg/eventhorizon-mtg.github.io',
@@ -77,7 +76,7 @@
             }]
           }
         });
-        
+
         console.log('✅ CMS inizializzato con config inline');
         
         // Test TOKEN SCOPE (il vero problema!)
