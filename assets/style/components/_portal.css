@@ -21,7 +21,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.12;
+  opacity: 0.3;
   z-index: 0;
   /* Effetto parallax subtile */
   transform: translateY(calc(var(--portal-parallax, 0px) * -1)) translateZ(0);
@@ -35,8 +35,8 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(243,242,247,0.85) 0%,
-    rgba(243,242,247,0.95) 100%
+    rgba(243,242,247,0.68) 0%,
+    rgba(243,242,247,0.82) 100%
   );
   z-index: 1;
 }
