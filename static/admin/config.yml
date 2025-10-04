@@ -16,6 +16,9 @@ collections:
     format: toml-frontmatter
     extension: md
     slug: "{{slug}}"
+    filter:
+      field: build
+      value: ""
     fields:
       - label: "Titolo"
         name: title
