@@ -210,12 +210,21 @@ class AuthManager {
         fullPayload: payload
       });
 
-      if (type !== 'oauth-callback') {
-        console.log('⏭️  Ignored non-oauth message type:', type);
+      // Accetta diversi formati di messaggio OAuth
+      const isOAuthMessage = (
+        type === 'oauth-callback' ||
+        payload.access_token ||
+        payload.token ||
+        payload.code ||
+        (typeof payload === 'string' && payload.includes('token'))
+      );
+
+      if (!isOAuthMessage) {
+        console.log('⏭️  Ignored non-oauth message type:', type, 'Full payload:', JSON.stringify(payload));
         return;
       }
 
-      console.log('✅ Valid OAuth callback received');
+      console.log('✅ OAuth message detected, processing...');
 
       // Chiudi eventuale popup
       if (this.popup) {
@@ -230,11 +239,20 @@ class AuthManager {
         return;
       }
 
-      // Se abbiamo già il token (dal worker)
-      if (token) {
-        console.log('🎯 Direct token received, saving...');
-        this.token = token;
-        Storage.set(config.storage.token, token);
+      // Estrai token da vari formati possibili
+      let extractedToken = token || payload.access_token || payload.token;
+      
+      // Se il messaggio è una stringa con formato specifico
+      if (typeof payload === 'string' && payload.includes('token')) {
+        const match = payload.match(/token[=:]([^&\s]+)/);
+        if (match) extractedToken = match[1];
+      }
+
+      // Se abbiamo già il token (da worker o altri formati)
+      if (extractedToken) {
+        console.log('🎯 Token extracted:', extractedToken.substring(0, 10) + '...');
+        this.token = extractedToken;
+        Storage.set(config.storage.token, extractedToken);
         await this.fetchUserData();
         this.notifyListeners();
         ui.showToast('Login effettuato con successo!', 'success');
