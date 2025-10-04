@@ -70,19 +70,22 @@ class GitHubAPI {
 
     // Metodi helper per operazioni comuni
     async getRepository() {
-        return this.request(`/repos/${config.repository}`);
+        const repoFullName = `${config.repo.owner}/${config.repo.name}`;
+        return this.request(`/repos/${repoFullName}`);
     }
 
     async getContent(path) {
-        return this.request(`/repos/${config.repository}/contents/${path}`);
+        const repoFullName = `${config.repo.owner}/${config.repo.name}`;
+        return this.request(`/repos/${repoFullName}/contents/${path}`);
     }
 
     async createOrUpdateFile(path, content, sha = null) {
-        const endpoint = `/repos/${config.repository}/contents/${path}`;
+        const repoFullName = `${config.repo.owner}/${config.repo.name}`;
+        const endpoint = `/repos/${repoFullName}/contents/${path}`;
         const body = {
             message: `Update ${path}`,
             content: btoa(content),
-            branch: config.branch
+            branch: config.repo.branch
         };
 
         if (sha) {
@@ -96,12 +99,13 @@ class GitHubAPI {
     }
 
     async deleteFile(path, sha) {
-        return this.request(`/repos/${config.repository}/contents/${path}`, {
+        const repoFullName = `${config.repo.owner}/${config.repo.name}`;
+        return this.request(`/repos/${repoFullName}/contents/${path}`, {
             method: 'DELETE',
             body: JSON.stringify({
                 message: `Delete ${path}`,
                 sha,
-                branch: config.branch
+                branch: config.repo.branch
             })
         });
     }
