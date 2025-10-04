@@ -16,6 +16,10 @@ collections:
     format: toml-frontmatter
     extension: md
     slug: "{{slug}}"
+    filter:
+      field: cms_exclude
+      value: true
+      # Nascondi file con cms_exclude = true (es. _index.md)
     fields:
       - label: "Titolo"
         name: title
