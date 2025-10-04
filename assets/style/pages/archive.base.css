@@ -11,7 +11,7 @@
   position: relative;
   /* Altezza coerente su tutti i breakpoint (override via --archive-hero-height) */
   min-height: var(--archive-hero-height, 240px);
-  color: var(--neutral-50, #F3F2F7);
+  color: var(--indigo-900, #2F2760);
 }
 @media (max-width: 480px){
   .archive-hero{ --archive-hero-height: 200px; }
