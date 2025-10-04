@@ -26,11 +26,33 @@
 
   <!-- Decap CMS - loaded AFTER DOM is ready -->
   <script>
+    // Debug: verifica che tutto sia caricato
+    console.log('🔍 DOM ready, nc-root exists:', !!document.getElementById('nc-root'));
+
     // Aspetta che il DOM sia pronto prima di caricare Decap CMS
     window.addEventListener('DOMContentLoaded', function() {
-      const script = document.createElement('script');
-      script.src = 'https://unpkg.com/decap-cms@^3.3.0/dist/decap-cms.js';
-      document.body.appendChild(script);
+      console.log('✅ DOMContentLoaded fired');
+
+      // Verifica che config.yml sia accessibile
+      fetch('/admin/config.yml')
+        .then(r => {
+          console.log('📄 config.yml response:', r.status);
+          return r.text();
+        })
+        .then(text => {
+          console.log('📄 config.yml loaded, length:', text.length);
+
+          // Carica Decap CMS
+          const script = document.createElement('script');
+          script.src = 'https://unpkg.com/decap-cms@^3.3.0/dist/decap-cms.js';
+          script.onload = () => console.log('✅ Decap CMS script loaded');
+          script.onerror = (e) => console.error('❌ Decap CMS script error:', e);
+          document.body.appendChild(script);
+        })
+        .catch(err => {
+          console.error('❌ config.yml not found:', err);
+          document.getElementById('nc-root').innerHTML = '<div style="padding:20px;color:red;">Errore: config.yml non trovato. Verifica il deploy.</div>';
+        });
     });
   </script>
 </body>
