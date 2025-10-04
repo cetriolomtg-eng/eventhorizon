@@ -79,48 +79,12 @@
         
         console.log('✅ CMS inizializzato con config inline');
         
-        // Test TOKEN SCOPE (il vero problema!)
+        // Check rapido stato
         setTimeout(() => {
           const user = localStorage.getItem('netlify-cms-user');
-          if (user) {
-            const userData = JSON.parse(user);
-            console.log('� TESTING TOKEN SCOPE...');
-            
-            // Test GitHub API scopes
-            fetch('https://api.github.com/user/repos?per_page=1', {
-              headers: { 'Authorization': `token ${userData.token}` }
-            })
-            .then(response => {
-              const scopes = response.headers.get('X-OAuth-Scopes');
-              console.log('🔑 TOKEN SCOPES:', scopes);
-              
-              if (!scopes) {
-                console.error('❌ NESSUNO SCOPE TROVATO!');
-              } else if (!scopes.includes('repo') && !scopes.includes('public_repo')) {
-                console.error('❌ SCOPE MANCANTI! Ha:', scopes, 'Serve: repo o public_repo');
-              } else {
-                console.log('✅ Scope OK:', scopes);
-                
-                // Test accesso repository
-                return fetch('https://api.github.com/repos/eventhorizon-mtg/eventhorizon-mtg.github.io', {
-                  headers: { 'Authorization': `token ${userData.token}` }
-                });
-              }
-            })
-            .then(response => {
-              if (response) {
-                console.log('📁 Repository access:', response.status);
-                if (response.status !== 200) {
-                  console.error('❌ ACCESSO REPOSITORY NEGATO!');
-                } else {
-                  console.log('✅ Repository access OK');
-                  console.log('🎯 TOKEN PERFETTO - problema potrebbe essere altro');
-                }
-              }
-            })
-            .catch(e => console.error('❌ Test scope fallito:', e));
-          }
-        }, 3000);
+          console.log('👤 User presente:', !!user);
+          console.log('🏗️ CMS config loaded:', !!(window.CMS.getConfig && window.CMS.getConfig()));
+        }, 2000);
       }
     });
   </script>
