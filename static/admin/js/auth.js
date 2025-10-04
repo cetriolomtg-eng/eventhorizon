@@ -130,24 +130,36 @@ class AuthManager {
    * Gestisce callback OAuth
    */
   async handleCallback(event) {
-    // Verifica origine
-    const workerBase = config.auth?.workerBase || 'https://auth.eventhorizon-mtg.workers.dev';
-    if (!event.origin.startsWith(workerBase)) return;
-    
-    // Validazione formato messaggio
-    if (!event.data?.startsWith?.('authorization:github:success:')) {
-      return;
-    }
-    
-    // Validazione source (deve essere il popup aperto da noi)
-    if (this.popup && event.source !== this.popup) {
-      console.warn('OAuth message from unauthorized source');
-      return;
-    }
-    
     try {
-      // Estrai token
-      const token = event.data.slice('authorization:github:success:'.length);
+      // Verifica origine
+      const workerBase = config.auth?.workerBase || 'https://auth.eventhorizon-mtg.workers.dev';
+      if (!event.origin.startsWith(workerBase)) {
+        console.log('Ignoring message from unauthorized origin:', event.origin);
+        return;
+      }
+      
+      // Validazione source (deve essere il popup aperto da noi)
+      if (this.popup && event.source !== this.popup) {
+        console.warn('OAuth message from unauthorized source');
+        return;
+      }
+      
+      // Gestisci sia il formato oggetto che stringa
+      let token;
+      if (typeof event.data === 'string') {
+        if (!event.data.startsWith('authorization:github:success:')) {
+          console.log('Ignoring message with invalid format:', event.data);
+          return;
+        }
+        token = event.data.slice('authorization:github:success:'.length);
+      } else if (typeof event.data === 'object') {
+        token = event.data.token;
+      } else {
+        console.log('Ignoring message with invalid data type:', typeof event.data);
+        return;
+      }
+      
+      // Valida token
       if (!token || token.length < 10) {
         throw new Error('Invalid OAuth token');
       }
@@ -180,7 +192,19 @@ class AuthManager {
    */
   async checkSession() {
     try {
-      const token = Storage.get(config.storage.token);
+      // Prova prima la nuova chiave di storage
+      let token = Storage.get(config.storage.token);
+      
+      // Fallback alla vecchia chiave se necessario
+      if (!token) {
+        token = Storage.get('github_token');
+        if (token) {
+          // Migra alla nuova chiave
+          Storage.set(config.storage.token, token);
+          Storage.remove('github_token');
+        }
+      }
+      
       if (!token) return;
       
       this.token = token;
@@ -192,6 +216,7 @@ class AuthManager {
       this.token = null;
       this.user = null;
       Storage.remove(config.storage.token);
+      Storage.remove('github_token'); // Pulisci anche la vecchia chiave
     }
   }
   
