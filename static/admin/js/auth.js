@@ -92,24 +92,25 @@ class AuthManager {
         const url = `${workerBase}/${authEndpoint}?origin=${encodeURIComponent(origin)}&scope=${encodeURIComponent(scope)}`;
         
         try {
-          // Test se il worker accetta la nostra origin
-          const testUrl = `${workerBase}/auth?origin=${encodeURIComponent(origin)}&scope=${encodeURIComponent(scope)}`;
-          const testResponse = await fetch(testUrl, { method: 'HEAD' });
+          // Apri direttamente il popup del worker - se non funziona, l'utente vedrà l'errore nel popup
+          console.log('Tentativo login via worker:', url);
+          this.popup = window.open(url, 'github-oauth', this.getPopupOptions());
           
-          if (testResponse.ok) {
-            this.popup = window.open(url, 'github-oauth', this.getPopupOptions());
-            if (!this.popup) {
-              throw new Error('Popup bloccato');
-            }
-            return;
-          } else {
-            const errorText = await testResponse.text();
-            console.warn('Worker rifiuta origin:', origin, errorText);
-            throw new Error(`Worker error: ${testResponse.status}`);
+          if (!this.popup) {
+            throw new Error('Popup bloccato: abilita i popup per questo sito');
           }
+          
+          // Timeout per fallback se il popup non si chiude entro 2 minuti
+          setTimeout(() => {
+            if (this.popup && !this.popup.closed) {
+              console.warn('Popup worker timeout, possibile errore');
+            }
+          }, 120000);
+          
+          return;
         } catch (workerError) {
-          console.warn('Worker non disponibile per origin:', origin, 'Errore:', workerError.message);
-          ui.showToast(`Worker non disponibile da ${origin}. Uso fallback GitHub diretto.`, 'warning');
+          console.warn('Errore apertura popup worker:', workerError.message);
+          ui.showToast('Errore apertura popup worker. Uso fallback GitHub diretto.', 'warning');
         }
       }
 
