@@ -19,11 +19,19 @@
           console.log('✅ Token OAuth ricevuto:', token);
           
           // Salva il token nel formato che Decap CMS si aspetta
-          localStorage.setItem('netlify-cms-user', JSON.stringify({
+          const userObj = {
             token: token,
             login: 'github-user',
-            name: 'GitHub User'
-          }));
+            name: 'GitHub User',
+            avatar_url: 'https://github.com/github.png',
+            id: 1
+          };
+          
+          localStorage.setItem('netlify-cms-user', JSON.stringify(userObj));
+          
+          // Prova anche altri formati che Decap CMS potrebbe riconoscere
+          localStorage.setItem('github_token', token);
+          sessionStorage.setItem('netlify-cms-user', JSON.stringify(userObj));
           
           console.log('💾 Token salvato, ricaricamento...');
           window.location.reload();
@@ -36,7 +44,61 @@
     if (savedUser) {
       console.log('👤 Token esistente:', JSON.parse(savedUser));
     }
+    
+    // Debug di Decap CMS
+    window.addEventListener('load', () => {
+      console.log('✅ Page loaded');
+      
+      setTimeout(() => {
+        console.log('🔍 Checking Decap CMS status...');
+        console.log('- window.CMS:', !!window.CMS);
+        console.log('- document.body.innerHTML length:', document.body.innerHTML.length);
+        console.log('- #nc-root exists:', !!document.getElementById('nc-root'));
+        
+        // Controlla se ci sono errori nella console
+        const originalError = console.error;
+        console.error = function(...args) {
+          console.log('🚨 CONSOLE ERROR:', ...args);
+          originalError.apply(console, args);
+        };
+        
+        // Prova a fare un fetch del config.yml per vedere se è accessibile
+        fetch('./config.yml')
+          .then(response => {
+            console.log('📋 config.yml response status:', response.status);
+            if (response.ok) {
+              return response.text();
+            } else {
+              throw new Error('Config file not found');
+            }
+          })
+          .then(configText => {
+            console.log('✅ config.yml content length:', configText.length);
+            console.log('📋 config.yml first 200 chars:', configText.substring(0, 200));
+          })
+          .catch(error => {
+            console.error('❌ Error loading config.yml:', error);
+          });
+          
+        // Se CMS è disponibile, prova a ottenere informazioni su di esso
+        if (window.CMS) {
+          console.log('CMS methods available:', Object.keys(window.CMS));
+          
+          // Prova a ottenere la configurazione
+          try {
+            const config = window.CMS.getConfig && window.CMS.getConfig();
+            console.log('CMS config:', config);
+          } catch (e) {
+            console.log('Error getting CMS config:', e);
+          }
+        }
+        
+      }, 3000);
+    });
   </script>
+  
+  <!-- Root element per Decap CMS -->
+  <div id="nc-root"></div>
   
   <!-- Include the script that builds the page and powers Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
