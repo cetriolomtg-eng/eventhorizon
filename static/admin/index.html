@@ -12,10 +12,18 @@
     <!-- Styles -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="editor.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/lib/codemirror.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/theme/monokai.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <!-- Dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/lib/codemirror.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/mode/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/mode/xml/xml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/mode/yaml/yaml.js"></script>
     
     <!-- App Module Initialization -->
     <script type="module">
@@ -26,6 +34,7 @@
         import { items } from './js/items.js';
         import { articles } from './js/articles.js';
         import { ui } from './js/ui.js';
+        import { editor } from './js/editor.js';
         import { formatDate, slugify, debounce, Storage, validators } from './js/utils.js';
 
         // Initialize app on DOM load
@@ -233,6 +242,9 @@
                         .map(article => ui.render('articleRow', article))
                         .join('');
                 };
+
+                // Initialize Editor
+                await editor.initialize('a_content', 'preview', 'editorToolbar');
 
                 // Load Content
                 async function loadContent() {
@@ -468,21 +480,49 @@
 
                     <div class="mt-8">
                         <label>Contenuto (Markdown)</label>
-                        <div class="editor-toolbar">
-                            <button class="btn" data-md="**">B</button>
-                            <button class="btn" data-md="_">I</button>
-                            <button class="btn" data-md="[](url)">Link</button>
-                            <button class="btn" data-md="# ">H1</button>
-                            <button class="btn" data-md="## ">H2</button>
-                            <button class="btn" data-md="### ">H3</button>
-                            <button class="btn" data-md="- ">List</button>
-                            <button class="btn" data-md="1. ">Num</button>
-                            <button class="btn" data-md="> ">Quote</button>
-                            <button class="btn" data-md="```\n\n```">Code</button>
-                            <button class="btn preview-btn">Preview</button>
+                        <div class="editor-container">
+                            <div class="editor-section">
+                                <div class="editor-toolbar" id="editorToolbar">
+                                    <button class="editor-btn" title="Grassetto (Ctrl+B)" data-md="bold">
+                                        <span class="material-icons">format_bold</span>
+                                    </button>
+                                    <button class="editor-btn" title="Corsivo (Ctrl+I)" data-md="italic">
+                                        <span class="material-icons">format_italic</span>
+                                    </button>
+                                    <button class="editor-btn" title="Link (Ctrl+L)" data-md="link">
+                                        <span class="material-icons">link</span>
+                                    </button>
+                                    <button class="editor-btn" title="Immagine" data-md="image">
+                                        <span class="material-icons">image</span>
+                                    </button>
+                                    <button class="editor-btn" title="Codice (Ctrl+K)" data-md="code">
+                                        <span class="material-icons">code</span>
+                                    </button>
+                                    <button class="editor-btn" title="Citazione" data-md="quote">
+                                        <span class="material-icons">format_quote</span>
+                                    </button>
+                                    <button class="editor-btn" title="Lista puntata" data-md="ul">
+                                        <span class="material-icons">format_list_bulleted</span>
+                                    </button>
+                                    <button class="editor-btn" title="Lista numerata" data-md="ol">
+                                        <span class="material-icons">format_list_numbered</span>
+                                    </button>
+                                    <button class="editor-btn" title="Titolo H2" data-md="h2">
+                                        <span class="material-icons">title</span>
+                                    </button>
+                                    <button class="editor-btn" title="Blocco codice" data-md="codeblock">
+                                        <span class="material-icons">code_blocks</span>
+                                    </button>
+                                </div>
+                                <textarea id="a_content" placeholder="Contenuto articolo in formato Markdown"></textarea>
+                            </div>
+                            <div class="preview-container">
+                                <div id="preview" class="preview"></div>
+                            </div>
                         </div>
-                        <textarea id="a_content" class="textarea--lg" placeholder="Contenuto articolo in formato Markdown"></textarea>
-                        <div id="preview" class="preview hidden"></div>
+                        <div class="autosave-indicator" id="autosaveIndicator">
+                            Salvataggio automatico...
+                        </div>
                     </div>
 
                     <div class="mt-8">
