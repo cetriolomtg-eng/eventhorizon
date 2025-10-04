@@ -106,16 +106,37 @@
                         who.textContent = user.login;
                         loginBtn.hidden = true;
                         logoutBtn.hidden = false;
+
+                        console.log('🔓 Nascondo lockedOverlay, mostro adminMain');
                         lockedOverlay.classList.add('hidden');
                         adminMain.classList.remove('hidden');
+
+                        console.log('📊 AdminMain classes:', adminMain.className);
+                        console.log('📊 AdminMain display:', window.getComputedStyle(adminMain).display);
+
                         loadContent();
                     } else {
                         console.log('❌ Utente non autenticato');
                         who.textContent = '';
                         loginBtn.hidden = false;
                         logoutBtn.hidden = true;
+
+                        console.log('🔒 Mostro lockedOverlay, nascondo adminMain');
                         lockedOverlay.classList.remove('hidden');
                         adminMain.classList.add('hidden');
+
+                        // Cleanup: nascondi tutte le sezioni
+                        const viewRow = document.getElementById('viewRow');
+                        const actionsRow = document.getElementById('actionsRow');
+                        const articleActionsRow = document.getElementById('articleActionsRow');
+                        const itemsSection = document.getElementById('itemsSection');
+                        const articlesSection = document.getElementById('articlesSection');
+
+                        if (viewRow) viewRow.classList.add('hidden');
+                        if (actionsRow) actionsRow.classList.add('hidden');
+                        if (articleActionsRow) articleActionsRow.classList.add('hidden');
+                        if (itemsSection) itemsSection.classList.add('hidden');
+                        if (articlesSection) articlesSection.classList.add('hidden');
                     }
                 });
 
@@ -323,10 +344,30 @@
                         const articleActionsRow = document.getElementById('articleActionsRow');
                         const itemsSection = document.getElementById('itemsSection');
 
-                        if (viewRow) viewRow.classList.remove('hidden');
-                        if (actionsRow) actionsRow.classList.remove('hidden');
-                        if (articleActionsRow) articleActionsRow.classList.remove('hidden');
-                        if (itemsSection) itemsSection.classList.remove('hidden');
+                        console.log('🎨 Elementi trovati:', {
+                            viewRow: !!viewRow,
+                            actionsRow: !!actionsRow,
+                            articleActionsRow: !!articleActionsRow,
+                            itemsSection: !!itemsSection
+                        });
+
+                        if (viewRow) {
+                            viewRow.classList.remove('hidden');
+                            console.log('✅ viewRow mostrato, classes:', viewRow.className);
+                        }
+                        if (actionsRow) {
+                            actionsRow.classList.remove('hidden');
+                            console.log('✅ actionsRow mostrato, classes:', actionsRow.className);
+                        }
+                        if (articleActionsRow) {
+                            articleActionsRow.classList.remove('hidden');
+                            console.log('✅ articleActionsRow mostrato, classes:', articleActionsRow.className);
+                        }
+                        if (itemsSection) {
+                            itemsSection.classList.remove('hidden');
+                            console.log('✅ itemsSection mostrato, classes:', itemsSection.className);
+                            console.log('📊 itemsSection display:', window.getComputedStyle(itemsSection).display);
+                        }
 
                         console.log('✅ Admin UI completamente caricata');
                     } catch (error) {
