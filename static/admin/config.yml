@@ -8,11 +8,11 @@ backend:
 media_folder: "static/uploads"
 public_folder: "/uploads"
 
-# publish_mode: editorial_workflow  # opzionale: bozza → review → publish
+# publish_mode: editorial_workflow  # opzionale: bozza -> review -> publish
 
 collections:
   - name: "archive_items"
-    label: "Archivio — Items"
+    label: "Archivio - Items"
     folder: "data/archive/items"
     create: true
     format: "yaml"
@@ -101,7 +101,7 @@ collections:
   # ARTICOLI
   # ========================================
   - name: "articles"
-    label: "📰 Articoli"
+    label: "Articoli"
     label_singular: "Articolo"
     folder: "content/article"
     format: "frontmatter"
