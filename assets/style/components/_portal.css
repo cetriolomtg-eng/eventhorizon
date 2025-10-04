@@ -26,9 +26,8 @@
   background-repeat: no-repeat;
   opacity: 0.3;
   z-index: 0;
-  /* Effetto parallax subtile */
-  transform: translate3d(-50%, calc(var(--portal-parallax, 0px) * -1), 0);
-  will-change: transform;
+  /* Centra lo sfondo rispetto alla viewport */
+  transform: translate3d(-50%, 0, 0);
 }
 
 /* Gradient overlay per migliore leggibilita */

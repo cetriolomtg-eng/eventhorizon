@@ -141,38 +141,6 @@
   chevrons.addEventListener('click', onChevronClick, { passive: false });
 })();
 
-/* Portal background parallax >>> */
-(function(){
-  const portal = document.querySelector('.portal');
-  if(!portal) return;
-
-  const portalBg = portal.querySelector('.portal::before') || portal;
-  let ticking = false;
-
-  const updateParallax = () => {
-    const scrolled = window.scrollY;
-    const portalTop = portal.offsetTop;
-    const portalHeight = portal.offsetHeight;
-    const windowHeight = window.innerHeight;
-
-    // Calcola se la sezione è nel viewport
-    if(scrolled + windowHeight > portalTop && scrolled < portalTop + portalHeight){
-      const offset = (scrolled - portalTop) * 0.3; // Fattore parallax 0.3
-      portal.style.setProperty('--portal-parallax', `${offset}px`);
-    }
-    ticking = false;
-  };
-
-  const onScroll = () => {
-    if(!ticking){
-      window.requestAnimationFrame(updateParallax);
-      ticking = true;
-    }
-  };
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  updateParallax(); // Init
-})();
 
 /* Image fallback handler >>> */
 (function() {
