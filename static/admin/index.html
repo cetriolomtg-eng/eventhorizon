@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="editor.css">
+    <link rel="stylesheet" href="media.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/lib/codemirror.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.2/theme/monokai.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -35,6 +36,7 @@
         import { articles } from './js/articles.js';
         import { ui } from './js/ui.js';
         import { editor } from './js/editor.js';
+        import { media } from './js/media.js';
         import { formatDate, slugify, debounce, Storage, validators } from './js/utils.js';
 
         // Initialize app on DOM load
@@ -253,7 +255,8 @@
                         
                         await Promise.all([
                             items.initialize(),
-                            articles.initialize()
+                            articles.initialize(),
+                            media.initialize()
                         ]);
                         
                         renderItems();
