@@ -5,6 +5,13 @@ class UIManager {
         this.loadingStates = new Map();
         this.modals = new Map();
     }
+    
+    // Error handling
+    showError(message) {
+        console.error(message);
+        // TODO: Implementare visualizzazione errore UI
+        alert(message);
+    }
 
     // Template Management
     registerTemplate(id, template) {

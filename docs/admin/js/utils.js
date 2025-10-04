@@ -1,3 +1,20 @@
+// Storage utility
+export const Storage = {
+    get(key) {
+        try {
+            return JSON.parse(localStorage.getItem(key));
+        } catch (e) {
+            return null;
+        }
+    },
+    set(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+    },
+    remove(key) {
+        localStorage.removeItem(key);
+    }
+};
+
 // Date formatting
 export function formatDate(date, format = 'YYYY-MM-DD') {
     const d = new Date(date);

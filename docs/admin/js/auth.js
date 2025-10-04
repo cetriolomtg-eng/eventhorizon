@@ -4,8 +4,27 @@
  */
 
 import { config } from './config.js';
-import { ui } from './ui.js';
-import { Storage } from './utils.js';
+
+// Minimal UI helper until ui.js is fixed
+const ui = {
+  showError: (message) => {
+    console.error(message);
+    alert(message);
+  }
+};
+
+// Minimal Storage helper until utils.js is fixed  
+const Storage = {
+  get: (key) => {
+    try {
+      return JSON.parse(localStorage.getItem(key));
+    } catch {
+      return null;
+    }
+  },
+  set: (key, value) => localStorage.setItem(key, JSON.stringify(value)),
+  remove: (key) => localStorage.removeItem(key)
+};
 
 class AuthManager {
   constructor() {
