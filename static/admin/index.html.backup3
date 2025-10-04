@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EventHorizon Admin - Decap CMS</title>
+  <style>
+    body {
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-size: 18px;
+      color: #666;
+    }
+    
+    .error {
+      background: #fee;
+      border: 1px solid #fcc;
+      border-radius: 4px;
+      padding: 20px;
+      margin: 20px;
+      color: #c33;
+    }
+  </style>
+</head>
+<body>
+  <div id="loading" class="loading">
+    🔄 Caricamento Decap CMS...
+  </div>
+  
+  <div id="error" class="error" style="display: none;">
+    <h3>❌ Errore di inizializzazione</h3>
+    <p>Controlla la console per maggiori dettagli.</p>
+  </div>
+  
+  <!-- Root element per Decap CMS -->
+  <div id="nc-root"></div>
+
+  <script>
+    console.log('🔍 Decap CMS Admin page loading...');
+    
+    let authToken = null;
+    
+    // Intercetta messaggi OAuth
+    window.addEventListener('message', (event) => {
+      console.log('📨 Window message received:', event.origin, event.data);
+      
+      // Se è un messaggio dal nostro worker OAuth
+      if (event.origin === 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev') {
+        if (typeof event.data === 'string' && event.data.startsWith('authorization:github:success:')) {
+          authToken = event.data.slice('authorization:github:success:'.length);
+          console.log('✅ Token OAuth ricevuto:', authToken);
+          
+          // Nascondi il loading
+          document.getElementById('loading').style.display = 'none';
+          
+          // Salva il token e ricarica
+          console.log('💾 Salvataggio token in localStorage...');
+          localStorage.setItem('netlify-cms-user', JSON.stringify({
+            token: authToken,
+            login: 'github-user',
+            name: 'GitHub User'
+          }));
+          
+          // Ricarica per applicare l'autenticazione
+          setTimeout(() => {
+            console.log('🔄 Ricaricamento pagina per applicare autenticazione...');
+            window.location.reload();
+          }, 1000);
+        }
+      }
+    });
+    
+    function showError(message) {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('error').style.display = 'block';
+      document.getElementById('error').innerHTML = `
+        <h3>❌ Errore</h3>
+        <p>${message}</p>
+        <button onclick="window.location.reload()">🔄 Ricarica</button>
+      `;
+    }
+    
+    // Controlla se abbiamo già un token salvato
+    const savedUser = localStorage.getItem('netlify-cms-user');
+    if (savedUser) {
+      console.log('👤 Token trovato in localStorage:', JSON.parse(savedUser));
+    }
+    
+    // Inizializza dopo il caricamento di Decap CMS
+    window.addEventListener('load', () => {
+      console.log('✅ Page loaded');
+      
+      setTimeout(() => {
+        if (window.CMS) {
+          console.log('✅ Decap CMS disponibile');
+          console.log('🔧 Inizializzazione Decap CMS...');
+          
+          try {
+            // Nascondi il loading
+            document.getElementById('loading').style.display = 'none';
+            
+            // Controlla se Decap CMS si è già inizializzato automaticamente
+            const root = document.getElementById('nc-root');
+            if (root && root.innerHTML.length > 100) {
+              console.log('✅ Decap CMS già inizializzato automaticamente');
+              return;
+            }
+            
+            // Inizializzazione manuale se necessario
+            console.log('🚀 Inizializzazione manuale di Decap CMS...');
+            
+            // Verifica se esiste il config.yml
+            fetch('./config.yml')
+              .then(response => {
+                if (response.ok) {
+                  console.log('✅ config.yml trovato, Decap CMS dovrebbe inizializzarsi automaticamente');
+                  // Forza la re-inizializzazione
+                  if (window.CMS.init) {
+                    window.CMS.init();
+                  }
+                } else {
+                  console.log('⚠️ config.yml non trovato, inizializzazione con config inline');
+                  // Inizializzazione con configurazione inline
+                  window.CMS.init({
+                    config: {
+                      backend: {
+                        name: 'github',
+                        repo: 'eventhorizon-mtg/eventhorizon-mtg.github.io',
+                        branch: 'main',
+                        base_url: 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev',
+                        auth_endpoint: '/auth'
+                      },
+                      media_folder: 'static/uploads',
+                      public_folder: '/uploads',
+                      collections: [
+                        {
+                          name: 'archive_items',
+                          label: 'Archivio Items',
+                          folder: 'data/archive/items',
+                          create: true,
+                          format: 'yaml',
+                          extension: 'yml',
+                          slug: '{{slug}}',
+                          fields: [
+                            { label: 'Data', name: 'date', widget: 'date', format: 'YYYY-MM-DD', required: true },
+                            { label: 'Titolo', name: 'title', widget: 'string', required: true },
+                            { label: 'Tipo', name: 'kind', widget: 'select', options: ['video', 'content'], required: true }
+                          ]
+                        }
+                      ]
+                    }
+                  });
+                }
+              })
+              .catch(error => {
+                console.error('❌ Errore caricamento config:', error);
+                showError('Errore nel caricamento della configurazione');
+              });
+              
+          } catch (error) {
+            console.error('❌ Errore inizializzazione Decap CMS:', error);
+            showError('Errore durante l\'inizializzazione: ' + error.message);
+          }
+          
+        } else {
+          console.error('❌ Decap CMS non disponibile');
+          showError('Decap CMS non si è caricato correttamente');
+        }
+      }, 3000);
+    });
+  </script>
+
+  <!-- Include the script that builds the page and powers Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+</body>
+</html>
