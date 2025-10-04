@@ -19,7 +19,7 @@ class ItemsManager {
             try {
                 const schemaResponse = await api.getContent('data/archive/_schema.yml');
                 this.schema = jsyaml.load(atob(schemaResponse.content));
-                console.log('✅ Schema caricato');
+                console.log('✅ Schema caricato:', this.schema);
             } catch (err) {
                 console.warn('⚠️ Schema non trovato, validazione disabilitata');
                 this.schema = {};
