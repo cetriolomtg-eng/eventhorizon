@@ -87,8 +87,14 @@ class ItemsManager {
         }
 
         // Verifica campi required dallo schema
-        for (const [field, schema] of Object.entries(this.schema)) {
-            if (schema.required && !item[field]) {
+        for (const [field, fieldSchema] of Object.entries(this.schema)) {
+            // Skip se lo schema del campo è null/undefined
+            if (!fieldSchema || typeof fieldSchema !== 'object') {
+                console.warn(`⚠️ Schema per campo "${field}" non valido:`, fieldSchema);
+                continue;
+            }
+
+            if (fieldSchema.required && !item[field]) {
                 errors.push(`Campo richiesto mancante: ${field}`);
                 continue;
             }
@@ -97,12 +103,12 @@ class ItemsManager {
             if (!value) continue;
 
             // Validazione tipo
-            switch (schema.type) {
+            switch (fieldSchema.type) {
                 case 'string':
                     if (typeof value !== 'string') {
                         errors.push(`${field} deve essere una stringa`);
-                    } else if (schema.enum && !schema.enum.includes(value)) {
-                        errors.push(`${field} deve essere uno di: ${schema.enum.join(', ')}`);
+                    } else if (fieldSchema.enum && !fieldSchema.enum.includes(value)) {
+                        errors.push(`${field} deve essere uno di: ${fieldSchema.enum.join(', ')}`);
                     }
                     break;
                 case 'number':
@@ -127,27 +133,40 @@ class ItemsManager {
     }
 
     async saveItem(item) {
+        console.log('💾 ItemsManager.saveItem() chiamato con:', item);
+
         await this.initialize();
 
         // Validazione
+        console.log('🔍 Validazione item...');
         const errors = this.validateItem(item);
         if (errors.length > 0) {
+            console.error('❌ Errori di validazione:', errors);
             throw new Error(`Validation errors:\n${errors.join('\n')}`);
         }
+        console.log('✅ Validazione passata');
 
         // Genera path del file
         const path = `data/archive/items/${item.id}.yml`;
-        
+        console.log('📁 Path file:', path);
+
         // Recupera sha se esiste
         const existingItem = this.items.get(item.id);
         const sha = existingItem?.sha;
+        console.log('🔑 SHA esistente:', sha || 'nuovo file');
+
+        // Genera YAML
+        const yamlContent = jsyaml.dump(item);
+        console.log('📝 YAML generato (primi 200 chars):', yamlContent.substring(0, 200));
 
         // Salva su GitHub
+        console.log('☁️ Inizio upload su GitHub...');
         const response = await api.createOrUpdateFile(
             path,
-            jsyaml.dump(item),
+            yamlContent,
             sha
         );
+        console.log('✅ Upload GitHub completato:', response);
 
         // Aggiorna cache locale
         this.items.set(item.id, {
@@ -156,6 +175,7 @@ class ItemsManager {
             path
         });
 
+        console.log('✅ Item salvato con successo in cache');
         return response;
     }
 
