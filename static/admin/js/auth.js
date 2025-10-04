@@ -159,8 +159,20 @@ class AuthManager {
       this.token = null;
       this.user = null;
       Storage.remove(config.storage.token);
+
+      // Cleanup: rimuovi anche drafts e cache
+      Storage.remove(config.storage.drafts);
+      Storage.remove('markdown_content');
+      Storage.remove('media_cache');
+      Storage.remove(config.storage.state);
+
       this.notifyListeners();
       ui.showToast('Logout effettuato', 'success');
+
+      // Reload pagina per reset completo dello stato
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (error) {
       console.error('Error during logout:', error);
       ui.showToast('Errore durante il logout', 'error');

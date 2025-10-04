@@ -9,31 +9,43 @@ class ArticlesManager {
 
     async initialize() {
         if (this.initialized) return;
-        
+
         try {
+            console.log('📰 Inizializzazione articles...');
+
             // Carica tutti gli articoli
             const articlesDir = await api.getContent('content/article');
+            let loadedCount = 0;
+            let errorCount = 0;
+
             for (const file of articlesDir) {
                 if (file.type === 'file' && file.name.endsWith('.md')) {
-                    const response = await api.getContent(file.path);
-                    const content = atob(response.content);
-                    
-                    // Estrai frontmatter e contenuto
-                    const { frontmatter, body } = this.parseFrontmatter(content);
-                    
-                    this.articles.set(file.name, {
-                        path: file.path,
-                        sha: response.sha,
-                        frontmatter,
-                        content: body
-                    });
+                    try {
+                        const response = await api.getContent(file.path);
+                        const content = atob(response.content);
+
+                        // Estrai frontmatter e contenuto
+                        const { frontmatter, body } = this.parseFrontmatter(content);
+
+                        this.articles.set(file.name, {
+                            path: file.path,
+                            sha: response.sha,
+                            frontmatter,
+                            content: body
+                        });
+                        loadedCount++;
+                    } catch (err) {
+                        console.error(`❌ Errore caricamento ${file.name}:`, err.message);
+                        errorCount++;
+                    }
                 }
             }
 
+            console.log(`✅ Articles caricati: ${loadedCount} (errori: ${errorCount})`);
             this.initialized = true;
         } catch (error) {
-            console.error('Error initializing articles:', error);
-            throw error;
+            console.error('❌ Errore critico inizializzazione articles:', error);
+            throw new Error(`Impossibile caricare articles: ${error.message}`);
         }
     }
 

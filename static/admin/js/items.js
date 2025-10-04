@@ -11,34 +11,58 @@ class ItemsManager {
 
     async initialize() {
         if (this.initialized) return;
-        
-        try {
-            // Carica schema
-            const schemaResponse = await api.getContent('data/archive/_schema.yml');
-            this.schema = jsyaml.load(atob(schemaResponse.content));
 
-            // Carica aliases
-            const aliasesResponse = await api.getContent('data/archive/aliases.yml');
-            this.aliases = jsyaml.load(atob(aliasesResponse.content));
+        try {
+            console.log('📦 Inizializzazione items...');
+
+            // Carica schema (opzionale - non blocca se manca)
+            try {
+                const schemaResponse = await api.getContent('data/archive/_schema.yml');
+                this.schema = jsyaml.load(atob(schemaResponse.content));
+                console.log('✅ Schema caricato');
+            } catch (err) {
+                console.warn('⚠️ Schema non trovato, validazione disabilitata');
+                this.schema = {};
+            }
+
+            // Carica aliases (opzionale)
+            try {
+                const aliasesResponse = await api.getContent('data/archive/aliases.yml');
+                this.aliases = jsyaml.load(atob(aliasesResponse.content));
+                console.log('✅ Aliases caricati');
+            } catch (err) {
+                console.warn('⚠️ Aliases non trovati');
+                this.aliases = {};
+            }
 
             // Carica tutti gli items
             const itemsDir = await api.getContent('data/archive/items');
+            let loadedCount = 0;
+            let errorCount = 0;
+
             for (const file of itemsDir) {
                 if (file.type === 'file' && file.name.endsWith('.yml')) {
-                    const response = await api.getContent(file.path);
-                    const content = jsyaml.load(atob(response.content));
-                    this.items.set(content.id, {
-                        ...content,
-                        sha: response.sha,
-                        path: file.path
-                    });
+                    try {
+                        const response = await api.getContent(file.path);
+                        const content = jsyaml.load(atob(response.content));
+                        this.items.set(content.id || file.name, {
+                            ...content,
+                            sha: response.sha,
+                            path: file.path
+                        });
+                        loadedCount++;
+                    } catch (err) {
+                        console.error(`❌ Errore caricamento ${file.name}:`, err.message);
+                        errorCount++;
+                    }
                 }
             }
 
+            console.log(`✅ Items caricati: ${loadedCount} (errori: ${errorCount})`);
             this.initialized = true;
         } catch (error) {
-            console.error('Error initializing items:', error);
-            throw error;
+            console.error('❌ Errore critico inizializzazione items:', error);
+            throw new Error(`Impossibile caricare items: ${error.message}`);
         }
     }
 

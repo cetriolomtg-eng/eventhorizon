@@ -264,52 +264,381 @@
                     itemForm.raw.value = jsyaml.dump(item);
                 };
 
+                // Validate Item Form
+                const validateItemForm = () => {
+                    const errors = [];
+
+                    if (!itemForm.title?.value?.trim()) {
+                        errors.push('Il titolo è obbligatorio');
+                    }
+
+                    if (!itemForm.date?.value) {
+                        errors.push('La data è obbligatoria');
+                    }
+
+                    const kind = itemForm.kind?.value;
+                    if (!kind) {
+                        errors.push('Il tipo (kind) è obbligatorio');
+                    } else if (!['video', 'content'].includes(kind)) {
+                        errors.push('Il tipo deve essere "video" o "content"');
+                    }
+
+                    const slug = itemForm.slug?.value || slugify(itemForm.title?.value || '');
+                    if (slug && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+                        errors.push('Lo slug deve contenere solo minuscole, numeri e trattini');
+                    }
+
+                    return errors;
+                };
+
                 // Save Item
                 const saveBtn = document.getElementById('saveBtn');
                 if (saveBtn) {
                     saveBtn.addEventListener('click', async () => {
-                    try {
-                        ui.showLoading('saveBtn');
-                        
-                        const formData = {
-                            date: itemForm.date.value,
-                            title: itemForm.title.value,
-                            slug: itemForm.slug.value || slugify(itemForm.title.value),
-                            kind: itemForm.kind.value,
-                            overline: itemForm.overline.value,
-                            author: itemForm.author.value,
-                            id: itemForm.id.value || itemForm.slug.value,
-                            thumb: itemForm.thumb.value,
-                            desc: itemForm.desc.value,
-                            tags: itemForm.tags.value.split(',').map(t => t.trim()).filter(Boolean),
-                            draft: itemForm.draft.checked,
-                            updated: itemForm.updated.value,
-                            card: itemForm.card.value
-                        };
+                        try {
+                            // Validazione
+                            const errors = validateItemForm();
+                            if (errors.length > 0) {
+                                ui.showToast('Errori di validazione:\n' + errors.join('\n'), 'error');
+                                return;
+                            }
 
-                        await items.saveItem(formData);
-                        
-                        ui.showToast('Item salvato con successo', 'success');
-                        renderItems();
-                    } catch (error) {
-                        ui.showToast(error.message, 'error');
-                    } finally {
-                        ui.hideLoading('saveBtn');
-                    }
+                            ui.showLoading('saveBtn');
+
+                            const formData = {
+                                date: itemForm.date.value,
+                                title: itemForm.title.value.trim(),
+                                slug: itemForm.slug.value || slugify(itemForm.title.value),
+                                kind: itemForm.kind.value,
+                                overline: itemForm.overline.value.trim(),
+                                author: itemForm.author.value.trim(),
+                                id: itemForm.id.value || itemForm.slug.value || slugify(itemForm.title.value),
+                                thumb: itemForm.thumb.value.trim(),
+                                desc: itemForm.desc.value.trim(),
+                                tags: itemForm.tags.value.split(',').map(t => t.trim()).filter(Boolean),
+                                draft: itemForm.draft.checked,
+                                updated: itemForm.updated.value,
+                                card: itemForm.card.value.trim()
+                            };
+
+                            await items.saveItem(formData);
+
+                            ui.showToast('Item salvato con successo', 'success');
+                            renderItems();
+                        } catch (error) {
+                            console.error('❌ Errore salvataggio item:', error);
+                            ui.showToast('Errore salvataggio: ' + error.message, 'error');
+                        } finally {
+                            ui.hideLoading('saveBtn');
+                        }
                     });
                 } else {
                     console.warn('⚠️ Pulsante save non trovato');
                 }
 
+                // New Item Button
+                const newBtn = document.getElementById('newBtn');
+                if (newBtn) {
+                    newBtn.addEventListener('click', () => {
+                        console.log('📝 Nuovo item');
+                        clearItemForm();
+                        // Imposta data corrente
+                        const today = new Date().toISOString().split('T')[0];
+                        itemForm.date.value = today;
+                        // Scroll al form
+                        itemForm.title.focus();
+                        ui.showToast('Nuovo item - compila il form', 'info');
+                    });
+                }
+
+                // Delete Item Button
+                const deleteBtn = document.getElementById('deleteBtn');
+                if (deleteBtn) {
+                    deleteBtn.addEventListener('click', async () => {
+                        const id = itemForm.id.value;
+                        if (!id) {
+                            ui.showToast('Nessun item selezionato', 'warning');
+                            return;
+                        }
+
+                        const item = items.getItem(id);
+                        const title = item?.title || id;
+
+                        if (!await ui.confirm(`Eliminare l'item "${title}"?`, {
+                            title: 'Conferma eliminazione',
+                            confirmText: 'Elimina',
+                            cancelText: 'Annulla'
+                        })) {
+                            return;
+                        }
+
+                        try {
+                            ui.showLoading('deleteBtn');
+                            await items.deleteItem(id);
+                            ui.showToast('Item eliminato con successo', 'success');
+                            clearItemForm();
+                            renderItems();
+                        } catch (error) {
+                            console.error('❌ Errore eliminazione item:', error);
+                            ui.showToast('Errore eliminazione: ' + error.message, 'error');
+                        } finally {
+                            ui.hideLoading('deleteBtn');
+                        }
+                    });
+                }
+
+                // Reload Items Button
+                const reloadBtn = document.getElementById('reloadBtn');
+                if (reloadBtn) {
+                    reloadBtn.addEventListener('click', async () => {
+                        try {
+                            ui.showLoading('reloadBtn');
+                            // Forza re-init
+                            items.initialized = false;
+                            await items.initialize();
+                            renderItems();
+                            ui.showToast('Items ricaricati', 'success');
+                        } catch (error) {
+                            console.error('❌ Errore reload items:', error);
+                            ui.showToast('Errore ricaricamento: ' + error.message, 'error');
+                        } finally {
+                            ui.hideLoading('reloadBtn');
+                        }
+                    });
+                }
+
+                // Click su item nella lista (delegazione eventi)
+                if (itemsList) {
+                    itemsList.addEventListener('click', (e) => {
+                        const editBtn = e.target.closest('.btn-edit');
+                        if (editBtn) {
+                            const itemEl = editBtn.closest('[data-id]');
+                            if (itemEl) {
+                                const itemId = itemEl.dataset.id;
+                                const item = items.getItem(itemId);
+                                if (item) {
+                                    console.log('✏️ Editing item:', itemId);
+                                    loadItemIntoForm(item);
+                                    // Scroll al form
+                                    itemForm.title.focus();
+                                } else {
+                                    ui.showToast('Item non trovato', 'error');
+                                }
+                            }
+                        }
+                    });
+                }
+
                 // Articles List
                 const articlesList = document.getElementById('articlesList');
-                
+
                 const renderArticles = () => {
+                    if (!articlesList) {
+                        console.warn('⚠️ articlesList non trovato');
+                        return;
+                    }
                     articlesList.innerHTML = articles.getAllArticles()
                         .sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date))
                         .map(article => ui.render('articleRow', article))
                         .join('');
                 };
+
+                // Article Form Elements
+                const articleForm = {
+                    title: document.getElementById('a_title'),
+                    date: document.getElementById('a_date'),
+                    author: document.getElementById('a_author'),
+                    content: document.getElementById('a_content'),
+                    tags: document.getElementById('a_tags'),
+                    categories: document.getElementById('a_categories'),
+                    draft: document.getElementById('a_draft'),
+                    featured: document.getElementById('a_featured')
+                };
+
+                let currentArticlePath = null;
+
+                const clearArticleForm = () => {
+                    Object.values(articleForm).forEach(input => {
+                        if (!input) return;
+                        if (input.type === 'checkbox') {
+                            input.checked = false;
+                        } else {
+                            input.value = '';
+                        }
+                    });
+                    currentArticlePath = null;
+                    if (editor.editor) {
+                        editor.cm.setValue('');
+                    }
+                };
+
+                const loadArticleIntoForm = (article) => {
+                    if (!article) return;
+
+                    const fm = article.frontmatter || {};
+                    if (articleForm.title) articleForm.title.value = fm.title || '';
+                    if (articleForm.date) articleForm.date.value = fm.date ? new Date(fm.date).toISOString().split('T')[0] : '';
+                    if (articleForm.author) articleForm.author.value = fm.author || '';
+                    if (articleForm.tags) articleForm.tags.value = (fm.tags || []).join(', ');
+                    if (articleForm.categories) articleForm.categories.value = (fm.categories || []).join(', ');
+                    if (articleForm.draft) articleForm.draft.checked = fm.draft || false;
+                    if (articleForm.featured) articleForm.featured.checked = fm.featured || false;
+
+                    currentArticlePath = article.path;
+
+                    // Carica contenuto nell'editor
+                    if (editor.cm) {
+                        editor.cm.setValue(article.content || '');
+                    } else if (articleForm.content) {
+                        articleForm.content.value = article.content || '';
+                    }
+                };
+
+                // New Article Button
+                const newArticleBtn = document.getElementById('newArticleBtn');
+                if (newArticleBtn) {
+                    newArticleBtn.addEventListener('click', () => {
+                        console.log('📝 Nuovo articolo');
+                        clearArticleForm();
+                        const today = new Date().toISOString().split('T')[0];
+                        if (articleForm.date) articleForm.date.value = today;
+                        if (articleForm.title) articleForm.title.focus();
+                        ui.showToast('Nuovo articolo - compila il form', 'info');
+                    });
+                }
+
+                // Save Article Button
+                const saveArticleBtn = document.getElementById('saveArticleBtn');
+                if (saveArticleBtn) {
+                    saveArticleBtn.addEventListener('click', async () => {
+                        try {
+                            ui.showLoading('saveArticleBtn');
+
+                            // Validazione base
+                            if (!articleForm.title?.value) {
+                                ui.showToast('Il titolo è obbligatorio', 'error');
+                                return;
+                            }
+
+                            // Genera filename dallo slug del titolo
+                            const slug = slugify(articleForm.title.value);
+                            const filename = currentArticlePath ?
+                                currentArticlePath.split('/').pop() :
+                                `${slug}.md`;
+
+                            // Prepara frontmatter
+                            const frontmatter = {
+                                title: articleForm.title.value,
+                                date: articleForm.date?.value || new Date().toISOString().split('T')[0],
+                                author: articleForm.author?.value || '',
+                                tags: articleForm.tags?.value.split(',').map(t => t.trim()).filter(Boolean) || [],
+                                categories: articleForm.categories?.value.split(',').map(t => t.trim()).filter(Boolean) || [],
+                                draft: articleForm.draft?.checked || false,
+                                featured: articleForm.featured?.checked || false
+                            };
+
+                            // Contenuto
+                            const content = editor.cm ? editor.cm.getValue() : articleForm.content?.value || '';
+
+                            await articles.saveArticle(filename, frontmatter, content);
+
+                            ui.showToast('Articolo salvato con successo', 'success');
+                            renderArticles();
+                            currentArticlePath = `content/article/${filename}`;
+                        } catch (error) {
+                            console.error('❌ Errore salvataggio articolo:', error);
+                            ui.showToast('Errore salvataggio: ' + error.message, 'error');
+                        } finally {
+                            ui.hideLoading('saveArticleBtn');
+                        }
+                    });
+                }
+
+                // Delete Article Button
+                const deleteArticleBtn = document.getElementById('deleteArticleBtn');
+                if (deleteArticleBtn) {
+                    deleteArticleBtn.addEventListener('click', async () => {
+                        if (!currentArticlePath) {
+                            ui.showToast('Nessun articolo selezionato', 'warning');
+                            return;
+                        }
+
+                        const filename = currentArticlePath.split('/').pop();
+                        const title = articleForm.title?.value || filename;
+
+                        if (!await ui.confirm(`Eliminare l'articolo "${title}"?`, {
+                            title: 'Conferma eliminazione',
+                            confirmText: 'Elimina',
+                            cancelText: 'Annulla'
+                        })) {
+                            return;
+                        }
+
+                        try {
+                            ui.showLoading('deleteArticleBtn');
+                            await articles.deleteArticle(filename);
+                            ui.showToast('Articolo eliminato con successo', 'success');
+                            clearArticleForm();
+                            renderArticles();
+                        } catch (error) {
+                            console.error('❌ Errore eliminazione articolo:', error);
+                            ui.showToast('Errore eliminazione: ' + error.message, 'error');
+                        } finally {
+                            ui.hideLoading('deleteArticleBtn');
+                        }
+                    });
+                }
+
+                // Reload Articles Button
+                const reloadArticlesBtn = document.getElementById('reloadArticlesBtn');
+                if (reloadArticlesBtn) {
+                    reloadArticlesBtn.addEventListener('click', async () => {
+                        try {
+                            ui.showLoading('reloadArticlesBtn');
+                            articles.initialized = false;
+                            await articles.initialize();
+                            renderArticles();
+                            ui.showToast('Articoli ricaricati', 'success');
+                        } catch (error) {
+                            console.error('❌ Errore reload articoli:', error);
+                            ui.showToast('Errore ricaricamento: ' + error.message, 'error');
+                        } finally {
+                            ui.hideLoading('reloadArticlesBtn');
+                        }
+                    });
+                }
+
+                // Click su articolo nella lista (delegazione eventi)
+                if (articlesList) {
+                    articlesList.addEventListener('click', (e) => {
+                        const editBtn = e.target.closest('.btn-edit');
+                        if (editBtn) {
+                            const articleEl = editBtn.closest('[data-path]');
+                            if (articleEl) {
+                                const path = articleEl.dataset.path;
+                                const filename = path.split('/').pop();
+                                const article = articles.getArticle(filename);
+                                if (article) {
+                                    console.log('✏️ Editing article:', filename);
+
+                                    // Switch alla tab articoli se non già attiva
+                                    const viewArticlesBtn = document.getElementById('viewArticlesBtn');
+                                    if (viewArticlesBtn) {
+                                        viewArticlesBtn.click();
+                                    }
+
+                                    // Aspetta che l'editor sia inizializzato
+                                    setTimeout(() => {
+                                        loadArticleIntoForm(article);
+                                        if (articleForm.title) articleForm.title.focus();
+                                    }, 100);
+                                } else {
+                                    ui.showToast('Articolo non trovato', 'error');
+                                }
+                            }
+                        }
+                    });
+                }
 
                 // Load Content
                 async function loadContent() {
@@ -333,8 +662,21 @@
 
                         // L'editor verrà inizializzato quando si accede alla sezione articoli
 
-                        renderItems();
-                        renderArticles();
+                        try {
+                            console.log('🎨 Inizio rendering items...');
+                            renderItems();
+                            console.log('✅ Items renderizzati');
+                        } catch (err) {
+                            console.error('❌ Errore rendering items:', err);
+                        }
+
+                        try {
+                            console.log('🎨 Inizio rendering articles...');
+                            renderArticles();
+                            console.log('✅ Articles renderizzati');
+                        } catch (err) {
+                            console.error('❌ Errore rendering articles:', err);
+                        }
 
                         console.log('📂 Rendering completato');
 

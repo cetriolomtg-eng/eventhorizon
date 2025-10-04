@@ -1,6 +1,35 @@
 import { config } from './config.js';
 import { auth } from './auth.js';
 
+// Helper: Retry with exponential backoff
+async function withRetry(fn, maxRetries = 3, initialDelay = 1000) {
+    let lastError;
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+        try {
+            return await fn();
+        } catch (error) {
+            lastError = error;
+            console.warn(`⚠️ Attempt ${attempt + 1}/${maxRetries} failed:`, error.message);
+
+            // Non fare retry su errori 4xx (client errors)
+            if (error.message.includes('404') || error.message.includes('401') || error.message.includes('403')) {
+                throw error;
+            }
+
+            // Ultimo tentativo fallito
+            if (attempt === maxRetries - 1) {
+                throw new Error(`Operazione fallita dopo ${maxRetries} tentativi: ${error.message}`);
+            }
+
+            // Exponential backoff: 1s, 2s, 4s...
+            const delay = initialDelay * Math.pow(2, attempt);
+            console.log(`⏳ Retry in ${delay}ms...`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+    }
+    throw lastError;
+}
+
 class GitHubAPI {
     constructor() {
         this.baseUrl = 'https://api.github.com';
@@ -76,7 +105,7 @@ class GitHubAPI {
 
     async getContent(path) {
         const repoFullName = `${config.repo.owner}/${config.repo.name}`;
-        return this.request(`/repos/${repoFullName}/contents/${path}`);
+        return withRetry(() => this.request(`/repos/${repoFullName}/contents/${path}`));
     }
 
     async createOrUpdateFile(path, content, sha = null) {
@@ -92,22 +121,22 @@ class GitHubAPI {
             body.sha = sha;
         }
 
-        return this.request(endpoint, {
+        return withRetry(() => this.request(endpoint, {
             method: 'PUT',
             body: JSON.stringify(body)
-        });
+        }));
     }
 
     async deleteFile(path, sha) {
         const repoFullName = `${config.repo.owner}/${config.repo.name}`;
-        return this.request(`/repos/${repoFullName}/contents/${path}`, {
+        return withRetry(() => this.request(`/repos/${repoFullName}/contents/${path}`, {
             method: 'DELETE',
             body: JSON.stringify({
                 message: `Delete ${path}`,
                 sha,
                 branch: config.repo.branch
             })
-        });
+        }));
     }
 }
 

@@ -173,31 +173,68 @@ class UIManager {
     // Confirmation Dialog
     async confirm(message, options = {}) {
         return new Promise((resolve) => {
-            const modal = this.createModal('confirm-dialog', {
-                title: options.title || 'Conferma',
-                content: `<p>${message}</p>`,
-                footer: `
-                    <button class="btn btn-secondary" data-action="cancel">
-                        ${options.cancelText || 'Annulla'}
-                    </button>
-                    <button class="btn btn-primary" data-action="confirm">
-                        ${options.confirmText || 'Conferma'}
-                    </button>
-                `
-            });
+            // Rimuovi modal esistente se presente
+            const existing = document.getElementById('confirm-dialog');
+            if (existing) {
+                existing.remove();
+            }
+
+            const modalEl = document.createElement('div');
+            modalEl.className = 'modal';
+            modalEl.id = 'confirm-dialog';
+
+            modalEl.innerHTML = `
+                <div class="modal-overlay"></div>
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <h3>${options.title || 'Conferma'}</h3>
+                    </div>
+                    <div class="modal-content">
+                        <p>${message}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" data-action="cancel">
+                            ${options.cancelText || 'Annulla'}
+                        </button>
+                        <button class="btn danger" data-action="confirm">
+                            ${options.confirmText || 'Conferma'}
+                        </button>
+                    </div>
+                </div>
+            `;
 
             const handleAction = (action) => {
-                modal.hide();
+                modalEl.classList.remove('show');
+                setTimeout(() => {
+                    modalEl.remove();
+                }, 300);
                 resolve(action === 'confirm');
             };
 
-            modal.element.querySelector('[data-action="cancel"]')
-                .addEventListener('click', () => handleAction('cancel'));
-            
-            modal.element.querySelector('[data-action="confirm"]')
-                .addEventListener('click', () => handleAction('confirm'));
+            const cancelBtn = modalEl.querySelector('[data-action="cancel"]');
+            const confirmBtn = modalEl.querySelector('[data-action="confirm"]');
+            const overlay = modalEl.querySelector('.modal-overlay');
 
-            modal.show();
+            cancelBtn.addEventListener('click', () => handleAction('cancel'));
+            confirmBtn.addEventListener('click', () => handleAction('confirm'));
+            overlay.addEventListener('click', () => handleAction('cancel'));
+
+            // ESC key
+            const escHandler = (e) => {
+                if (e.key === 'Escape') {
+                    handleAction('cancel');
+                    document.removeEventListener('keydown', escHandler);
+                }
+            };
+            document.addEventListener('keydown', escHandler);
+
+            document.body.appendChild(modalEl);
+
+            // Trigger animation
+            requestAnimationFrame(() => {
+                modalEl.classList.add('show');
+                confirmBtn.focus();
+            });
         });
     }
 }
