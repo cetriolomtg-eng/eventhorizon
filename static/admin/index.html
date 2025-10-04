@@ -25,6 +25,13 @@
   <div id="nc-root"></div>
 
   <!-- Decap CMS - loaded AFTER DOM is ready -->
-  <script src="https://unpkg.com/decap-cms@^3.3.0/dist/decap-cms.js"></script>
+  <script>
+    // Aspetta che il DOM sia pronto prima di caricare Decap CMS
+    window.addEventListener('DOMContentLoaded', function() {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/decap-cms@^3.3.0/dist/decap-cms.js';
+      document.body.appendChild(script);
+    });
+  </script>
 </body>
 </html>
