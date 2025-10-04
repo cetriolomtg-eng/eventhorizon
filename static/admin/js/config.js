@@ -13,16 +13,19 @@ export const config = {
     extension: "yml"
   },
 
-  // OAuth & API (Worker-based)
+  // OAuth & API (Worker-based con fallback)
   auth: {
     // Cloudflare Worker base URL che gestisce l'OAuth con GitHub
-    workerBase: "https://auth.eventhorizon-mtg.workers.dev",
+    workerBase: "https://eventhorizon-oauth.cetriolo-mtg.workers.dev",
     // Endpoint del worker per avviare l'autenticazione
     authEndpoint: "auth",
     // Endpoint del worker per scambio code->token
     tokenEndpoint: "token",
     // Endpoint del worker per proxy user info (opzionale)
     userEndpoint: "user",
+    // Fallback per sviluppo locale (GitHub diretto)
+    clientId: "Iv1.6670215d53bece67",
+    authUrl: "https://github.com/login/oauth/authorize",
     // Scope GitHub richiesti
     scope: "repo",
     // Versione API GitHub (per chiamate dirette all'API con token)

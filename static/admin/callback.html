@@ -6,14 +6,37 @@
 </head>
 <body>
     <script>
-        // Estrai i parametri dall'URL
+        // Gestisce sia callback GitHub diretto che worker Cloudflare
         const params = new URLSearchParams(window.location.search);
+        
+        // Se arriva dal worker con token già pronto
+        const token = params.get('token');
+        const error = params.get('error');
+        
+        if (token || error) {
+            // Callback dal worker: invia token direttamente
+            if (window.opener) {
+                window.opener.postMessage({
+                    type: 'oauth-callback',
+                    token,
+                    error
+                }, window.opener.origin);
+                window.close();
+            }
+            return;
+        }
+        
+        // Callback GitHub classico con code/state
         const code = params.get('code');
         const state = params.get('state');
         
-        // Invia il codice alla finestra principale
-        if (window.opener) {
-            window.opener.postMessage({ code, state }, window.opener.origin);
+        if (code && window.opener) {
+            // Per compatibilità con flusso diretto GitHub
+            window.opener.postMessage({ 
+                type: 'oauth-callback',
+                code, 
+                state 
+            }, window.opener.origin);
             window.close();
         }
     </script>

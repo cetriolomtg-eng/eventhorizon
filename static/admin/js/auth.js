@@ -81,32 +81,71 @@ class AuthManager {
     }
 
     try {
-      const workerBase = config.auth?.workerBase || 'https://auth.eventhorizon-mtg.workers.dev';
+      const workerBase = config.auth?.workerBase;
       const authEndpoint = config.auth?.authEndpoint || 'auth';
       const scope = config.auth?.scope || 'repo';
-
       const origin = location.origin;
-      const url = `${workerBase}/${authEndpoint}?origin=${encodeURIComponent(origin)}&scope=${encodeURIComponent(scope)}`;
 
-      // Apri popup centrato
-      const width = 600;
-      const height = 700;
-      const left = (window.innerWidth - width) / 2;
-      const top = (window.innerHeight - height) / 2;
+      // Prova prima il worker
+      if (workerBase) {
+        console.log('Tentativo login via worker:', workerBase);
+        const url = `${workerBase}/${authEndpoint}?origin=${encodeURIComponent(origin)}&scope=${encodeURIComponent(scope)}`;
+        
+        try {
+          // Test se il worker accetta la nostra origin
+          const testUrl = `${workerBase}/auth?origin=${encodeURIComponent(origin)}&scope=${encodeURIComponent(scope)}`;
+          const testResponse = await fetch(testUrl, { method: 'HEAD' });
+          
+          if (testResponse.ok) {
+            this.popup = window.open(url, 'github-oauth', this.getPopupOptions());
+            if (!this.popup) {
+              throw new Error('Popup bloccato');
+            }
+            return;
+          } else {
+            const errorText = await testResponse.text();
+            console.warn('Worker rifiuta origin:', origin, errorText);
+            throw new Error(`Worker error: ${testResponse.status}`);
+          }
+        } catch (workerError) {
+          console.warn('Worker non disponibile per origin:', origin, 'Errore:', workerError.message);
+          ui.showToast(`Worker non disponibile da ${origin}. Uso fallback GitHub diretto.`, 'warning');
+        }
+      }
 
-      this.popup = window.open(
-        url,
-        'github-oauth',
-        `width=${width},height=${height},left=${left},top=${top}`
-      );
+      // Fallback: GitHub diretto (per sviluppo)
+      console.log('Login fallback via GitHub diretto');
+      const clientId = config.auth?.clientId;
+      if (!clientId) {
+        throw new Error('Né worker né clientId configurato');
+      }
 
+      const redirectUri = `${origin}/admin/callback.html`;
+      const state = Math.random().toString(36).substring(7);
+      Storage.set('oauth_state', state);
+
+      const authUrl = new URL(config.auth.authUrl);
+      authUrl.searchParams.set('client_id', clientId);
+      authUrl.searchParams.set('redirect_uri', redirectUri);
+      authUrl.searchParams.set('scope', scope);
+      authUrl.searchParams.set('state', state);
+
+      this.popup = window.open(authUrl.toString(), 'github-oauth', this.getPopupOptions());
       if (!this.popup) {
         throw new Error('Popup bloccato: abilita i popup per questo sito');
       }
     } catch (error) {
       console.error('Errore avvio OAuth:', error);
-      ui.showToast('Errore durante il login', 'error');
+      ui.showToast('Errore durante il login: ' + error.message, 'error');
     }
+  }
+
+  getPopupOptions() {
+    const width = 600;
+    const height = 700;
+    const left = (window.innerWidth - width) / 2;
+    const top = (window.innerHeight - height) / 2;
+    return `width=${width},height=${height},left=${left},top=${top}`;
   }
   
   /**
@@ -136,12 +175,18 @@ class AuthManager {
         workerOrigin = config.auth?.workerBase ? new URL(config.auth.workerBase).origin : null;
       } catch {}
       const isAllowedOrigin = (event.origin === location.origin) || (workerOrigin && event.origin === workerOrigin);
-      if (!isAllowedOrigin) return;
+      if (!isAllowedOrigin) {
+        console.log('Ignored message from origin:', event.origin);
+        return;
+      }
 
-      // Payload atteso dal worker (via callback.html relay): { type: 'oauth-callback', token, error }
+      // Payload atteso: { type: 'oauth-callback', token, error } o { type: 'oauth-callback', code, state }
       const payload = event.data || {};
-      const { type, token, error } = payload;
-      if (type !== 'oauth-callback') return; // ignora altri messaggi generici
+      const { type, token, error, code, state } = payload;
+      if (type !== 'oauth-callback') {
+        console.log('Ignored non-oauth message:', payload);
+        return;
+      }
 
       // Chiudi eventuale popup
       if (this.popup) {
@@ -155,18 +200,47 @@ class AuthManager {
         return;
       }
 
-      if (!token) {
-        console.error('Token non ricevuto dal worker');
-        ui.showToast('Errore: token non ricevuto', 'error');
+      // Se abbiamo già il token (dal worker)
+      if (token) {
+        this.token = token;
+        Storage.set(config.storage.token, token);
+        await this.fetchUserData();
+        this.notifyListeners();
+        ui.showToast('Login effettuato', 'success');
         return;
       }
 
-      // Salva token e carica utente
-      this.token = token;
-      Storage.set(config.storage.token, token);
-      await this.fetchUserData();
-      this.notifyListeners();
-      ui.showToast('Login effettuato', 'success');
+      // Se abbiamo code/state (flusso GitHub diretto), scambia con worker
+      if (code && state) {
+        console.log('Scambio code->token tramite worker...');
+        const workerBase = config.auth?.workerBase || 'https://auth.eventhorizon-mtg.workers.dev';
+        const tokenEndpoint = config.auth?.tokenEndpoint || 'token';
+        
+        const response = await fetch(`${workerBase}/${tokenEndpoint}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code, state })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Errore scambio token: ${response.status}`);
+        }
+
+        const { access_token } = await response.json();
+        if (!access_token) {
+          throw new Error('Token non ricevuto dal worker');
+        }
+
+        this.token = access_token;
+        Storage.set(config.storage.token, access_token);
+        await this.fetchUserData();
+        this.notifyListeners();
+        ui.showToast('Login effettuato', 'success');
+        return;
+      }
+
+      console.error('Payload incompleto:', payload);
+      ui.showToast('Errore: dati OAuth incompleti', 'error');
     } catch (error) {
       console.error('Errore gestione callback OAuth:', error);
       ui.showToast('Errore durante il login', 'error');
