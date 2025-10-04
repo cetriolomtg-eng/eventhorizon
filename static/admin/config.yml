@@ -10,31 +10,100 @@ public_folder: /uploads
 
 collections:
   - name: items
-    label: Archivio Items
+    label: "Archivio Items"
     folder: data/archive/items
     create: true
     format: yaml
     extension: yml
     slug: "{{slug}}"
     fields:
-      - label: Data
+      - label: "ID"
+        name: id
+        widget: string
+        required: true
+        hint: "Identificativo univoco (es. eh-0001, Video001)"
+
+      - label: "Slug"
+        name: slug
+        widget: string
+        required: true
+        hint: "URL-friendly identifier"
+
+      - label: "Tipo Contenuto"
+        name: kind
+        widget: select
+        required: true
+        options:
+          - { label: "Video", value: "video" }
+          - { label: "Portale", value: "portal" }
+          - { label: "Articolo", value: "article" }
+          - { label: "Guida", value: "guide" }
+
+      - label: "Data"
         name: date
         widget: date
         required: true
-      - label: Titolo
+        format: "YYYY-MM-DD"
+
+      - label: "Titolo"
         name: title
         widget: string
         required: true
-      - label: Descrizione
-        name: description
+
+      - label: "Overline"
+        name: overline
+        widget: string
+        required: false
+        hint: "Testo sopra il titolo (es. 'LA STORIA DI MAGIC - EPISODIO #06')"
+
+      - label: "Descrizione"
+        name: desc
         widget: text
-        required: false
-      - label: Prezzo
-        name: price
-        widget: number
-        value_type: float
-        required: false
-      - label: Immagine
-        name: image
+        required: true
+
+      - label: "Thumbnail"
+        name: thumb
         widget: image
         required: false
+        hint: "Percorso immagine (es. /images/cards/fblthp_placeholder.webp)"
+
+      - label: "Tags"
+        name: tags
+        widget: list
+        required: false
+        hint: "Lista di tag separati da virgola"
+
+      - label: "Links"
+        name: links
+        widget: list
+        required: false
+        fields:
+          - label: "Label"
+            name: label
+            widget: string
+            required: true
+
+          - label: "URL"
+            name: href
+            widget: string
+            required: true
+
+          - label: "Classe Pulsante"
+            name: btn_class
+            widget: string
+            required: false
+            default: "btn--base"
+            hint: "Classe CSS (es. btn--base, btn--yt primary, btn--scry)"
+
+          - label: "Ordine"
+            name: sort_order
+            widget: number
+            required: false
+            value_type: int
+            hint: "Ordine di visualizzazione"
+
+          - label: "Link Primario"
+            name: primary
+            widget: boolean
+            required: false
+            default: false

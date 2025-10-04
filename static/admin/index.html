@@ -13,39 +13,11 @@
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
   <script>
-    console.log('🔵 Decap CMS - Pagina caricata');
-
-    // Verifica se c'è già un token salvato
-    const savedUser = localStorage.getItem('netlify-cms-user');
-    if (savedUser) {
-      const userData = JSON.parse(savedUser);
-      console.log('✅ Token trovato in localStorage:', userData.login);
-      console.log('📋 Contenuto completo:', userData);
-
-      // Verifica che il token sia valido
-      if (!userData.token) {
-        console.error('❌ Token mancante nel localStorage! Rimuovo dati corrotti...');
-        localStorage.removeItem('netlify-cms-user');
-      }
-    } else {
-      console.log('⚠️ Nessun token in localStorage - login necessario');
-    }
-
-    // DEBUG: mostra TUTTO il localStorage
-    console.log('🗄️ Contenuto completo localStorage:');
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      console.log(`  - ${key}:`, localStorage.getItem(key));
-    }
-
     // OAuth message handler per gestire il token dal worker OAuth
     window.addEventListener('message', (event) => {
-      console.log('📨 Messaggio ricevuto:', event.origin, event.data);
-
       if (event.origin === 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev') {
         if (typeof event.data === 'string' && event.data.startsWith('authorization:github:success:')) {
           const token = event.data.slice('authorization:github:success:'.length);
-          console.log('🔑 Token OAuth ricevuto');
 
           // Valida e salva il token
           fetch('https://api.github.com/user', {
@@ -53,84 +25,51 @@
           })
           .then(r => r.json())
           .then(user => {
-            console.log('✅ Token validato per utente:', user.login);
-
-            localStorage.setItem('netlify-cms-user', JSON.stringify({
+            const userData = {
               token: token,
               login: user.login,
               name: user.name || user.login,
               avatar_url: user.avatar_url,
               backendName: 'github'
+            };
+
+            // Salva in formati multipli per compatibilità Decap/Netlify CMS
+            localStorage.setItem('netlify-cms-user', JSON.stringify(userData));
+            localStorage.setItem('decap-cms-user', JSON.stringify(userData));
+            localStorage.setItem('netlify-cms-auth', JSON.stringify({
+              github: { token: token }
             }));
 
-            console.log('💾 Token salvato - ricarico pagina...');
             // Ricarica per inizializzare il CMS con il token
             window.location.reload();
           })
           .catch(e => {
-            console.error('❌ Errore validazione token:', e);
+            console.error('Errore validazione token:', e);
           });
         }
       }
     });
 
-    // Monitor quando il CMS si inizializza
+    // Forza autenticazione se token già presente (fix per Decap CMS)
     window.addEventListener('load', () => {
-      console.log('🚀 Window load event - CMS dovrebbe auto-inizializzarsi');
-
-      // Attendi che il CMS sia pronto e forza il login se abbiamo un token
       setTimeout(() => {
-        if (window.CMS) {
-          console.log('✅ window.CMS disponibile');
+        const savedUser = localStorage.getItem('netlify-cms-user');
+        if (savedUser && window.CMS) {
+          const userData = JSON.parse(savedUser);
 
-          // Se abbiamo un token salvato, prova a forzare l'autenticazione
-          const savedUser = localStorage.getItem('netlify-cms-user');
-          if (savedUser) {
-            const userData = JSON.parse(savedUser);
-            console.log('🔐 Tentativo di autenticazione manuale con token salvato...');
+          // Salva in tutti i formati necessari
+          localStorage.setItem('decap-cms-user', JSON.stringify(userData));
+          localStorage.setItem('netlify-cms-auth', JSON.stringify({
+            github: { token: userData.token }
+          }));
 
-            try {
-              // Prova a impostare manualmente l'utente autenticato
-              // Decap CMS potrebbe usare chiavi diverse
-              const authData = {
-                token: userData.token,
-                backendName: 'github'
-              };
-
-              // Salva in tutti i formati possibili che Decap potrebbe cercare
-              localStorage.setItem('decap-cms-user', JSON.stringify(userData));
-              localStorage.setItem('netlify-cms-user', JSON.stringify(userData));
-
-              // Salva anche il formato "vecchio" di Netlify CMS
-              localStorage.setItem('netlify-cms-auth', JSON.stringify({
-                github: {
-                  token: userData.token
-                }
-              }));
-
-              console.log('💾 Token salvato in formati multipli - ricarico...');
-
-              // Ricarica una sola volta per applicare
-              if (!sessionStorage.getItem('cms-reload-done')) {
-                sessionStorage.setItem('cms-reload-done', 'true');
-                window.location.reload();
-              }
-            } catch (e) {
-              console.error('❌ Errore durante autenticazione manuale:', e);
-            }
+          // Ricarica una sola volta
+          if (!sessionStorage.getItem('cms-reload-done')) {
+            sessionStorage.setItem('cms-reload-done', 'true');
+            window.location.reload();
           }
-        } else {
-          console.error('❌ window.CMS NON trovato!');
         }
-
-        // Verifica se il root ha contenuto
-        const root = document.getElementById('nc-root');
-        if (root && root.children.length > 0) {
-          console.log('✅ CMS renderizzato - elementi nel DOM:', root.children.length);
-        } else {
-          console.error('❌ CMS NON renderizzato - #nc-root vuoto!');
-        }
-      }, 2000);
+      }, 1500);
     });
   </script>
 </body>
