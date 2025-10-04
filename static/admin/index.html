@@ -4,10 +4,24 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>Admin · Event Horizon CMS</title>
+  <title>Content Manager</title>
+  <script>
+    // Debug prima del caricamento
+    console.log('🔍 Page loaded, checking elements...');
+    window.addEventListener('load', function() {
+      console.log('✅ Window loaded');
+      console.log('Body innerHTML length:', document.body.innerHTML.length);
+      console.log('Body children:', document.body.children.length);
+
+      setTimeout(() => {
+        console.log('🕐 After 2s - Body children:', document.body.children.length);
+        console.log('🕐 After 2s - Body HTML:', document.body.innerHTML.substring(0, 200));
+      }, 2000);
+    });
+  </script>
 </head>
 <body>
-  <!-- Decap CMS -->
+  <!-- Decap CMS will auto-inject its app here -->
   <script src="https://unpkg.com/decap-cms@^3.3.0/dist/decap-cms.js"></script>
 </body>
 </html>
