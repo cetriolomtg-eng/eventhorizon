@@ -1,5 +1,6 @@
 import { ui } from './ui.js';
 import { Storage } from './utils.js';
+import { marked } from 'https://cdn.jsdelivr.net/npm/marked@4.3.0/lib/marked.esm.js';
 
 class MarkdownEditor {
     constructor() {
@@ -76,23 +77,8 @@ class MarkdownEditor {
     }
 
     setupPreview() {
-        // Initialize marked with options
-        if (!window.marked) {
-            throw new Error('marked library not loaded');
-        }
-
         // Configure marked options
-        window.marked.setOptions({
-            highlight: (code, lang) => {
-                if (window.Prism && lang) {
-                    try {
-                        return window.Prism.highlight(code, window.Prism.languages[lang], lang);
-                    } catch (e) {
-                        return code;
-                    }
-                }
-                return code;
-            },
+        marked.use({
             breaks: true,
             gfm: true
         });
@@ -188,7 +174,7 @@ class MarkdownEditor {
 
     updatePreview() {
         const content = this.cm.getValue();
-        const html = window.marked.parse(content);
+        const html = marked.parse(content);
         this.preview.innerHTML = html;
     }
 
