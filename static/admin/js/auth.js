@@ -93,23 +93,25 @@ class AuthManager {
         
         try {
           // Apri direttamente il popup del worker - se non funziona, l'utente vedrà l'errore nel popup
-          console.log('Tentativo login via worker:', url);
+          console.log('🚀 Tentativo login via worker:', url);
           this.popup = window.open(url, 'github-oauth', this.getPopupOptions());
           
           if (!this.popup) {
             throw new Error('Popup bloccato: abilita i popup per questo sito');
           }
           
+          console.log('✅ Popup worker aperto, in attesa callback...');
+          
           // Timeout per fallback se il popup non si chiude entro 2 minuti
           setTimeout(() => {
             if (this.popup && !this.popup.closed) {
-              console.warn('Popup worker timeout, possibile errore');
+              console.warn('⏰ Popup worker timeout, possibile errore');
             }
           }, 120000);
           
           return;
         } catch (workerError) {
-          console.warn('Errore apertura popup worker:', workerError.message);
+          console.warn('❌ Errore apertura popup worker:', workerError.message);
           ui.showToast('Errore apertura popup worker. Uso fallback GitHub diretto.', 'warning');
         }
       }
@@ -169,6 +171,12 @@ class AuthManager {
    * Gestisce callback OAuth
    */
   async handleCallback(event) {
+    console.log('🔔 Received postMessage:', {
+      origin: event.origin,
+      data: event.data,
+      location: location.origin
+    });
+
     try {
       // Accetta messaggi dal nostro dominio (callback.html) o dal Worker
       let workerOrigin = null;
@@ -176,38 +184,60 @@ class AuthManager {
         workerOrigin = config.auth?.workerBase ? new URL(config.auth.workerBase).origin : null;
       } catch {}
       const isAllowedOrigin = (event.origin === location.origin) || (workerOrigin && event.origin === workerOrigin);
+      
+      console.log('🔍 Origin check:', {
+        eventOrigin: event.origin,
+        locationOrigin: location.origin,
+        workerOrigin,
+        isAllowed: isAllowedOrigin
+      });
+
       if (!isAllowedOrigin) {
-        console.log('Ignored message from origin:', event.origin);
+        console.log('❌ Ignored message from disallowed origin:', event.origin);
         return;
       }
 
       // Payload atteso: { type: 'oauth-callback', token, error } o { type: 'oauth-callback', code, state }
       const payload = event.data || {};
       const { type, token, error, code, state } = payload;
+      
+      console.log('📦 Payload analysis:', {
+        type,
+        hasToken: !!token,
+        hasError: !!error,
+        hasCode: !!code,
+        hasState: !!state,
+        fullPayload: payload
+      });
+
       if (type !== 'oauth-callback') {
-        console.log('Ignored non-oauth message:', payload);
+        console.log('⏭️  Ignored non-oauth message type:', type);
         return;
       }
 
+      console.log('✅ Valid OAuth callback received');
+
       // Chiudi eventuale popup
       if (this.popup) {
+        console.log('🔒 Closing popup');
         this.popup.close();
         this.popup = null;
       }
 
       if (error) {
-        console.error('OAuth error:', error);
-        ui.showToast('Errore durante il login', 'error');
+        console.error('❌ OAuth error:', error);
+        ui.showToast('Errore durante il login: ' + error, 'error');
         return;
       }
 
       // Se abbiamo già il token (dal worker)
       if (token) {
+        console.log('🎯 Direct token received, saving...');
         this.token = token;
         Storage.set(config.storage.token, token);
         await this.fetchUserData();
         this.notifyListeners();
-        ui.showToast('Login effettuato', 'success');
+        ui.showToast('Login effettuato con successo!', 'success');
         return;
       }
 

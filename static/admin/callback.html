@@ -6,22 +6,31 @@
 </head>
 <body>
     <script>
+        console.log('🔄 Callback page loaded, URL:', window.location.href);
+        
         // Gestisce sia callback GitHub diretto che worker Cloudflare
         const params = new URLSearchParams(window.location.search);
+        console.log('📋 URL params:', Object.fromEntries(params));
         
         // Se arriva dal worker con token già pronto
         const token = params.get('token');
         const error = params.get('error');
         
         if (token || error) {
+            console.log('🎯 Worker callback detected:', { token: !!token, error });
             // Callback dal worker: invia token direttamente
             if (window.opener) {
-                window.opener.postMessage({
+                const message = {
                     type: 'oauth-callback',
                     token,
                     error
-                }, window.opener.origin);
+                };
+                console.log('📤 Sending message to opener:', message);
+                window.opener.postMessage(message, window.opener.origin);
+                console.log('🔒 Closing callback window');
                 window.close();
+            } else {
+                console.error('❌ No window.opener found');
             }
             return;
         }
@@ -30,14 +39,23 @@
         const code = params.get('code');
         const state = params.get('state');
         
-        if (code && window.opener) {
-            // Per compatibilità con flusso diretto GitHub
-            window.opener.postMessage({ 
-                type: 'oauth-callback',
-                code, 
-                state 
-            }, window.opener.origin);
-            window.close();
+        if (code) {
+            console.log('🔑 GitHub code callback detected:', { code: !!code, state: !!state });
+            if (window.opener) {
+                const message = { 
+                    type: 'oauth-callback',
+                    code, 
+                    state 
+                };
+                console.log('📤 Sending message to opener:', message);
+                window.opener.postMessage(message, window.opener.origin);
+                console.log('🔒 Closing callback window');
+                window.close();
+            } else {
+                console.error('❌ No window.opener found');
+            }
+        } else {
+            console.log('⚠️  No recognizable OAuth params found');
         }
     </script>
 </body>
