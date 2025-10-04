@@ -130,16 +130,14 @@
   margin: 0 auto;
   max-width: 68ch;
   color: var(--neutral-00);
-  -webkit-text-stroke: 1px var(--indigo-900);
-  text-stroke: 1px var(--indigo-900);
+  text-shadow: 0 0 4px var(--indigo-900), 0 0 12px rgba(47,39,96,0.45);
 }
 .portal__sub{
   margin: 12px 0 18px;
   font-weight: var(--fw-bold);
   letter-spacing: 0.02em;
   color: var(--neutral-00);
-  -webkit-text-stroke: 1px var(--indigo-900);
-  text-stroke: 1px var(--indigo-900);
+  text-shadow: 0 0 4px var(--indigo-900), 0 0 12px rgba(47,39,96,0.45);
 }
 
 @media (min-width: 1024px){
