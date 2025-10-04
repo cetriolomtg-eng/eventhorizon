@@ -27,6 +27,8 @@
     
     <!-- App Module Initialization -->
     <script type="module">
+        console.log('🚀 Inizio caricamento moduli admin');
+        
         // Import modules
         import { config } from './js/config.js';
         import { auth } from './js/auth.js';
@@ -37,9 +39,12 @@
         import { editor } from './js/editor.js';
         import { media } from './js/media.js';
         import { formatDate, slugify, debounce, Storage, validators } from './js/utils.js';
+        
+        console.log('✅ Tutti i moduli caricati con successo');        // Initialize app on DOM load
 
         // Initialize app on DOM load
         document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🚀 Admin UI inizializzazione iniziata');
             try {
                 // Setup UI Templates
                 ui.registerTemplate('itemRow', data => `
@@ -81,7 +86,9 @@
                 logoutBtn.addEventListener('click', () => auth.logout());
 
                 auth.onAuthStateChanged(user => {
+                    console.log('🔐 Auth state changed:', user);
                     if (user) {
+                        console.log('✅ Utente autenticato:', user.login);
                         document.getElementById('who').textContent = user.login;
                         loginBtn.hidden = true;
                         logoutBtn.hidden = false;
@@ -89,6 +96,7 @@
                         document.getElementById('adminMain').classList.remove('hidden');
                         loadContent();
                     } else {
+                        console.log('❌ Utente non autenticato');
                         document.getElementById('who').textContent = '';
                         loginBtn.hidden = false;
                         logoutBtn.hidden = true;
@@ -257,6 +265,7 @@
 
                 // Load Content
                 async function loadContent() {
+                    console.log('📂 Caricamento contenuto iniziato');
                     try {
                         ui.showLoading('adminMain');
                         
@@ -266,15 +275,25 @@
                             media.initialize()
                         ]);
                         
+                        console.log('📂 Moduli inizializzati');
+                        
                         // L'editor verrà inizializzato quando si accede alla sezione articoli
                         
                         renderItems();
                         renderArticles();
                         
+                        console.log('📂 Rendering completato');
+                        
                         document.getElementById('viewRow').classList.remove('hidden');
                         document.getElementById('actionsRow').classList.remove('hidden');
                         document.getElementById('articleActionsRow').classList.remove('hidden');
+                        
+                        // Mostra la sezione archivio di default
+                        document.getElementById('itemsSection').classList.remove('hidden');
+                        
+                        console.log('✅ Admin UI completamente caricata');
                     } catch (error) {
+                        console.error('❌ Errore caricamento contenuto:', error);
                         ui.showToast(error.message, 'error');
                     } finally {
                         ui.hideLoading('adminMain');
@@ -287,8 +306,10 @@
                 });
 
             } catch (error) {
-                console.error('Initialization error:', error);
+                console.error('❌ Errore inizializzazione admin:', error);
                 ui.showToast('Errore di inizializzazione: ' + error.message, 'error');
+                // Prova a mostrare almeno il login
+                document.getElementById('lockedOverlay').classList.remove('hidden');
             }
         });
     </script>
