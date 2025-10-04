@@ -294,7 +294,13 @@
                 async function loadContent() {
                     console.log('📂 Caricamento contenuto iniziato');
                     try {
-                        ui.showLoading('adminMain');
+                        // Non usare showLoading su adminMain perché cancellerebbe il contenuto HTML
+                        // Mostra un loader specifico invece
+                        const buildNotice = document.getElementById('buildNotice');
+                        if (buildNotice) {
+                            buildNotice.classList.remove('hidden');
+                            buildNotice.querySelector('.msg').textContent = 'Caricamento dati...';
+                        }
 
                         await Promise.all([
                             items.initialize(),
@@ -327,7 +333,11 @@
                         console.error('❌ Errore caricamento contenuto:', error);
                         ui.showToast(error.message, 'error');
                     } finally {
-                        ui.hideLoading('adminMain');
+                        // Nascondi loader
+                        const buildNotice = document.getElementById('buildNotice');
+                        if (buildNotice) {
+                            buildNotice.classList.add('hidden');
+                        }
                     }
                 }
 
@@ -340,7 +350,10 @@
                 console.error('❌ Errore inizializzazione admin:', error);
                 ui.showToast('Errore di inizializzazione: ' + error.message, 'error');
                 // Prova a mostrare almeno il login
-                document.getElementById('lockedOverlay').classList.remove('hidden');
+                const lockedOverlay = document.getElementById('lockedOverlay');
+                if (lockedOverlay) {
+                    lockedOverlay.classList.remove('hidden');
+                }
             }
         });
     </script>
