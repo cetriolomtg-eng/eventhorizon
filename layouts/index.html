@@ -159,32 +159,30 @@
 
             <article class="card {{ if $isVideo }}is-video{{ else }}is-content{{ end }}" data-kind="{{ if $isVideo }}video{{ else }}content{{ end }}">
               {{ if and $isVideo (ne $purl "") }}
-                <a href="{{ $purl }}" target="_blank" rel="noopener noreferrer" class="card__link-wrapper" aria-label="Guarda video: {{ $tit }}">
-                  <div class="card__media">
-                    <img
-                      class="card__img"
-                      src="{{ $thumbURL }}"
-                      sizes="(max-width: 479px) 320px, (max-width: 1023px) 340px, 360px"
-                      width="1280" height="720"
-                      decoding="async"
-                      loading="{{ if eq $i 0 }}eager{{ else }}lazy{{ end }}"
-                      fetchpriority="{{ if eq $i 0 }}high{{ else }}low{{ end }}"
-                      alt="{{ if $tit }}{{ $tit }}{{ else }}Immagine contenuto{{ end }}"
-                    />
-                    <span class="card__media-overlay"></span>
-                    <span class="card__play" aria-hidden="true">
-                      <svg class="card__play-icon" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-                        <circle class="card__play-circle" cx="50" cy="50" r="34" />
-                        <polygon class="card__play-tri" points="35,32 65,50 35,68" />
-                      </svg>
-                    </span>
-                  </div>
-                  <div class="card__body">
-                    {{ with $over }}<p class="card__overline">{{ . }}</p>{{ end }}
-                    <h3 class="card__title">{{ $tit }}</h3>
-                    {{ with $desc }}<p class="card__desc">{{ . }}</p>{{ end }}
-                  </div>
-                </a>
+                <div class="card__media">
+                  <img
+                    class="card__img"
+                    src="{{ $thumbURL }}"
+                    sizes="(max-width: 479px) 320px, (max-width: 1023px) 340px, 360px"
+                    width="1280" height="720"
+                    decoding="async"
+                    loading="{{ if eq $i 0 }}eager{{ else }}lazy{{ end }}"
+                    fetchpriority="{{ if eq $i 0 }}high{{ else }}low{{ end }}"
+                    alt="{{ if $tit }}{{ $tit }}{{ else }}Immagine contenuto{{ end }}"
+                  />
+                  <span class="card__media-overlay"></span>
+                  <a href="{{ $purl }}" target="_blank" rel="noopener noreferrer" class="card__play" aria-label="Guarda video: {{ $tit }}">
+                    <svg class="card__play-icon" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                      <circle class="card__play-circle" cx="50" cy="50" r="34" />
+                      <polygon class="card__play-tri" points="35,32 65,50 35,68" />
+                    </svg>
+                  </a>
+                </div>
+                <div class="card__body">
+                  {{ with $over }}<p class="card__overline">{{ . }}</p>{{ end }}
+                  <h3 class="card__title">{{ $tit }}</h3>
+                  {{ with $desc }}<p class="card__desc">{{ . }}</p>{{ end }}
+                </div>
               {{ else }}
                 <div class="card__media">
                   <img

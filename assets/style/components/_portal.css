@@ -21,39 +21,82 @@
   font-size: var(--fs-h2);
   line-height: var(--lh-tight);
 }
-/* CTA "Vai all'archivio" */
+/* CTA "Vai all'archivio" - Liquid Glass */
 .portal__title a,
-.portal__cta{
+.btn--portal{
+  --portal-blur: 14px;
+  --portal-alpha: 0.22;
+  --portal-border: 0.42;
+  --portal-shadow: 0.30;
+
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  padding: 18px 32px;
+  padding: 20px 40px;
   margin: 24px auto 16px;
-  background: var(--indigo-700, #5B4E9D);
+  overflow: hidden;
+
+  /* Liquid glass effect */
+  background: rgba(91,78,157,var(--portal-alpha));
+  border: 1px solid rgba(255,255,255,var(--portal-border));
+  border-radius: 14px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.18),
+    0 6px 20px rgba(0,0,0,var(--portal-shadow));
+  -webkit-backdrop-filter: blur(var(--portal-blur)) saturate(1.3);
+  backdrop-filter: blur(var(--portal-blur)) saturate(1.3);
+
   color: #FFFFFF;
   text-decoration: none;
-  border-radius: 12px;
   font-family: var(--font-display, "Lexend Giga");
   font-weight: var(--fw-bold, 700);
   font-size: clamp(1.35rem, 2vw + 0.8rem, 1.75rem);
   line-height: var(--lh-tight, 1.15);
-  box-shadow: 0 4px 16px rgba(47,39,96,0.25);
-  transition: all 180ms var(--ease-standard, cubic-bezier(.2,.8,.2,1));
+  text-shadow: 0 2px 6px rgba(0,0,0,0.35);
+
   cursor: pointer;
+  transition: all 200ms var(--ease-standard, cubic-bezier(.2,.8,.2,1));
 }
+
+/* Background image sottile */
+.portal__title a::before,
+.btn--portal::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(159,123,184,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(47,39,96,0.12) 0%, transparent 50%);
+  opacity: 0.6;
+  z-index: -1;
+  transition: opacity 200ms ease;
+}
+
 .portal__title a:hover,
-.portal__cta:hover{
-  background: var(--indigo-600, #4A3F81);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(47,39,96,0.35);
+.btn--portal:hover{
+  background: rgba(91,78,157, calc(var(--portal-alpha) + 0.12));
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.28),
+    0 8px 28px rgba(0,0,0, calc(var(--portal-shadow) + 0.15));
 }
+
+.portal__title a:hover::before,
+.btn--portal:hover::before{
+  opacity: 0.85;
+}
+
 .portal__title a:active,
-.portal__cta:active{
-  transform: translateY(0);
+.btn--portal:active{
+  background: rgba(91,78,157, calc(var(--portal-alpha) + 0.06));
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.24),
+    0 4px 14px rgba(0,0,0, calc(var(--portal-shadow) + 0.05));
 }
+
 .portal__title a:focus-visible,
-.portal__cta:focus-visible{
+.btn--portal:focus-visible{
   outline: 3px solid var(--gold-600, #E0A402);
   outline-offset: 4px;
 }

@@ -231,7 +231,7 @@
 }
 
 /* ============================================================
-   Card link wrapper (per accessibilità video cards)
+   Card link wrapper (DEPRECATO - ora solo play button cliccabile)
    ============================================================ */
 .card__link-wrapper {
   display: flex;
@@ -240,17 +240,15 @@
   text-decoration: none;
   color: inherit;
   height: 100%;
+  pointer-events: none;
 }
 
 .card__link-wrapper:focus {
-  outline: 2px solid var(--gold-600, #E0A402);
-  outline-offset: 2px;
-  border-radius: 16px;
+  outline: none;
 }
 
 .card__link-wrapper:focus-visible {
-  outline: 2px solid var(--gold-600, #E0A402);
-  outline-offset: 2px;
+  outline: none;
 }
 
 /* ============================================================
@@ -286,11 +284,14 @@
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 64px;     /* hit-area M */
-  height: 64px;
+  width: 72px;     /* hit-area aumentata per link standalone */
+  height: 72px;
   display: grid;
   place-items: center;
   z-index: 2;      /* sopra overlay media */
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 50%;
 }
 .card.is-video .card__play::before{
   content: "";
@@ -309,10 +310,16 @@
 .card.is-video .card__play:hover::before{
   background: rgba(220,38,38,0.9);    /* red-600 */
   box-shadow: 0 0 12px rgba(220,38,38,0.7);
+  transform: scale(1.05);
 }
 .card.is-video .card__play:active::before{
   background: rgba(185,28,28,0.95);   /* red-700 */
   box-shadow: 0 0 20px 4px rgba(239,68,68,0.5); /* red-500 glow */
+  transform: scale(0.98);
+}
+.card.is-video .card__play:focus-visible{
+  outline: 3px solid var(--gold-600, #E0A402);
+  outline-offset: 4px;
 }
 
 /* SVG interno: preferenza triangolo. Se l'SVG usa classi dedicate: */
