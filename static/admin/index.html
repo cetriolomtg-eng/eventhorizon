@@ -50,8 +50,10 @@
           // Salva nel formato ESATTO che Decap CMS si aspetta
           localStorage.setItem('netlify-cms-user', JSON.stringify({
             token: token,
-            login: 'user',
-            name: 'GitHub User'
+            login: 'eventhorizon-mtg', // Username GitHub corretto
+            name: 'Event Horizon MTG',
+            avatar_url: 'https://github.com/eventhorizon-mtg.png',
+            backendName: 'github'
           }));
           
           // Ricarica senza timeout per evitare conflitti
@@ -65,7 +67,12 @@
       setTimeout(() => {
         console.log('🔍 Stato Decap CMS:');
         console.log('- window.CMS:', !!window.CMS);
-        console.log('- localStorage token:', !!localStorage.getItem('netlify-cms-user'));
+        
+        const storedUser = localStorage.getItem('netlify-cms-user');
+        console.log('- localStorage token:', !!storedUser);
+        if (storedUser) {
+          console.log('- Token details:', JSON.parse(storedUser));
+        }
         
         if (window.CMS) {
           console.log('- CMS config:', window.CMS.getConfig ? window.CMS.getConfig() : 'N/A');
