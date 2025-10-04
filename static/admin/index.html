@@ -75,6 +75,27 @@
           .then(configText => {
             console.log('✅ config.yml content length:', configText.length);
             console.log('📋 config.yml first 200 chars:', configText.substring(0, 200));
+            
+            // Prova a inizializzare manualmente Decap CMS
+            if (window.CMS && window.CMS.init) {
+              console.log('🚀 Tentativo inizializzazione manuale di Decap CMS...');
+              try {
+                window.CMS.init();
+                console.log('✅ CMS.init() chiamato con successo');
+                
+                // Verifica dopo l'inizializzazione
+                setTimeout(() => {
+                  const config = window.CMS.getConfig && window.CMS.getConfig();
+                  console.log('📋 Config dopo init:', config);
+                  
+                  const rootContent = document.getElementById('nc-root').innerHTML;
+                  console.log('🎯 #nc-root content length dopo init:', rootContent.length);
+                }, 2000);
+                
+              } catch (error) {
+                console.error('❌ Errore durante CMS.init():', error);
+              }
+            }
           })
           .catch(error => {
             console.error('❌ Error loading config.yml:', error);
@@ -102,5 +123,27 @@
   
   <!-- Include the script that builds the page and powers Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  
+  <script>
+    // Forza l'inizializzazione di Decap CMS dopo che si è caricato
+    console.log('🔄 Script Decap CMS caricato, tentativo inizializzazione immediata...');
+    
+    function tryInitCMS() {
+      if (window.CMS) {
+        console.log('🚀 Decap CMS disponibile, inizializzazione...');
+        try {
+          window.CMS.init();
+          console.log('✅ CMS.init() eseguito immediatamente');
+        } catch (error) {
+          console.error('❌ Errore init immediato:', error);
+        }
+      } else {
+        console.log('⏳ CMS non ancora disponibile, riprovo...');
+        setTimeout(tryInitCMS, 100);
+      }
+    }
+    
+    tryInitCMS();
+  </script>
 </body>
 </html>
