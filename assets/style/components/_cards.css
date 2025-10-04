@@ -79,20 +79,40 @@
     0 0.5px 1px rgba(0,0,0,0.03),
     0 8px 24px rgba(0,0,0,0.07);
   overflow: hidden;
+  position: relative;
   transform: translateZ(0);
   will-change: transform, box-shadow;
   transition:
     box-shadow 240ms ease,
     transform 240ms ease;
 }
-.card:hover{
-  transform: translateY(0);
-  box-shadow:
-    0 1px 2px rgba(0,0,0,0.05),
-    0 14px 32px rgba(0,0,0,0.12);
+@media (hover: hover){
+  .card:hover{
+    transform: translateY(-4px);
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.05),
+      0 16px 36px rgba(0,0,0,0.15);
+  }
 }
-.card:active{ transform: translateY(0); }
+.card:active{ transform: translateY(-2px); }
 .card:focus-within{ outline: none; }
+
+/* Badge NUOVO */
+.card__badge{
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  background: var(--gold-600, #E0A402);
+  color: #0E0F1A;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
 
 /* Media 16:9 (base) */
 .card__media{

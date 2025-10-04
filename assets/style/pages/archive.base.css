@@ -11,7 +11,8 @@
   position: relative;
   /* Altezza coerente su tutti i breakpoint (override via --archive-hero-height) */
   min-height: var(--archive-hero-height, 240px);
-  color: var(--indigo-900, #2F2760);
+  color: #fff;
+  isolation: isolate;
 }
 @media (max-width: 480px){
   .archive-hero{ --archive-hero-height: 200px; }
@@ -20,10 +21,10 @@
   width: min(100%, var(--container-max, 1200px));
   margin-inline: auto;
   padding-inline: var(--container-pad-x, 16px);
-  padding-top: clamp(18px, 3vw, 28px);
-  padding-bottom: clamp(10px, 2vw, 18px);
+  padding-top: clamp(20px, 3vw, 32px);
+  padding-bottom: clamp(14px, 2vw, 22px);
   position: relative; /* sopra al bg */
-  z-index: 1;
+  z-index: 2;
 }
 /* Background immagine opzionale via CSS var --archive-hero-bg */
 .archive-hero::before{
@@ -37,6 +38,13 @@
   opacity: var(--archive-hero-bg-opacity, 0.35);
   filter: saturate(1.05);
   z-index: 0; pointer-events: none;
+}
+/* Overlay gradient per migliorare contrasto testo */
+.archive-hero::after{
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(14,15,26,0.25) 0%, rgba(14,15,26,0.65) 100%);
+  z-index: 1; pointer-events: none;
 }
 
 /* Tablet (481–1023.98): preferisci --archive-hero-bg-tablet, poi desktop, poi mobile */
@@ -71,8 +79,14 @@
   font-size: var(--fs-h2, clamp(1.5rem, 2.8vw + 0.25rem, 2.25rem));
   line-height: var(--lh-tight, 1.15);
   letter-spacing: var(--trk-tight, -0.4px);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
-.filter-note{ margin: 6px 0 0; opacity: .92; }
+.filter-note{
+  margin: 8px 0 0;
+  opacity: .95;
+  font-size: clamp(0.9rem, 0.4vw + 0.85rem, 1rem);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
 
 .archive-search{
   position: static;
@@ -129,10 +143,10 @@
 }
 .archive-search__input:focus,
 .archive-search__select:focus{
-  /* rimuovi focus ring e mantieni lo stesso aspetto */
-  outline: none;
-  box-shadow: none;
-  border-color: rgba(255,255,255,0.16);
+  outline: 2px solid var(--gold-600, #E0A402);
+  outline-offset: 2px;
+  border-color: rgba(255,255,255,0.24);
+  background: rgba(255,255,255,0.14);
 }
 .archive-search__select{ min-width: 9ch; }
 .archive-search__btn{
@@ -178,14 +192,15 @@
   margin-inline: auto;
   padding-inline: var(--container-pad-x, 16px);
 }
-.archive{ padding: clamp(16px, 4vw, 32px) 0; }
+.archive{ padding: clamp(20px, 4vw, 36px) 0; }
 .archive-timeline{
   list-style: none; margin: 0; padding: 0;
-  display: grid; gap: 6px; /* compatto */
+  display: grid; gap: 8px;
 }
 /* Divider-only SEMPRE */
 .archive-timeline > li + li{
-  border-top: 1px solid rgba(255,255,255,.10);
+  border-top: 1px solid rgba(255,255,255,.12);
+  padding-top: 8px;
 }
 
 /* -----------------------
@@ -205,7 +220,17 @@
   grid-auto-rows: auto;
   gap: 8px 10px;
   align-items: start;
-  padding: 6px 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  transition: background-color 140ms var(--ease-standard, cubic-bezier(.2,.8,.2,1)),
+              transform 140ms var(--ease-standard, cubic-bezier(.2,.8,.2,1));
+}
+/* Hover effect per desktop */
+@media (hover: hover){
+  .archive-item .item:hover{
+    background: rgba(255,255,255,0.04);
+    transform: translateX(2px);
+  }
 }
 
 /* Thumb 128×72 — può essere <figure> o <a> */
@@ -353,25 +378,43 @@
    Paginazione
    ----------------------- */
 .archive-pager{
-  margin-top: 16px;
+  margin-top: 24px;
   display: grid;
   grid-auto-flow: column;
   justify-content: center; align-items: center;
-  gap: 14px;
+  gap: 16px;
   color: var(--neutral-50, #F3F2F7);
 }
 .archive-pager a{
   color: #fff; text-decoration: none;
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.12);
-  padding: 8px 12px; border-radius: 10px;
+  padding: 10px 16px; border-radius: 10px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 140ms ease, transform 140ms ease, border-color 140ms ease;
 }
-.archive-pager a:hover{ background: rgba(255,255,255,0.10); }
+.archive-pager a:hover{
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.20);
+  transform: scale(0.98);
+}
 .archive-pager a:focus-visible{
   outline: 2px solid var(--gold-600, #E0A402); outline-offset: 2px;
 }
-.archive-pager .disabled{ opacity: .5; pointer-events: none; }
-.archive-pager .curr{ opacity: .95; }
+.archive-pager .disabled{
+  opacity: .45;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+.archive-pager .curr{
+  opacity: 1;
+  font-weight: 600;
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(255,255,255,0.18);
+}
 
 /* -----------------------
    Empty state + SR util
