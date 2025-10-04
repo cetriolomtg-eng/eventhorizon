@@ -4,8 +4,36 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Content Manager</title>
+  <style>
+    /* Force visibility */
+    * {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+    body {
+      background: #f5f5f5 !important;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
 </head>
 <body>
+  <script>
+    console.log('🔍 Admin page loading...');
+    window.addEventListener('load', () => {
+      console.log('✅ Page loaded');
+      setTimeout(() => {
+        console.log('Body HTML length:', document.body.innerHTML.length);
+        console.log('Body has children:', document.body.children.length);
+        if (document.getElementById('nc-root')) {
+          console.log('✅ #nc-root exists');
+          console.log('#nc-root HTML length:', document.getElementById('nc-root').innerHTML.length);
+        } else {
+          console.log('❌ #nc-root NOT found');
+        }
+      }, 2000);
+    });
+  </script>
   <!-- Include the script that builds the page and powers Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
