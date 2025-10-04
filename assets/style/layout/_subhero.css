@@ -57,7 +57,7 @@
 }
 .pager__viewport{
   width: 100%;
-  min-height: clamp(200px, 30vh, 350px);
+  min-height: clamp(280px, 42vh, 480px);
   touch-action: pan-y;
   -webkit-tap-highlight-color: transparent;
   overflow: hidden;

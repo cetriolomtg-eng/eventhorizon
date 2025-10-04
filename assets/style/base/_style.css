@@ -338,7 +338,7 @@ main{ display: block; }
   display: grid;
   place-items: center;
   padding: 80px 24px;
-  min-height: clamp(520px, 78vh, 910px);
+  min-height: clamp(480px, 70vh, 820px);
   overflow: hidden;
 }
 .hero::before{
@@ -917,11 +917,11 @@ main{ display: block; }
   max-width: 980px;
   margin: 0;
   text-align: center;
-  font-family: var(--font-sans, "Lexend Deca", system-ui, sans-serif);
+  font-family: system-ui, -apple-system, sans-serif;
   font-weight: 400;
-  font-size: clamp(0.75rem, 0.28vw + 0.70rem, 0.875rem); /* ~12–14px */
-  line-height: 1.35;
-  color: #C8C6D8;
+  font-size: clamp(0.7rem, 0.25vw + 0.68rem, 0.8125rem); /* ~11.2–13px */
+  line-height: 1.45;
+  color: #B0B0B0;
 }
 .site-footer__disclaimer a{
   color: inherit;
@@ -947,7 +947,7 @@ footer,
 
   background: var(--ft-bg);
   color: var(--ft-text);
-  padding: clamp(24px, 5vw, 48px) 0;
+  padding: clamp(16px, 3vw, 28px) 0;
   border-top: 1px solid var(--ft-border);
 }
 

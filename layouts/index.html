@@ -236,7 +236,11 @@
   <!-- >>> START PORTAL -->
   <section id="portal" class="portal" aria-labelledby="portal-title">
   <div class="portal__inner">
-    <h2 id="portal-title" class="portal__title">Vai all'archivio</h2>
+    <h2 id="portal-title" class="portal__title">
+      <a href="{{ "/archive/" | absURL }}" aria-label="Vai all'archivio completo">
+        Vai all'archivio
+      </a>
+    </h2>
     <p class="portal__intro">
       Naviga tra i nostri contenuti: video, decklist e molto altro.
     </p>

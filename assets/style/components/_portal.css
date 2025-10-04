@@ -4,7 +4,7 @@
 .portal{
   background: var(--neutral-50);
   color: var(--indigo-900);
-  padding: clamp(32px, 6vw, 72px) 0;
+  padding: 0 0 clamp(32px, 6vw, 72px);
   /* Evita che l'anchor #portal finisca sotto la navbar fissa */
   scroll-margin-top: 80px;
 }
@@ -20,6 +20,42 @@
   font-weight: var(--fw-black);
   font-size: var(--fs-h2);
   line-height: var(--lh-tight);
+}
+/* CTA "Vai all'archivio" */
+.portal__title a,
+.portal__cta{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 18px 32px;
+  margin: 24px auto 16px;
+  background: var(--indigo-700, #5B4E9D);
+  color: #FFFFFF;
+  text-decoration: none;
+  border-radius: 12px;
+  font-family: var(--font-display, "Lexend Giga");
+  font-weight: var(--fw-bold, 700);
+  font-size: clamp(1.35rem, 2vw + 0.8rem, 1.75rem);
+  line-height: var(--lh-tight, 1.15);
+  box-shadow: 0 4px 16px rgba(47,39,96,0.25);
+  transition: all 180ms var(--ease-standard, cubic-bezier(.2,.8,.2,1));
+  cursor: pointer;
+}
+.portal__title a:hover,
+.portal__cta:hover{
+  background: var(--indigo-600, #4A3F81);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(47,39,96,0.35);
+}
+.portal__title a:active,
+.portal__cta:active{
+  transform: translateY(0);
+}
+.portal__title a:focus-visible,
+.portal__cta:focus-visible{
+  outline: 3px solid var(--gold-600, #E0A402);
+  outline-offset: 4px;
 }
 .portal__intro{
   margin: 0 auto;
