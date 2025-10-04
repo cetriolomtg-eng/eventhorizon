@@ -12,15 +12,6 @@
   <script>
     console.log('🔍 Decap CMS - versione pulita');
     
-    // Pulizia token precedenti che potrebbero essere corrotti
-    const existingUser = localStorage.getItem('netlify-cms-user');
-    if (existingUser) {
-      console.log('🧹 Rimozione token precedente per reset pulito');
-      localStorage.removeItem('netlify-cms-user');
-      localStorage.removeItem('github_token');
-      sessionStorage.removeItem('netlify-cms-user');
-    }
-    
     // Gestione OAuth semplificata
     window.addEventListener('message', (event) => {
       if (event.origin === 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev') {
