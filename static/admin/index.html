@@ -6,19 +6,20 @@
   <title>Content Manager</title>
 </head>
 <body>
+  <!-- Root element per Decap CMS -->
+  <div id="nc-root"></div>
+
+  <!-- Carica Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  
+
   <script>
-    console.log('🔍 Decap CMS - Configurazione Inline');
-    
-    // OAuth message handler
+    // OAuth message handler per gestire il token dal worker OAuth
     window.addEventListener('message', (event) => {
       if (event.origin === 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev') {
         if (typeof event.data === 'string' && event.data.startsWith('authorization:github:success:')) {
           const token = event.data.slice('authorization:github:success:'.length);
-          console.log('✅ Token ricevuto:', token);
-          
-          // Test token e salva
+
+          // Valida e salva il token
           fetch('https://api.github.com/user', {
             headers: { 'Authorization': `token ${token}` }
           })
@@ -31,98 +32,14 @@
               avatar_url: user.avatar_url,
               backendName: 'github'
             }));
-            
-            console.log('💾 Token salvato per:', user.login);
+
+            // Ricarica per inizializzare il CMS con il token
             window.location.reload();
           })
           .catch(e => {
-            console.error('❌ Token problem:', e);
+            console.error('Errore validazione token:', e);
           });
         }
-      }
-    });
-    
-    // Inizializzazione con config INLINE (nessun file YAML)
-    window.addEventListener('load', () => {
-      if (window.CMS) {
-        console.log('🚀 Inizializzazione con config inline...');
-
-        window.CMS.init({
-          config: {
-            backend: {
-              name: 'github',
-              repo: 'eventhorizon-mtg/eventhorizon-mtg.github.io',
-              branch: 'main',
-              base_url: 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev',
-              auth_endpoint: '/auth'
-            },
-            media_folder: 'static/uploads',
-            public_folder: '/uploads',
-            collections: [{
-              name: 'items',
-              label: 'Archivio Items',
-              folder: 'data/archive/items',
-              create: true,
-              format: 'yaml',
-              extension: 'yml',
-              slug: '{{slug}}',
-              fields: [
-                { label: 'Data', name: 'date', widget: 'date', required: true },
-                { label: 'Titolo', name: 'title', widget: 'string', required: true },
-                { label: 'Descrizione', name: 'description', widget: 'text' },
-                { label: 'Prezzo', name: 'price', widget: 'number', value_type: 'float' },
-                { label: 'Immagine', name: 'image', widget: 'image', required: false }
-              ]
-            }]
-          }
-        });
-
-        console.log('✅ CMS inizializzato con config inline');
-        
-        // Test TOKEN SCOPE (il vero problema!)
-        setTimeout(() => {
-          const user = localStorage.getItem('netlify-cms-user');
-          if (user) {
-            const userData = JSON.parse(user);
-            console.log('� TESTING TOKEN SCOPE...');
-            
-            // Test GitHub API scopes
-            fetch('https://api.github.com/user/repos?per_page=1', {
-              headers: { 'Authorization': `token ${userData.token}` }
-            })
-            .then(response => {
-              const scopes = response.headers.get('X-OAuth-Scopes');
-              console.log('🔑 TOKEN SCOPES:', scopes);
-              
-              if (!scopes) {
-                console.error('❌ NESSUNO SCOPE TROVATO!');
-              } else if (!scopes.includes('repo') && !scopes.includes('public_repo')) {
-                console.error('❌ SCOPE MANCANTI! Ha:', scopes, 'Serve: repo o public_repo');
-              } else {
-                console.log('✅ Scope OK:', scopes);
-                
-                // Test accesso repository
-                return fetch('https://api.github.com/repos/eventhorizon-mtg/eventhorizon-mtg.github.io', {
-                  headers: { 'Authorization': `token ${userData.token}` }
-                });
-              }
-            })
-            .then(response => {
-              if (response) {
-                console.log('📁 Repository access:', response.status);
-                if (response.status !== 200) {
-                  console.error('❌ ACCESSO REPOSITORY NEGATO!');
-                } else {
-                  console.log('✅ Repository access OK');
-                  console.log('🎯 TOKEN PERFETTO!');
-                  console.log('⚠️  CONFIGURAZIONE: config.yml ora disabilitato per evitare conflitti');
-                  console.log('📝 Se ancora non funziona, controlla errori React DOM');
-                }
-              }
-            })
-            .catch(e => console.error('❌ Test scope fallito:', e));
-          }
-        }, 3000);
       }
     });
   </script>
