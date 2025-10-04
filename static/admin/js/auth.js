@@ -348,20 +348,9 @@ class AuthManager {
     }
 
     try {
-      // Se è configurato un endpoint user del worker, usiamolo per evitare CORS/versioning
-      const workerBase = config.auth?.workerBase;
-      const userEndpoint = config.auth?.userEndpoint;
-
-      if (workerBase && userEndpoint) {
-        const resp = await fetch(`${workerBase}/${userEndpoint}`, {
-          headers: { 'Authorization': `Bearer ${this.token}` }
-        });
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        this.user = await resp.json();
-        return;
-      }
-
-      // Fallback: chiamata diretta API GitHub
+      console.log('👤 Fetching user data...');
+      
+      // Usa direttamente API GitHub (più affidabile del proxy worker)
       const response = await fetch('https://api.github.com/user', {
         headers: {
           'Accept': 'application/vnd.github+json',
@@ -370,10 +359,14 @@ class AuthManager {
         }
       });
 
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`GitHub API error: ${response.status}`);
+      }
+
       this.user = await response.json();
+      console.log('✅ User data loaded:', this.user.login);
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error('❌ Error fetching user data:', error);
       this.user = null;
       throw error;
     }
