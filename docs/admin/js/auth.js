@@ -164,12 +164,13 @@ class AuthManager {
         throw new Error('Invalid state parameter');
       }
       
-      // Scambia il codice per un token usando il backend
-      const response = await fetch('https://github.com/login/oauth/access_token', {
+      // Scambia il codice per un token usando il proxy CORS
+      const response = await fetch(config.auth.tokenUrl, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
+          'Origin': config.auth.redirectBase
         },
         body: JSON.stringify({
           client_id: config.auth.clientId,
