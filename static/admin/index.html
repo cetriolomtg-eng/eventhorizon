@@ -6,18 +6,25 @@
   <meta name="robots" content="noindex, nofollow" />
   <title>Admin · Event Horizon CMS</title>
 
-  <!-- Decap CMS -->
-  <script src="https://unpkg.com/decap-cms@^3.3.0/dist/decap-cms.js"></script>
-
-  <!-- Custom Styles (opzionale) -->
+  <!-- Custom Styles -->
   <style>
     :root {
       --primary-color: #6c5ce7;
       --background-color: #0e0f1a;
     }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
   </style>
 </head>
 <body>
-  <!-- Decap CMS UI verrà iniettato qui -->
+  <!-- Decap CMS mount point -->
+  <div id="nc-root"></div>
+
+  <!-- Decap CMS - loaded AFTER DOM is ready -->
+  <script src="https://unpkg.com/decap-cms@^3.3.0/dist/decap-cms.js"></script>
 </body>
 </html>
