@@ -13,11 +13,24 @@
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
   <script>
+    console.log('🔵 Decap CMS - Pagina caricata');
+
+    // Verifica se c'è già un token salvato
+    const savedUser = localStorage.getItem('netlify-cms-user');
+    if (savedUser) {
+      console.log('✅ Token trovato in localStorage:', JSON.parse(savedUser).login);
+    } else {
+      console.log('⚠️ Nessun token in localStorage - login necessario');
+    }
+
     // OAuth message handler per gestire il token dal worker OAuth
     window.addEventListener('message', (event) => {
+      console.log('📨 Messaggio ricevuto:', event.origin, event.data);
+
       if (event.origin === 'https://eventhorizon-oauth.cetriolo-mtg.workers.dev') {
         if (typeof event.data === 'string' && event.data.startsWith('authorization:github:success:')) {
           const token = event.data.slice('authorization:github:success:'.length);
+          console.log('🔑 Token OAuth ricevuto');
 
           // Valida e salva il token
           fetch('https://api.github.com/user', {
@@ -25,6 +38,8 @@
           })
           .then(r => r.json())
           .then(user => {
+            console.log('✅ Token validato per utente:', user.login);
+
             localStorage.setItem('netlify-cms-user', JSON.stringify({
               token: token,
               login: user.login,
@@ -33,14 +48,37 @@
               backendName: 'github'
             }));
 
+            console.log('💾 Token salvato - ricarico pagina...');
             // Ricarica per inizializzare il CMS con il token
             window.location.reload();
           })
           .catch(e => {
-            console.error('Errore validazione token:', e);
+            console.error('❌ Errore validazione token:', e);
           });
         }
       }
+    });
+
+    // Monitor quando il CMS si inizializza
+    window.addEventListener('load', () => {
+      console.log('🚀 Window load event - CMS dovrebbe auto-inizializzarsi');
+
+      // Verifica presenza CMS dopo 2 secondi
+      setTimeout(() => {
+        if (window.CMS) {
+          console.log('✅ window.CMS disponibile');
+        } else {
+          console.error('❌ window.CMS NON trovato!');
+        }
+
+        // Verifica se il root ha contenuto
+        const root = document.getElementById('nc-root');
+        if (root && root.children.length > 0) {
+          console.log('✅ CMS renderizzato - elementi nel DOM:', root.children.length);
+        } else {
+          console.error('❌ CMS NON renderizzato - #nc-root vuoto!');
+        }
+      }, 2000);
     });
   </script>
 </body>

@@ -25,3 +25,16 @@ collections:
         name: title
         widget: string
         required: true
+      - label: Descrizione
+        name: description
+        widget: text
+        required: false
+      - label: Prezzo
+        name: price
+        widget: number
+        value_type: float
+        required: false
+      - label: Immagine
+        name: image
+        widget: image
+        required: false
