@@ -20,7 +20,7 @@
   left: 50%;
   width: 100vw;
   height: 100%;
-  background-image: url('/images/woe-279.webp');
+  background-image: url('/images/portal_bg.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -129,9 +129,15 @@
 .portal__intro{
   margin: 0 auto;
   max-width: 68ch;
+  color: var(--neutral-00);
+  -webkit-text-stroke: 0.5px var(--indigo-900);
+  text-stroke: 0.5px var(--indigo-900);
 }
 .portal__sub{
   margin: 12px 0 18px;
   font-weight: var(--fw-bold);
   letter-spacing: 0.02em;
+  color: var(--neutral-00);
+  -webkit-text-stroke: 0.5px var(--indigo-900);
+  text-stroke: 0.5px var(--indigo-900);
 }
