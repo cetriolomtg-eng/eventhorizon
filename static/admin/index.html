@@ -19,20 +19,60 @@
 </head>
 <body>
   <script>
-    console.log('🔍 Admin page loading...');
+    console.log('🔍 Decap CMS Admin page loading...');
+    
+    // Debug del processo di inizializzazione di Decap CMS
     window.addEventListener('load', () => {
       console.log('✅ Page loaded');
+      
+      // Monitora gli eventi di Decap CMS
+      window.addEventListener('message', (event) => {
+        console.log('📨 Window message received:', event.origin, event.data);
+      });
+      
       setTimeout(() => {
         console.log('Body HTML length:', document.body.innerHTML.length);
         console.log('Body has children:', document.body.children.length);
+        
         if (document.getElementById('nc-root')) {
           console.log('✅ #nc-root exists');
           console.log('#nc-root HTML length:', document.getElementById('nc-root').innerHTML.length);
+          
+          // Controlla se ci sono elementi di login
+          const loginElements = document.querySelectorAll('[data-testid="login-button"], .nc-loginButton, button[type="button"]');
+          console.log('🔐 Login elements found:', loginElements.length);
+          
+          // Controlla se ci sono errori visibili
+          const errorElements = document.querySelectorAll('.nc-error, [class*="error"], [class*="Error"]');
+          console.log('❌ Error elements found:', errorElements.length);
+          if (errorElements.length > 0) {
+            errorElements.forEach((el, i) => {
+              console.log(`Error ${i}:`, el.textContent);
+            });
+          }
+          
         } else {
           console.log('❌ #nc-root NOT found');
         }
-      }, 2000);
+        
+        // Debug dello stato di Decap CMS
+        if (window.CMS) {
+          console.log('✅ Decap CMS object available');
+          console.log('CMS config:', window.CMS.getConfig ? window.CMS.getConfig() : 'Config not available');
+        } else {
+          console.log('❌ Decap CMS object NOT available');
+        }
+      }, 3000);
     });
+    
+    // Override console per catturare errori di Decap CMS
+    const originalError = console.error;
+    console.error = function(...args) {
+      if (args[0] && args[0].toString().includes('CMS') || args[0] && args[0].toString().includes('oauth')) {
+        console.log('🚨 DECAP CMS ERROR:', ...args);
+      }
+      originalError.apply(console, args);
+    };
   </script>
   <!-- Include the script that builds the page and powers Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
