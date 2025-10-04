@@ -41,29 +41,30 @@
         console.log('- window.CMS:', !!window.CMS);
         console.log('- Token presente:', !!localStorage.getItem('netlify-cms-user'));
         
-        // Forza inizializzazione se necessario
-        if (window.CMS && typeof window.CMS.init === 'function') {
-          console.log('🚀 Forzando inizializzazione CMS...');
-          try {
-            window.CMS.init();
-            console.log('✅ CMS inizializzato con successo');
-          } catch (e) {
-            console.error('❌ Errore inizializzazione CMS:', e);
-          }
+        // Lasciamo che Decap CMS si inizializzi naturalmente
+        console.log('⏳ Aspettando inizializzazione naturale di Decap CMS...');
+        
+        // Check finale dello stato con retry per aspettare config loading
+        function checkFinalState(attempt = 1, maxAttempts = 10) {
+          setTimeout(() => {
+            const config = window.CMS && window.CMS.getConfig ? window.CMS.getConfig() : null;
+            console.log(`📊 Check ${attempt}: CMS config disponibile:`, !!config);
+            
+            const hasLoginButton = !!document.querySelector('button[type="button"]');
+            console.log(`🔐 Check ${attempt}: Login UI visibile:`, hasLoginButton);
+            
+            if (config && !hasLoginButton) {
+              console.log('🎉 SUCCESS: Decap CMS completamente caricato e autenticato!');
+            } else if (attempt < maxAttempts) {
+              console.log(`⏳ Retry ${attempt + 1}/${maxAttempts}...`);
+              checkFinalState(attempt + 1, maxAttempts);
+            } else {
+              console.log('⚠️ CMS caricato ma config/auth potrebbero essere ancora in elaborazione');
+            }
+          }, 1000);
         }
         
-        // Check finale dello stato
-        setTimeout(() => {
-          const config = window.CMS && window.CMS.getConfig ? window.CMS.getConfig() : null;
-          console.log('📊 CMS config disponibile:', !!config);
-          
-          const hasLoginButton = !!document.querySelector('button[type="button"]');
-          console.log('🔐 Login UI visibile:', hasLoginButton);
-          
-          if (!hasLoginButton && config) {
-            console.log('🎉 SUCCESS: Decap CMS completamente caricato!');
-          }
-        }, 2000);
+        checkFinalState();
         
       }, 3000);
     });
