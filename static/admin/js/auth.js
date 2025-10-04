@@ -197,30 +197,33 @@ class AuthManager {
         return;
       }
 
-      // Payload atteso: { type: 'oauth-callback', token, error } o { type: 'oauth-callback', code, state }
+      // Payload può essere oggetto o stringa
       const payload = event.data || {};
-      const { type, token, error, code, state } = payload;
       
       console.log('📦 Payload analysis:', {
-        type,
-        hasToken: !!token,
-        hasError: !!error,
-        hasCode: !!code,
-        hasState: !!state,
+        type: typeof payload,
+        isString: typeof payload === 'string',
         fullPayload: payload
       });
+
+      // Per oggetti standard
+      const { type, token, error, code, state } = typeof payload === 'object' ? payload : {};
 
       // Accetta diversi formati di messaggio OAuth
       const isOAuthMessage = (
         type === 'oauth-callback' ||
-        payload.access_token ||
-        payload.token ||
-        payload.code ||
-        (typeof payload === 'string' && payload.includes('token'))
+        (payload && payload.access_token) ||
+        (payload && payload.token) ||
+        (payload && payload.code) ||
+        (typeof payload === 'string' && (
+          payload.includes('authorization:github:success:') ||
+          payload.includes('token') ||
+          payload.includes('code=')
+        ))
       );
 
       if (!isOAuthMessage) {
-        console.log('⏭️  Ignored non-oauth message type:', type, 'Full payload:', JSON.stringify(payload));
+        console.log('⏭️  Ignored non-oauth message. Full payload:', JSON.stringify(payload));
         return;
       }
 
@@ -240,12 +243,18 @@ class AuthManager {
       }
 
       // Estrai token da vari formati possibili
-      let extractedToken = token || payload.access_token || payload.token;
+      let extractedToken = token || (payload && payload.access_token) || (payload && payload.token);
       
-      // Se il messaggio è una stringa con formato specifico
-      if (typeof payload === 'string' && payload.includes('token')) {
-        const match = payload.match(/token[=:]([^&\s]+)/);
-        if (match) extractedToken = match[1];
+      // Se il messaggio è una stringa con formato specifico del worker
+      if (typeof payload === 'string') {
+        if (payload.startsWith('authorization:github:success:')) {
+          extractedToken = payload.replace('authorization:github:success:', '');
+          console.log('🔑 Token extracted from worker format');
+        } else {
+          // Altri formati stringa possibili
+          const match = payload.match(/(?:token|access_token)[=:]([^&\s]+)/);
+          if (match) extractedToken = match[1];
+        }
       }
 
       // Se abbiamo già il token (da worker o altri formati)
