@@ -49,6 +49,7 @@
         
         window.CMS.init({
           config: {
+            load_config_file: false,  // ⚡ IMPEDISCE caricamento config.yml automatico
             backend: {
               name: 'github',
               repo: 'eventhorizon-mtg/eventhorizon-mtg.github.io',
@@ -70,7 +71,7 @@
                 { label: 'Data', name: 'date', widget: 'date', required: true },
                 { label: 'Titolo', name: 'title', widget: 'string', required: true },
                 { label: 'Descrizione', name: 'description', widget: 'text' },
-                { label: 'Prezzo', name: 'price', widget: 'number', valueType: 'float' },
+                { label: 'Prezzo', name: 'price', widget: 'number', value_type: 'float' },
                 { label: 'Immagine', name: 'image', widget: 'image', required: false }
               ]
             }]
