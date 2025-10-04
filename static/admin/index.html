@@ -19,17 +19,30 @@
           const token = event.data.slice('authorization:github:success:'.length);
           console.log('✅ Token ricevuto:', token);
           
-          // Salva nel formato ESATTO che Decap CMS si aspetta
-          localStorage.setItem('netlify-cms-user', JSON.stringify({
-            token: token,
-            login: 'eventhorizon-mtg', // Username GitHub reale (dalla nostra analisi)
-            name: 'Event Horizon MTG',
-            avatar_url: 'https://github.com/eventhorizon-mtg.png',
-            backendName: 'github' // Campo critico scoperto nell'analisi
-          }));
-          
-          // Ricarica senza timeout per evitare conflitti
-          window.location.reload();
+          // TEST IMMEDIATO TOKEN GITHUB
+          fetch('https://api.github.com/user', {
+            headers: { 'Authorization': `token ${token}` }
+          })
+          .then(r => r.json())
+          .then(user => {
+            console.log('👤 GitHub user:', user.login);
+            
+            // Salva con username REALE da GitHub
+            localStorage.setItem('netlify-cms-user', JSON.stringify({
+              token: token,
+              login: user.login, // Username VERO da GitHub API
+              name: user.name || user.login,
+              avatar_url: user.avatar_url,
+              backendName: 'github'
+            }));
+            
+            console.log('💾 Token salvato per:', user.login);
+            window.location.reload();
+          })
+          .catch(e => {
+            console.error('❌ Token invalido:', e);
+            alert('Token GitHub non valido!');
+          });
         }
       }
     });
