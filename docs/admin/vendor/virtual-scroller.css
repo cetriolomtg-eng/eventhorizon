@@ -1,0 +1,21 @@
+/* Virtual Scroller Styles */
+.virtual-viewport {
+  scrollbar-gutter: stable;
+}
+
+.virtual-viewport::-webkit-scrollbar {
+  width: 10px;
+}
+
+.virtual-viewport::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 8px;
+}
+
+.virtual-viewport::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+.virtual-item {
+  transition: background-color var(--t-base), border-color var(--t-base);
+}
