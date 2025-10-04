@@ -68,7 +68,24 @@ class ItemsManager {
 
     validateItem(item) {
         const errors = [];
-        
+
+        // Validazione base (sempre attiva)
+        if (!item.id) {
+            errors.push('Campo richiesto mancante: id');
+        }
+        if (!item.title) {
+            errors.push('Campo richiesto mancante: title');
+        }
+        if (!item.date) {
+            errors.push('Campo richiesto mancante: date');
+        }
+
+        // Se schema non disponibile, skip validazione avanzata
+        if (!this.schema || Object.keys(this.schema).length === 0) {
+            console.warn('⚠️ Schema non disponibile, validazione limitata');
+            return errors;
+        }
+
         // Verifica campi required dallo schema
         for (const [field, schema] of Object.entries(this.schema)) {
             if (schema.required && !item[field]) {

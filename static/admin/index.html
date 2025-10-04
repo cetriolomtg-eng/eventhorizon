@@ -355,7 +355,10 @@
                 const deleteBtn = document.getElementById('deleteBtn');
                 if (deleteBtn) {
                     deleteBtn.addEventListener('click', async () => {
+                        console.log('🗑️ Click su deleteBtn');
                         const id = itemForm.id.value;
+                        console.log('🗑️ ID item da eliminare:', id);
+
                         if (!id) {
                             ui.showToast('Nessun item selezionato', 'warning');
                             return;
@@ -363,18 +366,26 @@
 
                         const item = items.getItem(id);
                         const title = item?.title || id;
+                        console.log('🗑️ Item trovato:', item);
 
-                        if (!await ui.confirm(`Eliminare l'item "${title}"?`, {
+                        console.log('🗑️ Mostrando conferma...');
+                        const confirmed = await ui.confirm(`Eliminare l'item "${title}"?`, {
                             title: 'Conferma eliminazione',
                             confirmText: 'Elimina',
                             cancelText: 'Annulla'
-                        })) {
+                        });
+                        console.log('🗑️ Conferma risultato:', confirmed);
+
+                        if (!confirmed) {
+                            console.log('🗑️ Eliminazione annullata');
                             return;
                         }
 
                         try {
+                            console.log('🗑️ Inizio eliminazione...');
                             ui.showLoading('deleteBtn');
                             await items.deleteItem(id);
+                            console.log('✅ Item eliminato');
                             ui.showToast('Item eliminato con successo', 'success');
                             clearItemForm();
                             renderItems();

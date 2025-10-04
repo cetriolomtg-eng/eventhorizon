@@ -672,60 +672,78 @@ textarea{
 .toast.toast-warning .toast-progress-bar{ background:var(--warn) }
 
 /* Confirmation modal (per sostituire confirm()) */
-.modal-overlay{
+/* Modal System */
+.modal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.7);
-  z-index:9998;
+  z-index:9999;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:var(--s-16);
-  animation:fadeIn .2s ease;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s ease;
 }
 
-.modal{
+.modal.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.modal-overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  z-index:1;
+}
+
+.modal-container{
+  position:relative;
+  z-index:2;
   background:var(--card);
   border:1px solid var(--border);
   border-radius:var(--radius-16);
   padding:var(--s-24);
   max-width:480px;
-  width:100%;
+  width:90%;
   box-shadow:0 20px 60px rgba(0,0,0,.5);
-  animation:modalSlideUp .3s cubic-bezier(.21,1.02,.73,1);
+  transform:translateY(20px);
+  transition:transform .3s cubic-bezier(.21,1.02,.73,1);
 }
 
-@keyframes fadeIn{
-  from{ opacity:0 }
-  to{ opacity:1 }
+.modal.show .modal-container{
+  transform:translateY(0);
 }
 
-@keyframes modalSlideUp{
-  from{ transform:translateY(20px); opacity:0 }
-  to{ transform:translateY(0); opacity:1 }
+.modal-header{
+  margin-bottom:var(--s-16);
 }
 
-.modal-title{
+.modal-header h3{
   font-size:18px;
   font-weight:600;
   color:var(--text);
-  margin:0 0 var(--s-16) 0;
+  margin:0;
 }
 
-.modal-message{
+.modal-content{
   color:var(--muted);
   font-size:14px;
   line-height:1.5;
-  margin:0 0 var(--s-24) 0;
+  margin-bottom:var(--s-24);
 }
 
-.modal-actions{
+.modal-content p{
+  margin:0;
+}
+
+.modal-footer{
   display:flex;
-  gap:var(--s-16);
+  gap:var(--s-8);
   justify-content:flex-end;
 }
 
-.modal-actions .btn{
+.modal-footer .btn{
   min-width:80px;
 }
 
