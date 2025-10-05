@@ -90,9 +90,7 @@
 
 .archive-search{
   position: static;
-  background: rgba(25,26,35,0.70);
-  -webkit-backdrop-filter: blur(10px) saturate(1.2);
-  backdrop-filter: blur(10px) saturate(1.2);
+  background: var(--neutral-900, #0E0F1A);
   border-bottom: 1px solid rgba(255,255,255,0.10);
   box-shadow: 0 8px 20px rgba(0,0,0,0.18);
 }
