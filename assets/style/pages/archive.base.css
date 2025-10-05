@@ -7,7 +7,7 @@
    ----------------------- */
 .archive-hero{
   padding-top: 64px;
-  background: var(--indigo-900, #2F2760);
+  background: var(--neutral-900, #1b1c2d);
   position: relative;
   /* Altezza coerente su tutti i breakpoint (override via --archive-hero-height) */
   min-height: var(--archive-hero-height, 240px);
