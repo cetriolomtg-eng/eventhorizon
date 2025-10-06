@@ -206,38 +206,7 @@
   transition: opacity 280ms ease;
 }
 
-/* Hover & Focus - Effetto 3D elegante */
-.link-card__link:hover{
-  transform: translateY(-6px) rotateX(2deg) scale(1.02);
-  box-shadow:
-    0 4px 8px rgba(0,0,0,0.1),
-    0 12px 24px rgba(0,0,0,0.15),
-    0 24px 48px rgba(0,0,0,0.2),
-    0 0 0 1px rgba(224, 164, 2, 0.2),
-    inset 0 1px 0 rgba(255,255,255,0.9);
-}
-
-.link-card__link:hover::before{
-  opacity: 1;
-}
-
-.link-card__link:hover .link-card__logo{
-  transform: scale(1.08) rotate(-3deg);
-}
-
-.link-card__link:hover .link-card__name{
-  color: var(--indigo-700, #4338ca);
-}
-
-.link-card__link:hover .link-card__copy{
-  opacity: 0.85;
-}
-
-.link-card__link:active{
-  transform: translateY(-3px) scale(1.01);
-  transition-duration: 120ms;
-}
-
+/* Focus only - hover effects removed */
 .link-card__link:focus-visible{
   outline: 3px solid var(--gold-500, #E0A402);
   outline-offset: 4px;
@@ -279,6 +248,11 @@
     opacity: 0;
     pointer-events: none;
     z-index: 1;
+  }
+
+  /* Nascondi testo descrittivo su mobile */
+  .link-card__copy{
+    display: none;
   }
 
   /* Card attiva (centrale) */
