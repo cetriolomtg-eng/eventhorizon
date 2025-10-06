@@ -16,25 +16,25 @@
   /* Nascondi il bottone filtro su desktop (il select Ã¨ visibile) */
   .archive-search__filter-toggle{ display: none; }
 
-  /* ----- Item layout: niente colonna 'pill', dropdown full-width ----- */
+  /* ----- Item layout: thumb -- testo | chevron ----- */
   .archive-item .item{
     display: grid;
-    grid-template-columns: 128px minmax(0,1fr) auto;      /* thumb | testo | chevron */
+    grid-template-columns: auto 1fr auto;      /* thumb | testo | chevron */
     grid-template-areas:
       "thumb text chevron"
       "details details details";                 /* dropdown sotto a tutta larghezza */
     column-gap: 14px;
     row-gap: 12px;
     padding: 10px 12px;
+    align-items: center; /* centra tutti gli elementi verticalmente */
   }
 
   /* Colonna testo */
   .item-head{
     grid-area: text;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 6px;
-    padding-inline-end: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
     min-width: 0; /* prevenire overflow titolo */
   }
   .item-overline{ grid-area: unset; }
@@ -43,14 +43,14 @@
     letter-spacing: var(--trk-tight-lg, -0.5px);
   }
 
-  /* Thumb allineato in alto: non condiziona l'altezza del dropdown */
+  /* Thumb centrato verticalmente rispetto al testo */
   .item-thumb{ align-self: center; }
 
-    /* Chevron a destra: stile coerente con i controlli */
+    /* Chevron a destra: centrato verticalmente */
   .item-actions-summary{
     grid-area: chevron;
     justify-self: end;
-    align-self: end;
+    align-self: center;
     width: 36px;
     height: 36px;
     border-radius: 10px;
