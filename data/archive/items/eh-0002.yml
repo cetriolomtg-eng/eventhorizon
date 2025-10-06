@@ -1,22 +1,23 @@
-id: "eh-0002"
-slug: "portale-risorse"
-kind: "portal"
-date: "2025-08-28"
-title: "Portale Risorse MTG"
-overline: "Link utili"
+id: eh-0002
+slug: portale-risorse
+kind: content
+date: 2025-08-28
+title: Portale Risorse MTG
+overline: Link utili
 desc: "Raccolta di risorse: regole, database carte, strumenti per deckbuilding."
-thumb: "/images/cards/fblthp_placeholder.webp"  # se non vuoi il thumbnail cliccabile, nessun link primario
-tags: ["risorse", "tool", "database"]
+thumb: /images/cards/fblthp_placeholder.webp
+tags:
+  - risorse
+  - tool
+  - database
 links:
-  - label: "Scryfall"
+  - label: Scryfall
     href: "#"
-    btn_class: "btn--base"
+    btn_class: btn--base
     sort_order: 1
     primary: false
-  - label: "EDHREC"
+  - label: EDHREC
     href: "#"
-    btn_class: "btn--base"
+    btn_class: btn--base
     sort_order: 2
     primary: false
-
-
