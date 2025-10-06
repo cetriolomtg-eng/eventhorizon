@@ -284,20 +284,20 @@
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 72px;     /* hit-area aumentata per link standalone */
-  height: 72px;
+  width: 80px;     /* hit-area aumentata per link standalone */
+  height: 56px;    /* proporzioni simili al logo YouTube (16:11 circa) */
   display: grid;
   place-items: center;
   z-index: 2;      /* sopra overlay media */
   text-decoration: none;
   cursor: pointer;
-  border-radius: 50%;
+  border-radius: 12px;
 }
 .card.is-video .card__play::before{
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 50%;                 /* cerchio esterno */
+  border-radius: 12px;                /* rettangolo arrotondato stile YouTube */
   background: rgba(0,0,0,0.35);
   backdrop-filter: blur(6px);
   transition: background 220ms ease, box-shadow 220ms ease, transform 220ms ease;
@@ -320,6 +320,7 @@
 .card.is-video .card__play:focus-visible{
   outline: 3px solid var(--gold-600, #E0A402);
   outline-offset: 4px;
+  border-radius: 12px;
 }
 
 /* SVG interno: preferenza triangolo. Se l'SVG usa classi dedicate: */
