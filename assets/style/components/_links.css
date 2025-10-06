@@ -1,5 +1,5 @@
 /* ============================================================
-   Links.css - Premium Showcase Style
+   Links.css - Stack Deck Style
    ============================================================ */
 .links {
   /* Tema sezione (scuro) */
@@ -10,16 +10,12 @@
   padding: clamp(48px, 8vw, 96px) 0;
   position: relative;
 
-  /* Card dimensions - uniformi per tutte */
-  --card-w: 240px;
-  --card-h: 140px;
-  --grid-gap: 24px;
+  /* Card dimensions - uniformi */
+  --card-w: 220px;
+  --card-h: 120px;
+  --grid-gap: 20px;
   --container-pad-x: var(--container-pad-x, 24px);
-  --container-max: calc(
-    (5 * var(--card-w)) +
-    (4 * var(--grid-gap)) +
-    (2 * var(--container-pad-x))
-  );
+  --container-max: 1400px;
 
   /* Parametri autoplay letti da links.js */
   --links-auto-speed: 24;
@@ -27,16 +23,16 @@
 }
 @media (min-width: 768px){
   .links{
-    --card-w: 260px;
-    --card-h: 150px;
-    --grid-gap: 28px;
+    --card-w: 240px;
+    --card-h: 130px;
+    --grid-gap: 24px;
   }
 }
 @media (min-width: 1024px){
   .links{
-    --card-w: 280px;
-    --card-h: 160px;
-    --grid-gap: 32px;
+    --card-w: 260px;
+    --card-h: 140px;
+    --grid-gap: 28px;
   }
 }
 
@@ -62,7 +58,7 @@
    ========================= */
 .links__carousel{
   position: relative;
-  padding: 12px 0 40px;
+  padding: 20px 0 40px;
 }
 
 .links__track{
@@ -77,7 +73,7 @@
 .links__track > li::marker{ content: ''; }
 
 /* =========================
-   Premium Card Design - Dimensioni uniformi
+   Stack Deck Card - Minimalista come mazzo di carte
    ========================= */
 .link-card{
   flex: 0 0 var(--card-w);
@@ -88,6 +84,13 @@
   position: relative;
 }
 
+/* Rotazione casuale leggera per effetto mazzo */
+.link-card:nth-child(5n + 1) { transform: rotate(-1.2deg); }
+.link-card:nth-child(5n + 2) { transform: rotate(0.8deg); }
+.link-card:nth-child(5n + 3) { transform: rotate(-0.5deg); }
+.link-card:nth-child(5n + 4) { transform: rotate(1deg); }
+.link-card:nth-child(5n + 5) { transform: rotate(-0.8deg); }
+
 .link-card__link{
   width: 100%;
   height: 100%;
@@ -95,77 +98,44 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 12px;
   padding: 20px;
 
-  /* Premium showcase style */
-  background:
-    linear-gradient(135deg, #FFFEF9 0%, #F5F3ED 100%);
+  /* Stile carta pulita - bianco crema */
+  background: #FEFDFB;
   color: var(--text-900, #0E0F1A);
 
-  /* Texture carta sottile */
-  background-image:
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.01) 2px,
-      rgba(0,0,0,0.01) 4px
-    );
-  background-size: 100%;
-
-  /* Bordo premium dorato */
-  border: 2px solid #C9A961;
-  border-radius: 12px;
+  /* Bordo scuro sottile e pulito */
+  border: 1px solid rgba(14, 15, 26, 0.15);
+  border-radius: 8px;
   box-sizing: border-box;
 
-  /* Shadow discreta ma elegante */
-  box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    inset 0 0 0 1px rgba(201, 169, 97, 0.3);
+  /* Ombra morbida realistica - singola layer */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 
   text-decoration: none;
   position: relative;
   overflow: hidden;
-  transition: transform 200ms ease;
-}
-
-/* Effetto premium sui bordi interni */
-.link-card__link::before{
-  content: '';
-  position: absolute;
-  inset: 6px;
-  border: 1px solid rgba(201, 169, 97, 0.2);
-  border-radius: 8px;
-  pointer-events: none;
-}
-
-/* Riflesso sottile angolo */
-.link-card__link::after{
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 40%;
-  background: linear-gradient(180deg,
-    rgba(255, 255, 255, 0.4) 0%,
-    rgba(255, 255, 255, 0) 100%);
-  pointer-events: none;
-  border-radius: 10px 10px 0 0;
+  transition: none; /* no animazioni, statico */
 }
 
 .link-card__logo{
   display: block;
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   aspect-ratio: 1 / 1;
   object-fit: contain;
   flex-shrink: 0;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
   position: relative;
   z-index: 1;
+}
+
+@media (min-width: 768px){
+  .link-card__logo{
+    width: 60px;
+    height: 60px;
+  }
 }
 
 .link-card__meta{
@@ -183,8 +153,8 @@
 .link-card__name{
   font-family: var(--font-sans, "Lexend Deca", system-ui, sans-serif);
   font-weight: var(--fw-bold, 700);
-  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
-  line-height: 1.3;
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  line-height: 1.25;
   color: var(--text-900, #0E0F1A);
   letter-spacing: -0.01em;
 
@@ -197,10 +167,10 @@
 }
 
 .link-card__copy{
-  font-size: clamp(0.8rem, 1.2vw, 0.85rem);
+  font-size: clamp(0.75rem, 1.2vw, 0.8rem);
   line-height: 1.3;
-  color: #6B5D47;
-  opacity: 0.85;
+  color: #5A5A5A;
+  opacity: 0.8;
 
   /* Clamp a 1 riga */
   display: -webkit-box;
@@ -214,41 +184,45 @@
 .link-card__link:focus-visible{
   outline: 3px solid var(--gold-500, #E0A402);
   outline-offset: 4px;
-  transform: scale(1.02);
 }
 
 /* Motion safety */
 @media (prefers-reduced-motion: reduce){
-  .link-card__link{
-    transition: none;
+  .link-card{
+    transform: none !important;
   }
 }
 
 /* =========================
-   Mobile: Carousel con carte sovrapposte (< 1024px)
+   Mobile: Swipe orizzontale classico (< 1024px)
    ========================= */
 @media (max-width: 1023.98px){
   .links__carousel{
     position: relative;
-    padding: 30px 0 60px;
+    padding: 20px 0 60px;
+    overflow: hidden;
   }
 
   .links__track{
-    display: block;
-    position: relative;
-    height: 180px; /* spazio per la card */
-    perspective: 1200px;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    gap: 16px;
+    padding: 0 var(--container-pad-x);
+  }
+
+  .links__track::-webkit-scrollbar{
+    display: none;
   }
 
   .link-card{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 85vw;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 1;
+    flex: 0 0 var(--card-w);
+    scroll-snap-align: center;
+    transform: none; /* reset rotazione su mobile */
   }
 
   /* Nascondi testo descrittivo su mobile */
@@ -256,60 +230,20 @@
     display: none;
   }
 
-  /* Card attiva (centrale) */
-  .link-card.is-active{
-    opacity: 1;
-    pointer-events: auto;
-    z-index: 3;
-    transform: translate(-50%, -50%) scale(1) rotateY(0deg);
-    transition:
-      opacity 400ms cubic-bezier(0.4, 0, 0.2, 1),
-      transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
-      z-index 0ms 0ms;
-  }
-
-  /* Card precedente (sinistra, parzialmente visibile) */
-  .link-card.is-prev{
-    opacity: 0.35;
-    pointer-events: none;
-    z-index: 2;
-    transform: translate(calc(-50% - 70px), -50%) scale(0.88) rotateY(8deg);
-    transition:
-      opacity 400ms cubic-bezier(0.4, 0, 0.2, 1),
-      transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
-      z-index 0ms 0ms;
-  }
-
-  /* Card successiva (destra, parzialmente visibile) */
-  .link-card.is-next{
-    opacity: 0.35;
-    pointer-events: none;
-    z-index: 2;
-    transform: translate(calc(-50% + 70px), -50%) scale(0.88) rotateY(-8deg);
-    transition:
-      opacity 400ms cubic-bezier(0.4, 0, 0.2, 1),
-      transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
-      z-index 0ms 0ms;
-  }
-
   /* Indicatori (dots) */
   .links__indicators{
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    margin-top: 28px;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    gap: 8px;
+    margin-top: 24px;
   }
 
   .links__indicator{
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: rgba(201, 169, 97, 0.3);
+    background: rgba(243, 242, 247, 0.3);
     border: none;
     padding: 0;
     cursor: pointer;
@@ -320,13 +254,13 @@
   }
 
   .links__indicator.is-active{
-    background: #C9A961;
-    width: 28px;
-    border-radius: 5px;
+    background: var(--gold-500, #E0A402);
+    width: 24px;
+    border-radius: 4px;
   }
 
   .links__indicator:hover{
-    background: rgba(201, 169, 97, 0.6);
+    background: rgba(243, 242, 247, 0.5);
     transform: scale(1.2);
   }
 
@@ -337,116 +271,43 @@
 }
 
 /* =========================
-   Desktop (≥1024px): riga scrollabile con snap
+   Desktop (≥1024px): griglia statica con spacing generoso
    ========================= */
 @media (min-width: 1024px){
   .links__carousel{
-    overflow: hidden;
     padding: 20px 0;
   }
 
   .links__track{
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    scroll-snap-type: x proximity;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: var(--grid-gap);
-    padding-bottom: 16px; /* spazio per ombre */
-
-    overscroll-behavior-x: contain;
-    scrollbar-gutter: stable both-edges;
+    row-gap: calc(var(--grid-gap) + 8px);
   }
-  .links__track::-webkit-scrollbar{ display: none; }
 
   .link-card{
     flex: 0 0 var(--card-w);
-    scroll-snap-align: start;
-    position: relative; /* reset da mobile */
-    opacity: 1; /* reset da mobile */
-    pointer-events: auto; /* reset da mobile */
-  }
-
-  /* Edge-fade ai lati del viewport */
-  .links__carousel::before,
-  .links__carousel::after{
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 60px;
-    pointer-events: none;
-    z-index: 10;
-  }
-  .links__carousel::before{
-    left: 0;
-    background: linear-gradient(to right, var(--links-bg) 0%, rgba(14,15,26,0) 100%);
-  }
-  .links__carousel::after{
-    right: 0;
-    background: linear-gradient(to left, var(--links-bg) 0%, rgba(14,15,26,0) 100%);
   }
 
   /* Nascondi indicatori su desktop */
   .links__indicators{
     display: none;
   }
-
-  /* Drag UX */
-  .links__track { cursor: grab; }
-  .links__track.is-dragging { cursor: grabbing; user-select: none; }
-  .links__track.is-dragging .link-card__link { pointer-events: none; }
-}
-
-/* Fade-in all'abilitazione desktop */
-.links__track.is-initializing { opacity: 0; }
-.links__track.is-ready { opacity: 1; transition: opacity 300ms ease; }
-@media (prefers-reduced-motion: reduce){
-  .links__track.is-ready { transition: none; }
 }
 
 /* Mobile: dimensioni ridotte */
 @media (max-width: 479.98px){
   .link-card {
-    --card-w: 220px;
-    --card-h: 130px;
+    --card-w: 200px;
+    --card-h: 110px;
   }
   .link-card__logo {
-    width: 56px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
   }
   .link-card__link{
     padding: 16px;
-    gap: 12px;
-  }
-}
-
-/* Edge-fade via mask-image (fallback: ::before/::after) */
-@supports ((-webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0), #000)) or
-           (mask-image: linear-gradient(to right, rgba(0,0,0,0), #000))) {
-  @media (min-width: 1024px){
-    .links__carousel{
-      position: relative;
-      -webkit-mask-image: linear-gradient(to right,
-        transparent 0,
-        #000 60px,
-        #000 calc(100% - 60px),
-        transparent 100%);
-              mask-image: linear-gradient(to right,
-        transparent 0,
-        #000 60px,
-        #000 calc(100% - 60px),
-        transparent 100%);
-      -webkit-mask-size: 100% 100%;
-              mask-size: 100% 100%;
-      -webkit-mask-repeat: no-repeat;
-              mask-repeat: no-repeat;
-    }
-    .links__carousel::before,
-    .links__carousel::after{
-      display: none !important;
-    }
+    gap: 10px;
   }
 }
