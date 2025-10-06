@@ -1,5 +1,5 @@
 /* ============================================================
-   Links.css - Card sovrapposte stile MTG
+   Links.css - Premium Showcase Style
    ============================================================ */
 .links {
   /* Tema sezione (scuro) */
@@ -7,61 +7,54 @@
   --links-text: var(--neutral-50, #F3F2F7);
   background: var(--links-bg);
   color: var(--links-text);
-  padding: clamp(32px, 6vw, 72px) 0;
+  padding: clamp(48px, 8vw, 96px) 0;
   position: relative;
-  overflow: hidden; /* contiene le card che escono dai bordi */
 
-  /* Container identico a Cards (4 colonne virtuali) */
-  --card-w: 280px;
-  --grid-gap: 20px;
-  --container-pad-x: var(--container-pad-x, 16px);
+  /* Card dimensions - uniformi per tutte */
+  --card-w: 240px;
+  --card-h: 140px;
+  --grid-gap: 24px;
+  --container-pad-x: var(--container-pad-x, 24px);
   --container-max: calc(
-    (4 * var(--card-w)) +
-    (3 * var(--grid-gap)) +
-    (2 * var(--container-pad-x, 16px))
+    (5 * var(--card-w)) +
+    (4 * var(--grid-gap)) +
+    (2 * var(--container-pad-x))
   );
 
   /* Parametri autoplay letti da links.js */
-  --links-auto-speed: 28;   /* px/s (più fluido e sobrio) */
-  --links-auto-ignore-rmw: 0; /* 0 = rispetta "Riduci animazioni" */
+  --links-auto-speed: 24;
+  --links-auto-ignore-rmw: 0;
 }
-@media (min-width: 480px){
+@media (min-width: 768px){
   .links{
-    --card-w: 300px;
-    --grid-gap: 22px;
-    --container-max: calc(
-      (4 * var(--card-w)) +
-      (3 * var(--grid-gap)) +
-      (2 * var(--container-pad-x, 16px))
-    );
+    --card-w: 260px;
+    --card-h: 150px;
+    --grid-gap: 28px;
   }
 }
 @media (min-width: 1024px){
   .links{
-    --card-w: 320px;
-    --grid-gap: 24px;
-    --container-max: calc(
-      (4 * var(--card-w)) +
-      (3 * var(--grid-gap)) +
-      (2 * var(--container-pad-x, 16px))
-    );
+    --card-w: 280px;
+    --card-h: 160px;
+    --grid-gap: 32px;
   }
 }
 
 .links__inner{
   width: min(100%, var(--container-max));
   margin-inline: auto;
-  padding-inline: var(--container-pad-x, 16px);
+  padding-inline: var(--container-pad-x);
 }
 
 .links__title{
-  margin: 0 0 24px;
+  margin: 0 0 40px;
   font-family: var(--font-sans, "Lexend Deca", system-ui, sans-serif);
   font-weight: var(--fw-black, 900);
   font-size: var(--fs-h2, clamp(1.5rem, 1.1vw + 1.2rem, 2rem));
   line-height: var(--lh-tight, 1.15);
   color: var(--links-text);
   text-align: center;
+  letter-spacing: -0.02em;
 }
 
 /* =========================
@@ -69,7 +62,7 @@
    ========================= */
 .links__carousel{
   position: relative;
-  padding: 20px 0 40px;
+  padding: 12px 0 40px;
 }
 
 .links__track{
@@ -79,178 +72,155 @@
   display: flex;
   gap: var(--grid-gap);
   position: relative;
-  perspective: 1000px;
 }
 .links__track > li{ list-style: none; }
 .links__track > li::marker{ content: ''; }
 
 /* =========================
-   Card compatte stile MTG - Design rinnovato
+   Premium Card Design - Dimensioni uniformi
    ========================= */
 .link-card{
-  --link-w: 240px;
-  flex: 0 0 var(--link-w);
-  max-width: var(--link-w);
+  flex: 0 0 var(--card-w);
+  width: var(--card-w);
+  max-width: var(--card-w);
+  height: var(--card-h);
   box-sizing: border-box;
   position: relative;
-  transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .link-card__link{
-  --link-h: 110px;
-  height: var(--link-h);
-
+  width: 100%;
+  height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 14px;
-  padding: 16px 18px;
+  padding: 20px;
 
-  /* Modern Glass morphism */
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  /* Premium showcase style */
+  background:
+    linear-gradient(135deg, #FFFEF9 0%, #F5F3ED 100%);
   color: var(--text-900, #0E0F1A);
 
-  /* Bordo trasparente con glow sottile */
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  position: relative;
+  /* Texture carta sottile */
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.01) 2px,
+      rgba(0,0,0,0.01) 4px
+    );
+  background-size: 100%;
 
-  border-radius: 16px;
+  /* Bordo premium dorato */
+  border: 2px solid #C9A961;
+  border-radius: 12px;
+  box-sizing: border-box;
 
-  /* Shadow morbida e glow */
+  /* Shadow discreta ma elegante */
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.12),
-    0 2px 8px rgba(0, 0, 0, 0.08),
-    inset 0 1px 1px rgba(255, 255, 255, 0.9),
-    0 0 0 1px rgba(224, 164, 2, 0.1);
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 0 0 1px rgba(201, 169, 97, 0.3);
 
   text-decoration: none;
-  transform: translateZ(0);
-  will-change: transform, box-shadow;
-  transition:
-    box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
-    transform 280ms cubic-bezier(0.4, 0, 0.2, 1),
-    background 280ms cubic-bezier(0.4, 0, 0.2, 1);
-  -webkit-tap-highlight-color: transparent;
+  position: relative;
   overflow: hidden;
+  transition: transform 200ms ease;
 }
 
-/* Glow animato sui bordi */
+/* Effetto premium sui bordi interni */
 .link-card__link::before{
   content: '';
   position: absolute;
-  inset: -1px;
-  border-radius: 16px;
-  padding: 1px;
-  background: linear-gradient(135deg,
-    rgba(224, 164, 2, 0.4) 0%,
-    rgba(147, 197, 253, 0.3) 25%,
-    rgba(196, 181, 253, 0.3) 50%,
-    rgba(251, 207, 232, 0.3) 75%,
-    rgba(224, 164, 2, 0.4) 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0.6;
-  transition: opacity 280ms ease;
+  inset: 6px;
+  border: 1px solid rgba(201, 169, 97, 0.2);
+  border-radius: 8px;
   pointer-events: none;
-  animation: borderGlow 8s linear infinite;
 }
 
-@keyframes borderGlow {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 0.8; }
-}
-
-/* Backdrop enhancement - glassmorphism extra */
+/* Riflesso sottile angolo */
 .link-card__link::after{
   content: '';
   position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  background: linear-gradient(135deg,
-    rgba(255, 255, 255, 0.3) 0%,
-    rgba(255, 255, 255, 0) 50%,
-    rgba(224, 164, 2, 0.05) 100%);
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0) 100%);
   pointer-events: none;
-  z-index: 0;
+  border-radius: 10px 10px 0 0;
 }
 
 .link-card__logo{
   display: block;
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   aspect-ratio: 1 / 1;
   object-fit: contain;
-  flex: 0 0 auto;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-  transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
   position: relative;
   z-index: 1;
-}
-@media (min-width: 768px){
-  .link-card__logo{
-    width: 52px;
-    height: 52px;
-  }
-}
-@media (min-width: 1280px){
-  .link-card__logo{
-    width: 56px;
-    height: 56px;
-  }
 }
 
 .link-card__meta{
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
   min-width: 0;
-  flex: 1;
+  width: 100%;
+  text-align: center;
   position: relative;
   z-index: 1;
 }
 
-.link-card__name,
-.link-card__copy{
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-}
 .link-card__name{
-  -webkit-line-clamp: 2;
-  line-height: 1.25;
+  font-family: var(--font-sans, "Lexend Deca", system-ui, sans-serif);
   font-weight: var(--fw-bold, 700);
-  font-size: clamp(0.95rem, 1.8vw, 1.05rem);
-  margin-bottom: 3px;
+  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+  line-height: 1.3;
   color: var(--text-900, #0E0F1A);
   letter-spacing: -0.01em;
-  transition: color 280ms ease;
-}
-.link-card__copy{
-  -webkit-line-clamp: 1;
-  opacity: 0.7;
-  line-height: 1.3;
-  font-size: clamp(0.8rem, 1.5vw, 0.88rem);
-  color: var(--text-800, #22232C);
-  transition: opacity 280ms ease;
+
+  /* Clamp a 2 righe */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  width: 100%;
 }
 
-/* Focus only - hover effects removed */
+.link-card__copy{
+  font-size: clamp(0.8rem, 1.2vw, 0.85rem);
+  line-height: 1.3;
+  color: #6B5D47;
+  opacity: 0.85;
+
+  /* Clamp a 1 riga */
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Focus accessibilità */
 .link-card__link:focus-visible{
   outline: 3px solid var(--gold-500, #E0A402);
   outline-offset: 4px;
+  transform: scale(1.02);
 }
 
 /* Motion safety */
 @media (prefers-reduced-motion: reduce){
-  .link-card,
-  .link-card__link,
-  .link-card__link::before,
-  .link-card__logo{
+  .link-card__link{
     transition: none;
-  }
-
-  .link-card__link::before{
-    animation: none;
   }
 }
 
@@ -260,13 +230,13 @@
 @media (max-width: 1023.98px){
   .links__carousel{
     position: relative;
-    padding: 30px 0 50px;
+    padding: 30px 0 60px;
   }
 
   .links__track{
     display: block;
     position: relative;
-    height: 140px; /* spazio per la card + sovrapposizione */
+    height: 180px; /* spazio per la card */
     perspective: 1200px;
   }
 
@@ -275,8 +245,7 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    --link-w: 260px;
-    max-width: 90vw;
+    max-width: 85vw;
     opacity: 0;
     pointer-events: none;
     z-index: 1;
@@ -301,10 +270,10 @@
 
   /* Card precedente (sinistra, parzialmente visibile) */
   .link-card.is-prev{
-    opacity: 0.4;
+    opacity: 0.35;
     pointer-events: none;
     z-index: 2;
-    transform: translate(calc(-50% - 80px), -50%) scale(0.85) rotateY(8deg);
+    transform: translate(calc(-50% - 70px), -50%) scale(0.88) rotateY(8deg);
     transition:
       opacity 400ms cubic-bezier(0.4, 0, 0.2, 1),
       transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
@@ -313,10 +282,10 @@
 
   /* Card successiva (destra, parzialmente visibile) */
   .link-card.is-next{
-    opacity: 0.4;
+    opacity: 0.35;
     pointer-events: none;
     z-index: 2;
-    transform: translate(calc(-50% + 80px), -50%) scale(0.85) rotateY(-8deg);
+    transform: translate(calc(-50% + 70px), -50%) scale(0.88) rotateY(-8deg);
     transition:
       opacity 400ms cubic-bezier(0.4, 0, 0.2, 1),
       transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
@@ -328,8 +297,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-    margin-top: 24px;
+    gap: 10px;
+    margin-top: 28px;
     position: absolute;
     bottom: 0;
     left: 50%;
@@ -337,10 +306,10 @@
   }
 
   .links__indicator{
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    background: rgba(243, 242, 247, 0.3);
+    background: rgba(201, 169, 97, 0.3);
     border: none;
     padding: 0;
     cursor: pointer;
@@ -351,13 +320,13 @@
   }
 
   .links__indicator.is-active{
-    background: var(--gold-500, #E0A402);
-    width: 24px;
-    border-radius: 4px;
+    background: #C9A961;
+    width: 28px;
+    border-radius: 5px;
   }
 
   .links__indicator:hover{
-    background: rgba(243, 242, 247, 0.5);
+    background: rgba(201, 169, 97, 0.6);
     transform: scale(1.2);
   }
 
@@ -368,7 +337,7 @@
 }
 
 /* =========================
-   Desktop (≥1024px): riga scrollabile con snap + edge-fade
+   Desktop (≥1024px): riga scrollabile con snap
    ========================= */
 @media (min-width: 1024px){
   .links__carousel{
@@ -385,7 +354,7 @@
     scrollbar-width: none;
     scroll-snap-type: x proximity;
     gap: var(--grid-gap);
-    padding-bottom: 12px; /* evita ritaglio delle ombre */
+    padding-bottom: 16px; /* spazio per ombre */
 
     overscroll-behavior-x: contain;
     scrollbar-gutter: stable both-edges;
@@ -393,7 +362,7 @@
   .links__track::-webkit-scrollbar{ display: none; }
 
   .link-card{
-    flex: 0 0 var(--link-w);
+    flex: 0 0 var(--card-w);
     scroll-snap-align: start;
     position: relative; /* reset da mobile */
     opacity: 1; /* reset da mobile */
@@ -407,7 +376,7 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 48px;
+    width: 60px;
     pointer-events: none;
     z-index: 10;
   }
@@ -424,26 +393,8 @@
   .links__indicators{
     display: none;
   }
-}
 
-/* Nascondi scrollbar orizzontale tra 790px e 1023px */
-@media (min-width: 790px) and (max-width: 1023.98px){
-  .links__track{
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .links__track::-webkit-scrollbar{
-    display: none;
-  }
-}
-
-/* =========================
-   UX drag + init fade
-   ========================= */
-/* Drag: cursore e blocco click durante trascinamento (solo desktop) */
-@media (min-width: 1024px){
+  /* Drag UX */
   .links__track { cursor: grab; }
   .links__track.is-dragging { cursor: grabbing; user-select: none; }
   .links__track.is-dragging .link-card__link { pointer-events: none; }
@@ -456,55 +407,21 @@
   .links__track.is-ready { transition: none; }
 }
 
-/* Mobile: card più piccole */
+/* Mobile: dimensioni ridotte */
 @media (max-width: 479.98px){
-  .link-card { --link-w: 220px; }
-  .link-card__link {
-    --link-h: 100px;
-    padding: 14px 16px;
-    gap: 12px;
+  .link-card {
+    --card-w: 220px;
+    --card-h: 130px;
   }
   .link-card__logo {
-    width: 42px;
-    height: 42px;
+    width: 56px;
+    height: 56px;
+  }
+  .link-card__link{
+    padding: 16px;
+    gap: 12px;
   }
 }
-
-/* =========================
-   Variante: Link Card Full Logo
-   ========================= */
-.link-card.link-card--full .link-card__link {
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-
-.link-card.link-card--full .link-card__logo {
-  width: 80px;
-  height: 80px;
-  margin: 0;
-}
-@media (min-width: 768px){
-  .link-card.link-card--full .link-card__logo {
-    width: 92px;
-    height: 92px;
-  }
-}
-@media (min-width: 1280px){
-  .link-card.link-card--full .link-card__logo {
-    width: 100px;
-    height: 100px;
-  }
-}
-
-/* Nascondi meta info */
-.link-card.link-card--full .link-card__meta {
-  display: none;
-}
-
-/* Spacing testo */
-.links .link-card__name{ letter-spacing: var(--trk-slight, -0.01em); }
-.links .link-card__copy{ letter-spacing: 0; }
 
 /* Edge-fade via mask-image (fallback: ::before/::after) */
 @supports ((-webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0), #000)) or
@@ -514,20 +431,19 @@
       position: relative;
       -webkit-mask-image: linear-gradient(to right,
         transparent 0,
-        #000 48px,
-        #000 calc(100% - 48px),
+        #000 60px,
+        #000 calc(100% - 60px),
         transparent 100%);
               mask-image: linear-gradient(to right,
         transparent 0,
-        #000 48px,
-        #000 calc(100% - 48px),
+        #000 60px,
+        #000 calc(100% - 60px),
         transparent 100%);
       -webkit-mask-size: 100% 100%;
               mask-size: 100% 100%;
       -webkit-mask-repeat: no-repeat;
               mask-repeat: no-repeat;
     }
-    /* Evita doppio effetto quando la mask è disponibile */
     .links__carousel::before,
     .links__carousel::after{
       display: none !important;
