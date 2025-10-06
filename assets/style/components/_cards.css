@@ -286,18 +286,19 @@
   margin: auto;
   width: 80px;     /* hit-area aumentata per link standalone */
   height: 56px;    /* proporzioni simili al logo YouTube (16:11 circa) */
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 2;      /* sopra overlay media */
   text-decoration: none;
   cursor: pointer;
-  border-radius: 12px;
+  border-radius: 8px;
 }
 .card.is-video .card__play::before{
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 12px;                /* rettangolo arrotondato stile YouTube */
+  border-radius: 8px;                /* rettangolo arrotondato stile YouTube */
   background: rgba(0,0,0,0.35);
   backdrop-filter: blur(6px);
   transition: background 220ms ease, box-shadow 220ms ease, transform 220ms ease;
@@ -320,7 +321,7 @@
 .card.is-video .card__play:focus-visible{
   outline: 3px solid var(--gold-600, #E0A402);
   outline-offset: 4px;
-  border-radius: 12px;
+  border-radius: 8px;
 }
 
 /* SVG interno: preferenza triangolo. Se l'SVG usa classi dedicate: */
@@ -335,7 +336,7 @@
   stroke-width: 2px;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
-  transform: scale(1.25) translateX(3%); /* allineamento ottico di base */
+  transform: scale(1.15) translateX(2%); /* centrato verticalmente */
   transform-origin: center;
 }
 /* Fallback: se lo sprite non ha classi, prova con selettori generici */
