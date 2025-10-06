@@ -46,6 +46,7 @@
   width: min(100%, var(--container-max));
   margin-inline: auto;
   padding-inline: var(--container-pad-x, 16px);
+  text-align: center;
 }
 
 /* Eyebrow (sopratitolo) */
@@ -72,7 +73,7 @@
 
 /* Sottotitolo */
 .portal__subtitle{
-  margin: 0 0 20px;
+  margin: 0 auto 20px;
   font-size: clamp(1rem, 0.5vw + 0.9rem, 1.125rem);
   line-height: 1.4;
   opacity: 0.92;
