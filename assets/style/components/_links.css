@@ -1,5 +1,5 @@
 /* ============================================================
-   Links.css
+   Links.css - Card sovrapposte stile MTG
    ============================================================ */
 .links {
   /* Tema sezione (scuro) */
@@ -8,10 +8,12 @@
   background: var(--links-bg);
   color: var(--links-text);
   padding: clamp(32px, 6vw, 72px) 0;
+  position: relative;
+  overflow: hidden; /* contiene le card che escono dai bordi */
 
   /* Container identico a Cards (4 colonne virtuali) */
-  --card-w: 320px;
-  --grid-gap: 16px;
+  --card-w: 280px;
+  --grid-gap: 20px;
   --container-pad-x: var(--container-pad-x, 16px);
   --container-max: calc(
     (4 * var(--card-w)) +
@@ -20,13 +22,13 @@
   );
 
   /* Parametri autoplay letti da links.js */
-  --links-auto-speed: 36;   /* px/s (cambia qui per piÃ¹ lento/veloce) */
-  --links-auto-ignore-rmw: 0; /* 0 = rispetta â€œRiduci animazioniâ€ */
+  --links-auto-speed: 28;   /* px/s (più fluido e sobrio) */
+  --links-auto-ignore-rmw: 0; /* 0 = rispetta "Riduci animazioni" */
 }
 @media (min-width: 480px){
   .links{
-    --card-w: 340px;
-    --grid-gap: 20px;
+    --card-w: 300px;
+    --grid-gap: 22px;
     --container-max: calc(
       (4 * var(--card-w)) +
       (3 * var(--grid-gap)) +
@@ -36,8 +38,8 @@
 }
 @media (min-width: 1024px){
   .links{
-    --card-w: 360px;
-    --grid-gap: 22px;
+    --card-w: 320px;
+    --grid-gap: 24px;
     --container-max: calc(
       (4 * var(--card-w)) +
       (3 * var(--grid-gap)) +
@@ -49,84 +51,135 @@
 .links__inner{
   width: min(100%, var(--container-max));
   margin-inline: auto;
-  padding-inline: var(--container-pad-x, 16px); /* allineato a Cards */
+  padding-inline: var(--container-pad-x, 16px);
 }
 
 .links__title{
-  margin: 0 0 16px;               /* stesso spacing del titolo Cards */
+  margin: 0 0 24px;
   font-family: var(--font-sans, "Lexend Deca", system-ui, sans-serif);
   font-weight: var(--fw-black, 900);
   font-size: var(--fs-h2, clamp(1.5rem, 1.1vw + 1.2rem, 2rem));
   line-height: var(--lh-tight, 1.15);
   color: var(--links-text);
+  text-align: center;
 }
 
 /* =========================
-   Track: reset UL + griglia (mobile/tablet)
+   Track: Carousel container
    ========================= */
-.links__carousel{ position: relative; }
+.links__carousel{
+  position: relative;
+  padding: 20px 0 40px;
+}
 
 .links__track{
   list-style: none;
   padding-left: 0;
   margin: 0;
-
   display: flex;
-  flex-wrap: wrap;                /* griglia per mobile/tablet */
-  justify-content: center;        /* come le Cards */
-  align-items: stretch;
-
   gap: var(--grid-gap);
-  column-gap: var(--grid-gap);
-  row-gap: var(--grid-gap);
+  position: relative;
+  perspective: 1000px;
 }
 .links__track > li{ list-style: none; }
 .links__track > li::marker{ content: ''; }
 
 /* =========================
-   Card compatte (chiare) â€” altezza uniforme
+   Card compatte stile MTG - Design rinnovato
    ========================= */
 .link-card{
-  --link-w: 240px;                 /* aumenta a 260px per meno colonne */
+  --link-w: 240px;
   flex: 0 0 var(--link-w);
   max-width: var(--link-w);
   box-sizing: border-box;
+  position: relative;
+  transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .link-card__link{
-  --link-h: 96px;                  /* 92â€“100px suggerito */
+  --link-h: 110px;
   height: var(--link-h);
 
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
+  gap: 14px;
+  padding: 16px 18px;
 
-  background: #ffffff;             /* cards chiare su sezione scura */
+  /* Design elegante con gradiente sottile */
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   color: var(--text-900, #0E0F1A);
-  border: 1px solid color-mix(in oklab, var(--indigo-900, #2F2760) 10%, transparent);
-  border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(0,0,0,.06);
+
+  /* Bordo con gradiente dorato/indaco */
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+
+  border-radius: 14px;
+
+  /* Ombre profonde per effetto 3D */
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.08),
+    0 8px 16px rgba(0,0,0,0.12),
+    0 16px 32px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.8);
 
   text-decoration: none;
-  /* niente transform nell'hover (zero â€œsaltelliâ€) */
-  transition: box-shadow 160ms ease, background-color 160ms ease;
+  transform: translateZ(0);
+  will-change: transform, box-shadow;
+  transition:
+    box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
   -webkit-tap-highlight-color: transparent;
-  overflow: hidden;                /* sicurezza anti overflow */
+  overflow: hidden;
+}
+
+/* Bordo gradiente prima dell'hover */
+.link-card__link::before{
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  padding: 2px;
+  background: linear-gradient(135deg,
+    rgba(224, 164, 2, 0.3) 0%,
+    rgba(47, 39, 96, 0.2) 50%,
+    rgba(224, 164, 2, 0.3) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 280ms ease;
+  pointer-events: none;
 }
 
 .link-card__logo{
   display: block;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   aspect-ratio: 1 / 1;
   object-fit: contain;
   flex: 0 0 auto;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-@media (min-width: 768px){  .link-card__logo{ width: 44px; height: 44px; } }
-@media (min-width: 1280px){ .link-card__logo{ width: 52px; height: 52px; } }
+@media (min-width: 768px){
+  .link-card__logo{
+    width: 52px;
+    height: 52px;
+  }
+}
+@media (min-width: 1280px){
+  .link-card__logo{
+    width: 56px;
+    height: 56px;
+  }
+}
 
-.link-card__meta{ display: grid; min-width: 0; }
+.link-card__meta{
+  display: grid;
+  min-width: 0;
+  flex: 1;
+}
 
 .link-card__name,
 .link-card__copy{
@@ -135,82 +188,235 @@
   -webkit-box-orient: vertical;
 }
 .link-card__name{
-  -webkit-line-clamp: 2;           /* max 2 righe */
-  line-height: 1.2;
-  font-weight: var(--fw-semibold, 600);
-  font-size: clamp(0.95rem, 1.8vw, 1rem);
-  margin-bottom: 2px;
+  -webkit-line-clamp: 2;
+  line-height: 1.25;
+  font-weight: var(--fw-bold, 700);
+  font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+  margin-bottom: 3px;
   color: var(--text-900, #0E0F1A);
+  letter-spacing: -0.01em;
+  transition: color 280ms ease;
 }
 .link-card__copy{
-  -webkit-line-clamp: 1;           /* singola riga */
-  opacity: 0.85;
+  -webkit-line-clamp: 1;
+  opacity: 0.7;
   line-height: 1.3;
-  font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+  font-size: clamp(0.8rem, 1.5vw, 0.88rem);
   color: var(--text-800, #22232C);
+  transition: opacity 280ms ease;
 }
 
-/* Hover & Focus (senza movimento) */
+/* Hover & Focus - Effetto 3D elegante */
 .link-card__link:hover{
-  box-shadow: 0 6px 16px rgba(0,0,0,.12);
-  background: color-mix(in oklab, white 92%, color-mix(in oklab, var(--indigo-900, #2F2760) 6%, transparent));
+  transform: translateY(-6px) rotateX(2deg) scale(1.02);
+  box-shadow:
+    0 4px 8px rgba(0,0,0,0.1),
+    0 12px 24px rgba(0,0,0,0.15),
+    0 24px 48px rgba(0,0,0,0.2),
+    0 0 0 1px rgba(224, 164, 2, 0.2),
+    inset 0 1px 0 rgba(255,255,255,0.9);
 }
+
+.link-card__link:hover::before{
+  opacity: 1;
+}
+
+.link-card__link:hover .link-card__logo{
+  transform: scale(1.08) rotate(-3deg);
+}
+
+.link-card__link:hover .link-card__name{
+  color: var(--indigo-700, #4338ca);
+}
+
+.link-card__link:hover .link-card__copy{
+  opacity: 0.85;
+}
+
+.link-card__link:active{
+  transform: translateY(-3px) scale(1.01);
+  transition-duration: 120ms;
+}
+
 .link-card__link:focus-visible{
-  outline: 2px solid var(--gold-500, #E0A402);
-  outline-offset: 3px;
+  outline: 3px solid var(--gold-500, #E0A402);
+  outline-offset: 4px;
 }
 
 /* Motion safety */
 @media (prefers-reduced-motion: reduce){
-  .link-card__link{ transition: none; }
+  .link-card,
+  .link-card__link,
+  .link-card__link::before,
+  .link-card__logo{
+    transition: none;
+  }
 }
 
 /* =========================
-   Desktop (â‰¥1024px): riga scrollabile con snap + edge-fade
+   Mobile: Carousel con carte sovrapposte (< 1024px)
    ========================= */
-@media (min-width: 1024px){
+@media (max-width: 1023.98px){
   .links__carousel{
-    overflow: hidden;              /* viewport per edge-fade */
+    position: relative;
+    padding: 30px 0 50px;
   }
 
   .links__track{
-    flex-wrap: nowrap;             /* riga singola */
-    justify-content: flex-start;   /* fondamentale per il loop JS */
+    display: block;
+    position: relative;
+    height: 140px; /* spazio per la card + sovrapposizione */
+    perspective: 1200px;
+  }
+
+  .link-card{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    --link-w: 260px;
+    max-width: 90vw;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Card attiva (centrale) */
+  .link-card.is-active{
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 3;
+    transform: translate(-50%, -50%) scale(1) rotateY(0deg);
+    transition:
+      opacity 400ms cubic-bezier(0.4, 0, 0.2, 1),
+      transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
+      z-index 0ms 0ms;
+  }
+
+  /* Card precedente (sinistra, parzialmente visibile) */
+  .link-card.is-prev{
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 2;
+    transform: translate(calc(-50% - 80px), -50%) scale(0.85) rotateY(8deg);
+    transition:
+      opacity 400ms cubic-bezier(0.4, 0, 0.2, 1),
+      transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
+      z-index 0ms 0ms;
+  }
+
+  /* Card successiva (destra, parzialmente visibile) */
+  .link-card.is-next{
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 2;
+    transform: translate(calc(-50% + 80px), -50%) scale(0.85) rotateY(-8deg);
+    transition:
+      opacity 400ms cubic-bezier(0.4, 0, 0.2, 1),
+      transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
+      z-index 0ms 0ms;
+  }
+
+  /* Indicatori (dots) */
+  .links__indicators{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .links__indicator{
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(243, 242, 247, 0.3);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition:
+      background 300ms ease,
+      transform 300ms ease,
+      width 300ms ease;
+  }
+
+  .links__indicator.is-active{
+    background: var(--gold-500, #E0A402);
+    width: 24px;
+    border-radius: 4px;
+  }
+
+  .links__indicator:hover{
+    background: rgba(243, 242, 247, 0.5);
+    transform: scale(1.2);
+  }
+
+  .links__indicator:focus-visible{
+    outline: 2px solid var(--gold-500, #E0A402);
+    outline-offset: 3px;
+  }
+}
+
+/* =========================
+   Desktop (≥1024px): riga scrollabile con snap + edge-fade
+   ========================= */
+@media (min-width: 1024px){
+  .links__carousel{
+    overflow: hidden;
+    padding: 20px 0;
+  }
+
+  .links__track{
+    flex-wrap: nowrap;
+    justify-content: flex-start;
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;         /* FF: nasconde scrollbar */
-    scroll-snap-type: x proximity; /* snap dolce */
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
     gap: var(--grid-gap);
-    padding-bottom: 8px;           /* evita ritaglio delle ombre */
+    padding-bottom: 12px; /* evita ritaglio delle ombre */
 
-    overscroll-behavior-x: contain;       /* evita lo â€œscroll chainingâ€ verso la pagina */
-    scrollbar-gutter: stable both-edges;  /* stabilizza il layout quando appare la scrollbar */
+    overscroll-behavior-x: contain;
+    scrollbar-gutter: stable both-edges;
   }
-  .links__track::-webkit-scrollbar{ display: none; } /* WebKit: nasconde scrollbar */
+  .links__track::-webkit-scrollbar{ display: none; }
 
   .link-card{
-    flex: 0 0 var(--link-w);       /* larghezza fissa per snap */
+    flex: 0 0 var(--link-w);
     scroll-snap-align: start;
+    position: relative; /* reset da mobile */
+    opacity: 1; /* reset da mobile */
+    pointer-events: auto; /* reset da mobile */
   }
 
-  /* Edge-fade ai lati del viewport (fallback) */
+  /* Edge-fade ai lati del viewport */
   .links__carousel::before,
   .links__carousel::after{
     content: "";
     position: absolute;
-    top: 0; bottom: 0;
-    width: 36px;                   /* intensitÃ  dissolvenza */
-    pointer-events: none;          /* non blocca i click/scroll */
-    z-index: 1;
+    top: 0;
+    bottom: 0;
+    width: 48px;
+    pointer-events: none;
+    z-index: 10;
   }
   .links__carousel::before{
     left: 0;
-    background: linear-gradient(to right, var(--links-bg) 0%, rgba(25,26,35,0) 100%);
+    background: linear-gradient(to right, var(--links-bg) 0%, rgba(14,15,26,0) 100%);
   }
   .links__carousel::after{
     right: 0;
-    background: linear-gradient(to left, var(--links-bg) 0%, rgba(25,26,35,0) 100%);
+    background: linear-gradient(to left, var(--links-bg) 0%, rgba(14,15,26,0) 100%);
+  }
+
+  /* Nascondi indicatori su desktop */
+  .links__indicators{
+    display: none;
   }
 }
 
@@ -220,75 +426,41 @@
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;      /* Firefox */
+    scrollbar-width: none;
   }
   .links__track::-webkit-scrollbar{
-    display: none;              /* WebKit */
+    display: none;
   }
 }
-/* Nascondi scrollbar orizzontale tra 790px e 1023px */
 
 /* =========================
-   UX drag + init fade + mobile sizing
+   UX drag + init fade
    ========================= */
-/* Drag: cursore e blocco click durante trascinamento */
-.links__track { cursor: grab; }
-.links__track.is-dragging { cursor: grabbing; user-select: none; }
-.links__track.is-dragging .link-card__link { pointer-events: none; }
+/* Drag: cursore e blocco click durante trascinamento (solo desktop) */
+@media (min-width: 1024px){
+  .links__track { cursor: grab; }
+  .links__track.is-dragging { cursor: grabbing; user-select: none; }
+  .links__track.is-dragging .link-card__link { pointer-events: none; }
+}
 
-/* Fade-in all'abilitazione desktop (gestito dal JS) */
+/* Fade-in all'abilitazione desktop */
 .links__track.is-initializing { opacity: 0; }
-.links__track.is-ready { opacity: 1; transition: opacity 200ms ease; }
+.links__track.is-ready { opacity: 1; transition: opacity 300ms ease; }
 @media (prefers-reduced-motion: reduce){
   .links__track.is-ready { transition: none; }
 }
 
-/* Mobile: card piÃ¹ piccole (baseline) */
+/* Mobile: card più piccole */
 @media (max-width: 479.98px){
-  .link-card { --link-w: 200px; }
-  .link-card__link { --link-h: 88px; padding: 12px 14px; }
-  .link-card__logo { width: 36px; height: 36px; }
-}
-
-@media (min-width: 1024px){
-  .links{
-    --links-auto-speed: 32; /* piÃ¹ fluido, non eccessivo */
+  .link-card { --link-w: 220px; }
+  .link-card__link {
+    --link-h: 100px;
+    padding: 14px 16px;
+    gap: 12px;
   }
-}
-
-/* =========================
-   Extra-compact Mobile (<768px)
-   ========================= */
-@media (max-width: 767.98px){
-  /* Card extra-compatte */
-  .links .link-card {
-    --link-w: 150px;
-    max-width: var(--link-w);
-    flex: 0 0 var(--link-w);
-  }
-
-  /* Contenuto piÃ¹ ridotto */
-  .links .link-card__link {
-    --link-h: 70px;
-    height: var(--link-h);
-    padding: 8px 10px;
-    gap: 6px;
-  }
-
-  /* Logo piÃ¹ piccolo */
-  .links .link-card__logo {
-    width: 24px;
-    height: 24px;
-  }
-
-  /* Nascondi testo descrittivo */
-  .links .link-card__copy {
-    display: none !important;
-  }
-
-  /* Track con gap minore */
-  .links .links__track {
-    gap: 6px;
+  .link-card__logo {
+    width: 42px;
+    height: 42px;
   }
 }
 
@@ -297,18 +469,18 @@
    ========================= */
 .link-card.link-card--full .link-card__link {
   justify-content: center;
-  padding: 0;               /* niente padding interno */
+  padding: 20px;
 }
 
 .link-card.link-card--full .link-card__logo {
-  width: 72px;
-  height: 72px;
+  width: 80px;
+  height: 80px;
   margin: auto;
 }
 @media (min-width: 768px){
   .link-card.link-card--full .link-card__logo {
-    width: 88px;
-    height: 88px;
+    width: 92px;
+    height: 92px;
   }
 }
 @media (min-width: 1280px){
@@ -323,32 +495,32 @@
   display: none;
 }
 
-.links .link-card__name{ letter-spacing: var(--trk-slight); }
+/* Spacing testo */
+.links .link-card__name{ letter-spacing: var(--trk-slight, -0.01em); }
 .links .link-card__copy{ letter-spacing: 0; }
 
-/* Edge-fade via mask-image (fallback: ::before/::after) >>> */
+/* Edge-fade via mask-image (fallback: ::before/::after) */
 @supports ((-webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0), #000)) or
            (mask-image: linear-gradient(to right, rgba(0,0,0,0), #000))) {
   @media (min-width: 1024px){
     .links__carousel{
-      position: relative; /* garanzia */
-      /* Opaco al centro, trasparente ai lati (36px come UI attuale) */
+      position: relative;
       -webkit-mask-image: linear-gradient(to right,
         transparent 0,
-        #000 36px,
-        #000 calc(100% - 36px),
+        #000 48px,
+        #000 calc(100% - 48px),
         transparent 100%);
               mask-image: linear-gradient(to right,
         transparent 0,
-        #000 36px,
-        #000 calc(100% - 36px),
+        #000 48px,
+        #000 calc(100% - 48px),
         transparent 100%);
       -webkit-mask-size: 100% 100%;
               mask-size: 100% 100%;
       -webkit-mask-repeat: no-repeat;
               mask-repeat: no-repeat;
     }
-    /* Evita doppio effetto quando la mask Ã¨ disponibile */
+    /* Evita doppio effetto quando la mask è disponibile */
     .links__carousel::before,
     .links__carousel::after{
       display: none !important;

@@ -1,14 +1,15 @@
 /* ============================================================
-   Links.js
+   Links.js - Carousel con carte sovrapposte
    ============================================================ */
 (() => {
   // ===== Config =====
-  const DESKTOP_BP = 1024;         // modalità carosello da desktop in su (>=1024px)
+  const DESKTOP_BP = 1024;         // modalità carosello desktop (>=1024px)
+  const MOBILE_AUTO_INTERVAL = 4000; // autoplay mobile (ms)
   const IDLE_RESUME_MS = 3000;     // pausa autoplay dopo interazione manuale
-  const DEFAULT_SPEED  = 24;       // px/sec (override via CSS: --links-auto-speed)
-  const DRAG_THRESHOLD = 8;        // px per distinguere click vs drag (hardening)
+  const DEFAULT_SPEED  = 24;       // px/sec desktop (override via CSS: --links-auto-speed)
+  const DRAG_THRESHOLD = 8;        // px per distinguere click vs drag
 
-  function initLinksLoop() {
+  function initLinksCarousel() {
     const section  = document.querySelector('.links');
     if (!section) return;
 
@@ -18,24 +19,31 @@
 
     // A11y base
     track.setAttribute('tabindex', '0');
-    track.setAttribute('aria-label', 'Elenco collegamenti scorrevole orizzontale');
+    track.setAttribute('aria-label', 'Elenco collegamenti scorrevole');
 
     // Media queries & prefers
     const mqDesktop      = window.matchMedia(`(min-width: ${DESKTOP_BP}px)`);
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    // ===== Stato misure/loop =====
+    // ===== Stato mobile carousel =====
+    let mobileCurrentIndex = 0;
+    let mobileAutoTimer = null;
+    let mobileCards = [];
+    let mobileIndicators = [];
+    let mobileIndicatorsContainer = null;
+
+    // ===== Stato desktop carousel =====
     let gapPx = 16;
     let cardStep = 240;
     let originalWidth = 0;
     let leftAnchor = 0;
     let loopEnabled = false;
 
-    // ===== Stato virtual scroll =====
+    // ===== Stato virtual scroll (desktop) =====
     let virtualX = 0;
     let wrapMargin = 480;
 
-    // ===== Stato drag =====
+    // ===== Stato drag (desktop) =====
     let dragging = false;
     let draggingActive = false;
     let startX = 0;
@@ -43,7 +51,7 @@
     let capturedId = null;
     let dragPrevSnap = '';
 
-    // ===== Stato autoplay =====
+    // ===== Stato autoplay (desktop) =====
     let rafId = 0;
     let lastTs = 0;
     let autoPaused = false;
@@ -67,7 +75,7 @@
     };
     const ignoreRMW = () => cssNumber('--links-auto-ignore-rmw', section) > 0;
 
-    // Riconoscimento cloni retro-compatibile
+    // Riconoscimento cloni (desktop)
     const isClone = (li) =>
       !!li && ((li.dataset && li.dataset.clone === '1') || li.classList.contains('is-clone'));
 
@@ -92,6 +100,185 @@
       return frag;
     };
 
+    // ===== MOBILE CAROUSEL =====
+    const initMobileCarousel = () => {
+      mobileCards = Array.from(track.querySelectorAll('.link-card')).filter(li => !isClone(li));
+      if (mobileCards.length === 0) return;
+
+      mobileCurrentIndex = 0;
+
+      // Crea indicatori
+      if (!mobileIndicatorsContainer) {
+        mobileIndicatorsContainer = document.createElement('div');
+        mobileIndicatorsContainer.className = 'links__indicators';
+        mobileIndicatorsContainer.setAttribute('role', 'tablist');
+        mobileIndicatorsContainer.setAttribute('aria-label', 'Indicatori carousel');
+        carousel.appendChild(mobileIndicatorsContainer);
+      }
+
+      mobileIndicatorsContainer.innerHTML = '';
+      mobileIndicators = [];
+
+      mobileCards.forEach((card, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'links__indicator';
+        btn.setAttribute('type', 'button');
+        btn.setAttribute('role', 'tab');
+        btn.setAttribute('aria-label', `Vai alla card ${i + 1}`);
+        btn.setAttribute('aria-controls', card.id || `link-card-${i}`);
+        if (i === 0) {
+          btn.classList.add('is-active');
+          btn.setAttribute('aria-selected', 'true');
+        } else {
+          btn.setAttribute('aria-selected', 'false');
+        }
+        btn.addEventListener('click', () => mobileGoToSlide(i));
+        mobileIndicatorsContainer.appendChild(btn);
+        mobileIndicators.push(btn);
+      });
+
+      updateMobileSlides();
+      startMobileAutoplay();
+
+      // Touch/swipe support
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      track.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      track.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleMobileSwipe();
+      }, { passive: true });
+
+      const handleMobileSwipe = () => {
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) {
+            // Swipe left -> next
+            mobileNextSlide();
+          } else {
+            // Swipe right -> prev
+            mobilePrevSlide();
+          }
+        }
+      };
+
+      // Keyboard navigation
+      track.addEventListener('keydown', onMobileKey);
+    };
+
+    const updateMobileSlides = () => {
+      if (mobileCards.length === 0) return;
+
+      const total = mobileCards.length;
+      const prevIndex = (mobileCurrentIndex - 1 + total) % total;
+      const nextIndex = (mobileCurrentIndex + 1) % total;
+
+      mobileCards.forEach((card, i) => {
+        card.classList.remove('is-active', 'is-prev', 'is-next');
+
+        if (i === mobileCurrentIndex) {
+          card.classList.add('is-active');
+          card.setAttribute('aria-hidden', 'false');
+        } else if (i === prevIndex) {
+          card.classList.add('is-prev');
+          card.setAttribute('aria-hidden', 'true');
+        } else if (i === nextIndex) {
+          card.classList.add('is-next');
+          card.setAttribute('aria-hidden', 'true');
+        } else {
+          card.setAttribute('aria-hidden', 'true');
+        }
+      });
+
+      // Update indicators
+      mobileIndicators.forEach((ind, i) => {
+        if (i === mobileCurrentIndex) {
+          ind.classList.add('is-active');
+          ind.setAttribute('aria-selected', 'true');
+        } else {
+          ind.classList.remove('is-active');
+          ind.setAttribute('aria-selected', 'false');
+        }
+      });
+    };
+
+    const mobileGoToSlide = (index) => {
+      if (index >= 0 && index < mobileCards.length) {
+        mobileCurrentIndex = index;
+        updateMobileSlides();
+        stopMobileAutoplay();
+        startMobileAutoplay();
+      }
+    };
+
+    const mobileNextSlide = () => {
+      mobileCurrentIndex = (mobileCurrentIndex + 1) % mobileCards.length;
+      updateMobileSlides();
+      stopMobileAutoplay();
+      startMobileAutoplay();
+    };
+
+    const mobilePrevSlide = () => {
+      mobileCurrentIndex = (mobileCurrentIndex - 1 + mobileCards.length) % mobileCards.length;
+      updateMobileSlides();
+      stopMobileAutoplay();
+      startMobileAutoplay();
+    };
+
+    const startMobileAutoplay = () => {
+      if (prefersReduced.matches && !ignoreRMW()) return;
+      stopMobileAutoplay();
+      mobileAutoTimer = setInterval(() => {
+        mobileNextSlide();
+      }, MOBILE_AUTO_INTERVAL);
+    };
+
+    const stopMobileAutoplay = () => {
+      if (mobileAutoTimer) {
+        clearInterval(mobileAutoTimer);
+        mobileAutoTimer = null;
+      }
+    };
+
+    const onMobileKey = (e) => {
+      switch (e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          mobilePrevSlide();
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          mobileNextSlide();
+          break;
+        case 'Home':
+          e.preventDefault();
+          mobileGoToSlide(0);
+          break;
+        case 'End':
+          e.preventDefault();
+          mobileGoToSlide(mobileCards.length - 1);
+          break;
+      }
+    };
+
+    const destroyMobileCarousel = () => {
+      stopMobileAutoplay();
+      if (mobileIndicatorsContainer) {
+        mobileIndicatorsContainer.remove();
+        mobileIndicatorsContainer = null;
+      }
+      mobileCards.forEach(card => {
+        card.classList.remove('is-active', 'is-prev', 'is-next');
+        card.removeAttribute('aria-hidden');
+      });
+      track.removeEventListener('keydown', onMobileKey);
+    };
+
+    // ===== DESKTOP CAROUSEL (existing code adapted) =====
     const measureGapsAndStep = () => {
       const styles = getComputedStyle(track);
       gapPx = parseFloat(styles.columnGap) || parseFloat(styles.gap) || 0;
@@ -117,8 +304,8 @@
       wrapMargin = Math.max(cardStep * 3, Math.round(vw * 0.5));
     };
 
-    // ===== Stili forzati in modalità carosello =====
     const forceDesktopStyles = () => {
+      track.style.display = 'flex';
       track.style.flexWrap = 'nowrap';
       track.style.justifyContent = 'flex-start';
       track.style.overflowX = 'auto';
@@ -129,7 +316,9 @@
       track.style.userSelect  = 'none';
       track.classList.add('is-initializing');
     };
+
     const clearDesktopStyles = () => {
+      track.style.display = '';
       track.style.flexWrap = '';
       track.style.justifyContent = '';
       track.style.overflowX = '';
@@ -141,22 +330,18 @@
       track.classList.remove('is-initializing', 'is-ready', 'is-dragging');
     };
 
-    // ===== Costruzione banda + cloni (robusta) =====
     const buildLoopAdaptive = () => {
       cleanupClones();
       const orig = originals();
       if (orig.length < 1) { loopEnabled = false; return; }
 
-      // Misure base con soli originali
       measureGapsAndStep();
       measureAnchors();
       updateWrapMargin();
 
       const viewportW = (carousel.clientWidth || track.clientWidth || 0);
-
       let minWidthNeeded = viewportW + (2 * wrapMargin) + (2 * originalWidth) + Math.max(cardStep, 1);
 
-      // Duplica set a sinistra e destra fino a superare la soglia (limite sicurezza)
       let copies = 0;
       const MAX_COPIES = 10;
       while (((track.scrollWidth || 0) < minWidthNeeded) && copies < MAX_COPIES) {
@@ -164,44 +349,35 @@
         track.appendChild(duplicateSet(orig));
         copies++;
 
-        // Rimisuro dopo il reflow
         measureGapsAndStep();
         measureAnchors();
         updateWrapMargin();
 
-        // Ricalcola la soglia con i nuovi numeri
         minWidthNeeded = viewportW + (2 * wrapMargin) + (2 * originalWidth) + Math.max(cardStep, 1);
       }
 
-      // Posiziona la vista sulla banda originale
       track.scrollTo({ left: leftAnchor, behavior: 'auto' });
       virtualX = track.scrollLeft;
       loopEnabled = true;
     };
 
-    // ===== Loop infinito: wrap “off-screen” con isteresi (robusto) =====
     const wrapOffscreenIfNeeded = () => {
       if (!loopEnabled || originalWidth <= 0) return;
 
-      // Range esteso: centro sulla banda originale e concedo isteresi ai lati
       const minX = leftAnchor - wrapMargin;
       const maxX = leftAnchor + originalWidth + wrapMargin;
 
       if (virtualX >= minX && virtualX < maxX) return;
 
-      // Normalizza sempre nella [leftAnchor, leftAnchor + originalWidth)
       const rel = virtualX - leftAnchor;
       const norm = ((rel % originalWidth) + originalWidth) % originalWidth;
       virtualX = leftAnchor + norm;
 
-      // Applicazione diretta: niente scatti (autoplay ha snap disattivato)
       track.scrollLeft = virtualX;
     };
 
-    // ===== Autoplay =====
     const setPaused = (val) => {
       autoPaused = !!val;
-      // Ripristina snap quando in pausa completa; disattivalo quando attivo
       if (autoPaused) {
         if (snapCache) track.style.scrollSnapType = snapCache;
       } else {
@@ -219,7 +395,6 @@
     const tick = (ts) => {
       rafId = requestAnimationFrame(tick);
 
-      // Rispetta RMW a meno che non sia forzato da CSS
       const rmwActive = prefersReduced.matches && !ignoreRMW();
       if (autoPaused || rmwActive || document.visibilityState === 'hidden') {
         lastTs = ts;
@@ -235,11 +410,9 @@
       const spd = readSpeed();
       if (spd <= 0) return;
 
-      // Avanza posizione virtuale (float), poi applica al DOM
       virtualX += spd * dt;
       track.scrollLeft = virtualX;
 
-      // Eventuale wrap solo quando “fuori” dal cono visibile + margine
       wrapOffscreenIfNeeded();
     };
 
@@ -250,13 +423,13 @@
         rafId = requestAnimationFrame(tick);
       }
     };
+
     const stopAutoplay  = () => {
       if (rafId) cancelAnimationFrame(rafId);
       rafId = 0;
       setPaused(true);
     };
 
-    // ===== Controls / Input =====
     const behavior = prefersReduced.matches && !ignoreRMW() ? 'auto' : 'smooth';
 
     const scrollByStep = (dir) => {
@@ -282,7 +455,6 @@
       }
     };
 
-    // ===== Drag con soglia + pointer capture tardiva =====
     const onPointerDown = (e) => {
       if (e.button !== 0) return;
       dragging = true;
@@ -290,20 +462,16 @@
       startX = e.clientX;
       startLeft = track.scrollLeft;
 
-      // Pausa soft (non tocco snap globale qui)
       autoPaused = true;
 
-      // Disattivo snap solo per la durata del drag (se era attivo inline)
       dragPrevSnap = track.style.scrollSnapType || '';
       track.style.scrollSnapType = 'none';
-      // NIENTE preventDefault qui: lascia passare i click finché non stai davvero trascinando
     };
 
     const onPointerMove = (e) => {
       if (!dragging) return;
       const dx = e.clientX - startX;
 
-      // Attiva il drag solo oltre la soglia → i link restano cliccabili sui micro-movimenti
       if (!draggingActive && Math.abs(dx) > DRAG_THRESHOLD) {
         draggingActive = true;
         track.classList.add('is-dragging');
@@ -325,24 +493,20 @@
         if (capturedId != null) { try { track.releasePointerCapture(capturedId); } catch(_) {} capturedId = null; }
       }
 
-      // Ripristina lo snap com'era prima del drag (inline)
       track.style.scrollSnapType = dragPrevSnap || '';
       dragPrevSnap = '';
 
-      // Riprendi autoplay al prossimo frame (pausa soft → false)
       requestAnimationFrame(() => { autoPaused = false; });
 
       dragging = false;
       draggingActive = false;
     };
 
-    // ===== Hover soft (pausa senza toccare snap) =====
     const pauseSoft = () => { autoPaused = true; };
     const resumeSoft = () => { autoPaused = false; };
     const onMouseEnter = () => pauseSoft();
     const onMouseLeave = () => resumeSoft();
 
-    // ===== Resize / Reflow =====
     let resizeT;
     const onResize = () => {
       clearTimeout(resizeT);
@@ -355,7 +519,6 @@
       }, 50);
     };
 
-    // ===== Visibility change (hardening) =====
     const onVisibility = () => {
       if (document.hidden) {
         if (rafId) stopAutoplay();
@@ -367,16 +530,17 @@
       }
     };
 
-    // ===== Mount / Unmount =====
     const enableDesktop = () => {
-      if (section.dataset.linksReady === '1') return; 
+      if (section.dataset.linksReady === '1') return;
       section.dataset.linksReady = '1';
-      carousel.dataset.linksReady = '1'; 
+      carousel.dataset.linksReady = '1';
+
+      // Distruggi mobile se attivo
+      destroyMobileCarousel();
 
       forceDesktopStyles();
       buildLoopAdaptive();
 
-      // Bind eventi
       track.addEventListener('keydown', onKey);
       track.addEventListener('wheel', onWheel, { passive: false });
       track.addEventListener('pointerdown', onPointerDown, { passive: false });
@@ -384,16 +548,13 @@
       window.addEventListener('pointerup', onPointerUp, { passive: false });
       window.addEventListener('resize', onResize, { passive: true });
 
-      // Hover = pausa soft / leave = riprendi (senza cambiare snap)
       track.addEventListener('mouseenter', onMouseEnter);
       track.addEventListener('mouseleave', onMouseLeave);
 
-      // Al load delle immagini ricostruiamo e manteniamo lo stato
       track.querySelectorAll('img').forEach(img => {
         img.addEventListener('load', onResize, { passive: true });
       });
 
-      // Pausa quando fuori viewport
       if ('IntersectionObserver' in window) {
         io = new IntersectionObserver((entries) => {
           const e = entries[0];
@@ -407,13 +568,10 @@
         io.observe(section);
       }
 
-      // Visibility
       document.addEventListener('visibilitychange', onVisibility);
 
-      // Avvia autoplay
       startAutoplay();
 
-      // Fade-in + kickstart autoplay (nudge + riallineo virtuale) + watchdog
       requestAnimationFrame(() => {
         track.classList.remove('is-initializing');
         track.classList.add('is-ready');
@@ -424,7 +582,6 @@
         track.scrollLeft = virtualX;
         wrapOffscreenIfNeeded();
 
-        // Watchdog: se dopo 700ms non si è mosso, riavvia il RAF
         setTimeout(() => {
           const after = track.scrollLeft;
           if (Math.abs(after - before) < 1) {
@@ -443,7 +600,6 @@
 
       stopAutoplay();
 
-      // Unbind
       track.removeEventListener('keydown', onKey);
       track.removeEventListener('wheel', onWheel);
       track.removeEventListener('pointerdown', onPointerDown);
@@ -457,7 +613,6 @@
       track.removeEventListener('mouseleave', onMouseLeave);
       document.removeEventListener('visibilitychange', onVisibility);
 
-      // Disconnetti IO
       if (io) { try { io.disconnect(); } catch(_) {} io = null; }
 
       clearDesktopStyles();
@@ -467,15 +622,18 @@
       loopEnabled = false;
     };
 
-    // ===== Attivazione modalità carosello =====
     const handleMQ = () => {
       const hasCards = originals().length > 0;
       if (mqDesktop.matches && hasCards) {
         enableDesktop();
       } else {
         disableDesktop();
+        if (hasCards) {
+          initMobileCarousel();
+        }
       }
     };
+
     let _mqResizeT;
     const onGlobalResize = () => {
       clearTimeout(_mqResizeT);
@@ -483,15 +641,14 @@
     };
     window.addEventListener('resize', onGlobalResize, { passive: true });
 
-    // Avvio + compat vecchie API MQ
     handleMQ();
     if (mqDesktop.addEventListener) mqDesktop.addEventListener('change', handleMQ);
     else if (mqDesktop.addListener) mqDesktop.addListener(handleMQ);
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initLinksLoop, { once: true });
+    document.addEventListener('DOMContentLoaded', initLinksCarousel, { once: true });
   } else {
-    initLinksLoop();
+    initLinksCarousel();
   }
 })();
