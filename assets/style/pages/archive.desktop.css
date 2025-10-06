@@ -90,6 +90,20 @@
   }
   .archive-item.is-content .item::before{ content: none !important; }
 
+  /* Video su desktop: play trasparente che diventa rosso all'hover */
+  .archive-item.is-video .item-thumb::before{
+    background: rgba(0,0,0,0.35); /* trasparente di default */
+    transition: background 220ms ease, box-shadow 220ms ease;
+  }
+  .archive-item.is-video .item-thumb:hover::before{
+    background: rgba(220,38,38,0.9); /* rosso all'hover */
+    box-shadow: 0 0 12px rgba(220,38,38,0.7);
+  }
+  .archive-item.is-video .item-thumb:active::before{
+    background: rgba(185,28,28,0.95);
+    box-shadow: 0 0 20px 4px rgba(239,68,68,0.5);
+  }
+
   /* Spazio inferiore condizionale (se vuoi enfatizzare lâ€™apertura)
      â€“ applicabile se aggiungi una classe .is-open via JS al container
   */
