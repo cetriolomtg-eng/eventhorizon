@@ -249,7 +249,6 @@
 @media (hover: hover){
   .archive-item .item:hover{
     background: rgba(255,255,255,0.08);
-    transform: translateX(4px);
   }
 }
 
@@ -286,8 +285,7 @@
   grid-area: over; margin: 0;
   font-size: clamp(.78rem, .3vw + .72rem, .85rem);
   letter-spacing: var(--trk-wide, 0.04em);
-  opacity: .92;
-  color: rgba(243,242,247,0.75); /* neutral-50 più leggibile */
+  color: rgba(243,242,247,0.82); /* neutral-50 con maggior contrasto */
 }
 .item-title{
   grid-area: title; margin: 0;
@@ -350,15 +348,15 @@
 .item-actions-summary{
   grid-area: title;             /* accanto al titolo (nessuna colonna 'pill') */
   justify-self: end; align-self: start;
-  width: 36px; height: 36px;
-  border-radius: 10px;
+  width: 32px; height: 32px;
+  border-radius: 8px;
   display: inline-flex; align-items: center; justify-content: center;
   cursor: pointer; list-style: none;
   -webkit-tap-highlight-color: transparent; user-select: none; outline: none;
   pointer-events: auto;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.04);
-  color: #fff; /* rende bianco lo chevron (::after) */
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,0.6); /* chevron più tenue */
   transition: background-color 140ms ease, border-color 140ms ease, transform 140ms ease;
 }
 .item-actions-summary::-webkit-details-marker{ display: none; }
@@ -372,9 +370,9 @@
   opacity: 1;
 }
 .item-actions-summary:hover{
-  background: rgba(255,255,255,0.10);
-  border-color: rgba(255,255,255,0.20);
-  transform: scale(1.05);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.85);
+  transform: none;
 }
 .item-actions-summary:focus-visible{
   outline: 2px solid var(--gold-600,#E0A402); outline-offset: 2px;
@@ -391,7 +389,8 @@
   border-radius: 8px;
   background: rgba(255,255,255,0.04);
   border-left: 3px solid var(--indigo-500, #9F7BB8);
-  color: rgba(243,242,247,0.88);
+  color: #fff;
+  font-family: "Open Sans", system-ui, -apple-system, sans-serif;
   line-height: 1.55;
 }
 .item-details .item-desc p{ margin: 0; }
@@ -409,7 +408,7 @@
    Varianti Archivio (is-video / is-content)
    ----------------------- */
 .archive-item.is-video .item-overline{
-  color: #C9B3DA; /* indigo-300 più chiaro per contrasto */
+  color: #D4C2E3; /* indigo più chiaro per miglior contrasto */
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -426,7 +425,7 @@
 }
 
 .archive-item.is-content .item-overline{
-  color: #5DD4D7; /* teal più chiaro per contrasto */
+  color: #6FE0E3; /* teal più chiaro per miglior contrasto */
   font-weight: 600;
   letter-spacing: 0.05em;
 }
@@ -520,7 +519,7 @@
   width: 40px; height: 40px;
   transform: translate(-50%, -50%);
   border-radius: 999px;
-  background: rgba(255,255,255,0.16);
+  background: rgba(211,47,47,0.40); /* YouTube red sempre visibile */
   -webkit-backdrop-filter: blur(6px) saturate(1.2);
   backdrop-filter: blur(6px) saturate(1.2);
   box-shadow: 0 2px 8px rgba(0,0,0,.25) inset, 0 2px 6px rgba(0,0,0,.20);
@@ -537,12 +536,5 @@
   z-index: 2;
   pointer-events: none;
   transform-origin: center;
-}
-
-/* Hover: se il thumbnail è primario su item video, colora il Play di rosso */
-@media (hover:hover){
-  .archive-item.is-video .item-thumb.primary:hover::before{
-    background: rgba(211,47,47,0.40); /* YouTube red, semi-trasparente */
-  }
 }
 

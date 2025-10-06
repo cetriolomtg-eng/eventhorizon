@@ -23,7 +23,7 @@
     grid-template-areas:
       "thumb text chevron"
       "details details details";                 /* dropdown sotto a tutta larghezza */
-    column-gap: 18px;
+    column-gap: 14px;
     row-gap: 12px;
     padding: 10px 12px;
   }
@@ -64,12 +64,18 @@
   /* .item-details display spostato in base */
     /* Pannello: visibilità via [hidden] (senza animazioni) */
   /* Allinea il contenuto del pannello sotto la colonna testo:
-     128px (thumb) + 18px (gap) + 12px (padding orizzontale dell'item) = 158px */
-  .item-panel{ margin-top: 0; padding: 0 12px 8px 158px; }
+     128px (thumb) + 14px (gap) + 12px (padding orizzontale dell'item) = 154px */
+  .item-panel{ margin-top: 0; padding: 0 12px 8px 154px; }
   .item-panel .item-descbar{ margin-bottom: 12px; }
 
   /* Sposta descrizione e pills nella colonna testo */
-  .item-panel .item-summary{ margin: 0; width: 100%; max-width: none; }
+  .item-panel .item-summary{
+    margin: 0;
+    width: 100%;
+    max-width: none;
+    font-family: "Open Sans", system-ui, -apple-system, sans-serif;
+    color: #fff;
+  }
   .item-panel .item-ctas{
     margin-top: 12px;
     display: flex;

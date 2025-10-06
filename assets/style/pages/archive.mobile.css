@@ -41,7 +41,7 @@
   /* Spazio minimo tra testo e chevron '>' dello sheet */
   .item-overline,
   .item-title{
-    padding-inline-end: calc(36px + 6px);
+    padding-inline-end: calc(32px + 6px);
   }
 
   /* Bottone filtro compatto */
@@ -80,7 +80,7 @@
   /* -------- Bottom Sheet (MOBILE) -------- */
   body.is-sheet-open{ overflow: hidden; touch-action: none; }
 
-  /* Cerchio effetto vetro sotto l'icona Play nei thumbnail video */
+  /* Cerchio effetto vetro sotto l'icona Play nei thumbnail video - sempre rosso */
   .archive-item.is-video .item-thumb{ position: relative; }
   .archive-item.is-video .item-thumb::before{
     content: "";
@@ -89,7 +89,7 @@
     width: 36px; height: 36px;
     transform: translate(-50%, -50%);
     border-radius: 999px;
-    background: rgba(255,255,255,0.16);
+    background: rgba(211,47,47,0.40); /* YouTube red sempre visibile */
     -webkit-backdrop-filter: blur(6px) saturate(1.2);
     backdrop-filter: blur(6px) saturate(1.2);
     box-shadow: 0 2px 8px rgba(0,0,0,.25) inset, 0 2px 6px rgba(0,0,0,.20);
@@ -144,8 +144,10 @@
     animation: fadeInContent 300ms cubic-bezier(.2,.8,.2,1) 100ms both;
   }
   .archive-sheet__content .item-summary{
+    font-family: "Open Sans", system-ui, -apple-system, sans-serif;
     font-size: clamp(.88rem, .4vw + .8rem, .95rem);
-    line-height: 1.45; opacity: .95;
+    line-height: 1.45;
+    color: #fff;
   }
   @keyframes fadeInContent{
     from{ opacity: 0; transform: translateY(8px); }
