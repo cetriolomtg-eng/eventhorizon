@@ -1,165 +1,133 @@
-/* =======================
-   Portal - Coerente con Cards
-   ======================= */
-.portal{
-  position: relative;
-  background: var(--neutral-50, #F3F2F7);
-  color: var(--indigo-900, #2F2760);
+/* ============================================================
+   Portal.css
+   ============================================================ */
+.portal {
+  /* Tema sezione (scuro) */
+  --portal-bg: var(--neutral-900, #0E0F1A);
+  --portal-text: var(--neutral-50, #F3F2F7);
+  background: var(--portal-bg);
+  color: var(--portal-text);
   padding: clamp(48px, 8vw, 96px) 0;
-  /* Evita che l'anchor #portal finisca sotto la navbar fissa */
-  scroll-margin-top: 80px;
-  isolation: isolate;
-  overflow: hidden;
-}
 
-/* Background image full-bleed */
-.portal::before{
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 100vw;
-  height: 100%;
-  background-image: url('/images/portal_bg.webp');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 1;
-  z-index: 0;
-  /* Centra lo sfondo rispetto alla viewport */
-  transform: translate3d(-50%, 0, 0);
+  /* Container identico a Cards (4 colonne virtuali) */
+  --card-w: 320px;
+  --grid-gap: 16px;
+  --container-pad-x: var(--container-pad-x, 16px);
+  --container-max: calc(
+    (4 * var(--card-w)) +
+    (3 * var(--grid-gap)) +
+    (2 * var(--container-pad-x, 16px))
+  );
 }
-
+@media (min-width: 480px){
+  .portal{
+    --card-w: 340px;
+    --grid-gap: 20px;
+    --container-max: calc(
+      (4 * var(--card-w)) +
+      (3 * var(--grid-gap)) +
+      (2 * var(--container-pad-x, 16px))
+    );
+  }
+}
+@media (min-width: 1024px){
+  .portal{
+    --card-w: 360px;
+    --grid-gap: 22px;
+    --container-max: calc(
+      (4 * var(--card-w)) +
+      (3 * var(--grid-gap)) +
+      (2 * var(--container-pad-x, 16px))
+    );
+  }
+}
 
 .portal__inner{
-  position: relative;
-  z-index: 2;
-  width: min(100%, var(--container-max, 1200px));
+  width: min(100%, var(--container-max));
   margin-inline: auto;
   padding-inline: var(--container-pad-x, 16px);
   text-align: center;
 }
+
 .portal__title{
-  margin: 0 0 16px;
+  margin: 0 0 12px;
   font-family: var(--font-sans, "Lexend Deca", system-ui, sans-serif);
   font-weight: var(--fw-black, 900);
   font-size: var(--fs-h2, clamp(1.5rem, 1.1vw + 1.2rem, 2rem));
   line-height: var(--lh-tight, 1.15);
-  letter-spacing: -0.02em;
+  color: var(--portal-text);
 }
-/* CTA "Vai all'archivio" - Premium Button Style */
+
+.portal__subtitle{
+  margin: 0 0 24px;
+  font-size: clamp(1rem, 0.5vw + 0.9rem, 1.125rem);
+  line-height: 1.4;
+  opacity: 0.92;
+  color: var(--portal-text);
+}
+
+/* =========================
+   CTA principale (Glass style)
+   ========================= */
 .portal__title a,
 .btn--portal{
-  position: relative;
+  --portal-blur: 14px;
+  --portal-alpha: 0.22;
+  --portal-border: 0.16;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 24px 48px;
-  margin: 32px auto 20px;
-  overflow: hidden;
-
-  /* Premium style come le card */
-  background: linear-gradient(135deg, #FFFEF9 0%, #F5F3ED 100%);
-
-  /* Texture carta sottile */
-  background-image:
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.01) 2px,
-      rgba(0,0,0,0.01) 4px
-    );
-
-  border: 2px solid #C9A961;
-  border-radius: 16px;
-  box-shadow:
-    0 6px 24px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    inset 0 0 0 1px rgba(201, 169, 97, 0.3);
-
-  color: var(--indigo-900, #2F2760);
-  text-decoration: none;
-  font-family: var(--font-sans, "Lexend Deca", system-ui, sans-serif);
-  font-weight: var(--fw-black, 900);
-  font-size: clamp(1.25rem, 2vw + 0.8rem, 1.65rem);
-  line-height: var(--lh-tight, 1.15);
-  letter-spacing: -0.02em;
-
-  cursor: pointer;
-  transition: transform 200ms ease, box-shadow 200ms ease;
-}
-
-/* Bordo interno premium */
-.portal__title a::before,
-.btn--portal::before{
-  content: '';
-  position: absolute;
-  inset: 6px;
-  border: 1px solid rgba(201, 169, 97, 0.2);
+  gap: 8px;
+  padding: 14px 28px;
   border-radius: 12px;
-  pointer-events: none;
-}
 
-/* Riflesso sottile */
-.portal__title a::after,
-.btn--portal::after{
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 40%;
-  background: linear-gradient(180deg,
-    rgba(255, 255, 255, 0.4) 0%,
-    rgba(255, 255, 255, 0) 100%);
-  pointer-events: none;
-  border-radius: 14px 14px 0 0;
+  /* Glassmorphism */
+  background: rgba(91,78,157,var(--portal-alpha));
+  border: 1px solid rgba(255,255,255,var(--portal-border));
+  -webkit-backdrop-filter: blur(var(--portal-blur)) saturate(1.3);
+          backdrop-filter: blur(var(--portal-blur)) saturate(1.3);
+
+  color: #FFFFFF;
+  font-weight: var(--fw-semibold, 600);
+  font-size: clamp(0.95rem, 0.4vw + 0.88rem, 1.05rem);
+  text-decoration: none;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+
+  transition: all 200ms ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .portal__title a:hover,
 .btn--portal:hover{
+  --portal-alpha: 0.32;
+  --portal-border: 0.24;
   transform: translateY(-2px);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    inset 0 0 0 1px rgba(201, 169, 97, 0.4);
-}
-
-.portal__title a:active,
-.btn--portal:active{
-  transform: translateY(0);
-  box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    inset 0 0 0 1px rgba(201, 169, 97, 0.3);
+  box-shadow: 0 6px 20px rgba(91,78,157,0.35);
 }
 
 .portal__title a:focus-visible,
 .btn--portal:focus-visible{
-  outline: 3px solid var(--gold-600, #E0A402);
-  outline-offset: 4px;
-}
-.portal__intro{
-  margin: 0 auto 12px;
-  max-width: 68ch;
-  color: var(--text-800, #22232C);
-  font-size: clamp(1rem, 0.5vw + 0.9rem, 1.15rem);
-  line-height: 1.6;
-  opacity: 0.9;
-}
-.portal__sub{
-  margin: 0 0 8px;
-  font-weight: var(--fw-semibold, 600);
-  letter-spacing: 0.01em;
-  color: var(--indigo-700, #4338ca);
-  font-size: clamp(0.95rem, 0.4vw + 0.85rem, 1.05rem);
+  outline: 2px solid var(--gold-500, #E0A402);
+  outline-offset: 3px;
 }
 
-@media (min-width: 1024px){
-  .portal::before{
-    bottom: 0;
-    height: auto;
+/* Motion safety */
+@media (prefers-reduced-motion: reduce){
+  .portal__title a,
+  .btn--portal{
+    transition: none;
   }
+  .portal__title a:hover,
+  .btn--portal:hover{
+    transform: none;
+  }
+}
+
+/* Icona opzionale nel CTA */
+.btn--portal .icon{
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  vertical-align: middle;
 }
