@@ -234,15 +234,15 @@
   <!-- >>> START PORTAL -->
   <section id="portal" class="portal" aria-labelledby="portal-title">
   <div class="portal__inner">
-    <h2 id="portal-title" class="portal__title">
-      <a href="{{ "/archive/" | absURL }}" aria-label="Vai all'archivio completo">
-        Vai all'archivio
-      </a>
-    </h2>
-    <p class="portal__intro">
-      Naviga tra i nostri contenuti: video, decklist e molto altro.
-    </p>
-    <p class="portal__sub">Viaggia tra le storie che plasmano Magic.</p>
+    <p class="portal__eyebrow">Scopri tutto</p>
+    <h2 id="portal-title" class="portal__title">Archivio completo</h2>
+    <p class="portal__subtitle">Video, decklist, storie che plasmano Magic</p>
+    <a href="{{ "/archive/" | absURL }}" class="btn btn--portal" aria-label="Esplora l'archivio completo">
+      Esplora l'Archivio
+      <svg class="icon icon--arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </a>
   </div>
   </section>
   <!-- <<< END PORTAL --->

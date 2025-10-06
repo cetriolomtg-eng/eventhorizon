@@ -7,7 +7,7 @@
   --portal-text: var(--neutral-50, #F3F2F7);
   background: var(--portal-bg);
   color: var(--portal-text);
-  padding: clamp(48px, 8vw, 96px) 0;
+  padding: clamp(28px, 5vw, 56px) 0;
 
   /* Container identico a Cards (4 colonne virtuali) */
   --card-w: 320px;
@@ -47,10 +47,27 @@
   margin-inline: auto;
   padding-inline: var(--container-pad-x, 16px);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
+/* Eyebrow (sopratitolo) */
+.portal__eyebrow{
+  margin: 0;
+  font-family: var(--font-sans, "Lexend Deca", system-ui, sans-serif);
+  font-size: clamp(0.75rem, 0.3vw + 0.7rem, 0.875rem);
+  font-weight: var(--fw-semibold, 600);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+  color: var(--portal-text);
+}
+
+/* Titolo principale */
 .portal__title{
-  margin: 0 0 12px;
+  margin: 0;
   font-family: var(--font-sans, "Lexend Deca", system-ui, sans-serif);
   font-weight: var(--fw-black, 900);
   font-size: var(--fs-h2, clamp(1.5rem, 1.1vw + 1.2rem, 2rem));
@@ -58,18 +75,19 @@
   color: var(--portal-text);
 }
 
+/* Sottotitolo */
 .portal__subtitle{
-  margin: 0 0 24px;
+  margin: 0 0 16px;
   font-size: clamp(1rem, 0.5vw + 0.9rem, 1.125rem);
   line-height: 1.4;
   opacity: 0.92;
   color: var(--portal-text);
+  max-width: 64ch;
 }
 
 /* =========================
    CTA principale (Glass style)
    ========================= */
-.portal__title a,
 .btn--portal{
   --portal-blur: 14px;
   --portal-alpha: 0.22;
@@ -98,7 +116,6 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.portal__title a:hover,
 .btn--portal:hover{
   --portal-alpha: 0.32;
   --portal-border: 0.24;
@@ -106,7 +123,6 @@
   box-shadow: 0 6px 20px rgba(91,78,157,0.35);
 }
 
-.portal__title a:focus-visible,
 .btn--portal:focus-visible{
   outline: 2px solid var(--gold-500, #E0A402);
   outline-offset: 3px;
@@ -114,20 +130,32 @@
 
 /* Motion safety */
 @media (prefers-reduced-motion: reduce){
-  .portal__title a,
   .btn--portal{
     transition: none;
   }
-  .portal__title a:hover,
   .btn--portal:hover{
     transform: none;
   }
 }
 
-/* Icona opzionale nel CTA */
+/* Icona freccia nel CTA */
 .btn--portal .icon{
   width: 20px;
   height: 20px;
   display: inline-block;
   vertical-align: middle;
+  transition: transform 200ms ease;
+}
+
+.btn--portal:hover .icon--arrow{
+  transform: translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce){
+  .btn--portal .icon{
+    transition: none;
+  }
+  .btn--portal:hover .icon--arrow{
+    transform: none;
+  }
 }
