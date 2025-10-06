@@ -173,6 +173,7 @@
   --portal-alpha: 0.24;
   --portal-border: 0.2;
 
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -183,7 +184,7 @@
 
   /* Glassmorphism potenziato */
   background: rgba(91,78,157,var(--portal-alpha));
-  border: 1px solid rgba(255,255,255,var(--portal-border));
+  border: 1px solid transparent;
   -webkit-backdrop-filter: blur(var(--portal-blur)) saturate(1.4);
           backdrop-filter: blur(var(--portal-blur)) saturate(1.4);
 
@@ -202,6 +203,45 @@
   transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
+  overflow: hidden;
+}
+
+/* Animated gradient border */
+.btn--portal::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  padding: 1px;
+  background: linear-gradient(
+    90deg,
+    #FFFFFF 0%,
+    #D00093 25%,
+    #9F7BB8 50%,
+    #5B4E9D 75%,
+    #FFFFFF 100%
+  );
+  background-size: 200% 100%;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: borderFlow 3s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes borderFlow {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 0%;
+  }
 }
 
 .btn--portal:hover{
@@ -233,6 +273,17 @@
   }
   .btn--portal:hover{
     transform: none;
+  }
+  /* Disabilita animazione border gradient */
+  .btn--portal::before{
+    animation: none;
+    background: linear-gradient(
+      90deg,
+      rgba(255,255,255,0.3) 0%,
+      rgba(159,123,184,0.4) 50%,
+      rgba(255,255,255,0.3) 100%
+    );
+    background-size: 100% 100%;
   }
 }
 
