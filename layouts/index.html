@@ -1,5 +1,5 @@
 {{ define "main" }}
-<main id="home" class="home">
+<main id="main-content" class="home" tabindex="-1">
 
   <!-- >>> START HERO SECTION -->
   <div class="hero-layout">
@@ -96,37 +96,39 @@
         <article class="pager__slide slide-4" id="slide-4"
                  role="group" aria-roledescription="slide"
                  aria-label="Slide 4 di 4: Discord"
-                 data-bg-mobile="{{ "images/subhero/sh3-mobile.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
-                 data-bg-desktop="{{ "images/subhero/sh3-desktop.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}">
+                 data-bg-mobile="{{ "images/subhero/sh4-mobile.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
+                 data-bg-desktop="{{ "images/subhero/sh4-desktop.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}">
           <h2 class="slide__title">RESTIAMO IN CONTATTO</h2>
           <p class="slide__desc">
-            Siamo Vincenzo e Francesco, amici appassionati di Magic: The Gathering, Dungeons &amp; Dragons, giochi da tavolo e videogiochi.
+            Unisciti alla nostra community su Discord!<br>
+            Parliamo di Magic, condividiamo strategie e organizziamo partite insieme.
           </p>
           <div class="slide__cta">
-            <a class="btn btn--teal" 
+            <a class="btn btn--teal"
                target="_blank" rel="noopener noreferrer"
                href="https://discord.com/invite/tQrbzhUa4k">Discord</a>
           </div>
         </article>
 
-              </div>
-            </div>
-
-            <!-- Dots -->
-            <div class="pager__dots" role="tablist" aria-label="Selettore slide">
-              <button class="dot is-active" aria-current="true" aria-controls="slide-1" aria-label="Vai alla slide 1"></button>
-              <button class="dot" aria-controls="slide-2" aria-label="Vai alla slide 2"></button>
-              <button class="dot" aria-controls="slide-3" aria-label="Vai alla slide 3"></button>
-              <button class="dot" aria-controls="slide-4" aria-label="Vai alla slide 4"></button>
-            </div>
-
-            <!-- Frecce (desktop only, nascoste su mobile via CSS/JS) -->
-            <div class="pager__controls glass" aria-hidden="true">
-              <button class="pager__arrow prev" type="button" aria-label="Slide precedente">&lsaquo;</button>
-              <button class="pager__arrow next" type="button" aria-label="Slide successiva">&rsaquo;</button>
-            </div>
           </div>
         </div>
+
+        <!-- Dots -->
+        <div class="pager__dots" role="tablist" aria-label="Selettore slide">
+          <button class="dot is-active" aria-current="true" aria-controls="slide-1" aria-label="Vai alla slide 1"></button>
+          <button class="dot" aria-controls="slide-2" aria-label="Vai alla slide 2"></button>
+          <button class="dot" aria-controls="slide-3" aria-label="Vai alla slide 3"></button>
+          <button class="dot" aria-controls="slide-4" aria-label="Vai alla slide 4"></button>
+        </div>
+
+        <!-- Frecce (desktop only, nascoste su mobile via CSS/JS) -->
+        <div class="pager__controls glass">
+          <button class="pager__arrow prev" type="button" aria-label="Slide precedente">&lsaquo;</button>
+          <button class="pager__arrow next" type="button" aria-label="Slide successiva">&rsaquo;</button>
+        </div>
+
+        <!-- ARIA live region per screen reader -->
+        <div id="carousel-status" class="sr-only" aria-live="polite" aria-atomic="true"></div>
       </div>
     </section>
     <!-- <<< END SUB-HERO -->

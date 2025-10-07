@@ -111,7 +111,7 @@
   });
 })();
 
-/* Hero chevrons: scroll to #portal (mobile only) >>> */
+/* Hero chevrons: scroll to next section (mobile only) >>> */
 (function () {
   const chevrons = document.querySelector('.hero-cta--chevrons');
   if (!chevrons) return;
@@ -124,16 +124,18 @@
   const onChevronClick = (ev) => {
     if (!mqMobile.matches) return;
 
-    // Trova la sezione PORTAL (nuova logica)
-    const target = document.getElementById('portal') || document.querySelector('#portal');
-    if (!target) return; // fallback: lascia il default dell'anchor
+    // Trova la prossima sezione (sub-hero o cards)
+    const target = document.querySelector('.sub-hero, #subhero') ||
+                   document.querySelector('.cards, #cards');
+
+    if (!target) return; // nessuna sezione successiva
 
     ev.preventDefault();
     try {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (_) {
-      // Fallback robusto
-      const y = target.getBoundingClientRect().top + window.pageYOffset;
+      // Fallback robusto per browser senza smooth scroll
+      const y = target.getBoundingClientRect().top + window.pageYOffset - 80;
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
   };

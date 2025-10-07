@@ -178,10 +178,10 @@
     });
   }
 
-  // Altezza viewport = max slide (clamp 200–420)
+  // Altezza viewport = max slide (clamp 240–520 per contenuti più lunghi)
   function measureViewport(){
     const maxH = slides.reduce((m, s) => Math.max(m, s.scrollHeight), 0);
-    const target = Math.max(200, Math.min(420, maxH));
+    const target = Math.max(240, Math.min(520, maxH));
     viewport.style.height = target + 'px';
   }
 
@@ -404,25 +404,36 @@
     document.querySelector('.cards__inner') ||
     document.querySelector('.links__inner');
 
-  // Unifica i ResizeObserver in uno solo per evitare overhead
+  // Unifica i ResizeObserver in uno solo per evitare overhead - OTTIMIZZATO
   if ('ResizeObserver' in window) {
+    // Debounce per evitare troppi aggiornamenti
+    let resizeTimeout = null;
     _alignRO = new ResizeObserver(() => {
-      requestAlign();
-      measureViewport();
-      alignArrows?.();
+      if (resizeTimeout) return;
+      resizeTimeout = setTimeout(() => {
+        resizeTimeout = null;
+        requestAlign();
+        measureViewport();
+        alignArrows?.();
+      }, 150);
     });
 
-    // Osserva tutti gli elementi necessari con un solo observer
+    // Osserva solo container e viewport, non ogni singola slide
     if (refForRO) _alignRO.observe(refForRO);
-    _alignRO.observe(document.documentElement);
-    slides.forEach(s => _alignRO.observe(s));
     _alignRO.observe(viewport);
+    // Osserva documentElement solo per orientamento/zoom
+    _alignRO.observe(document.documentElement);
   } else {
     // Fallback per browser senza ResizeObserver
+    let resizeTimeout = null;
     window.addEventListener('resize', () => {
-      requestAlign();
-      measureViewport();
-      alignArrows?.();
+      if (resizeTimeout) return;
+      resizeTimeout = setTimeout(() => {
+        resizeTimeout = null;
+        requestAlign();
+        measureViewport();
+        alignArrows?.();
+      }, 150);
     });
   }
 
