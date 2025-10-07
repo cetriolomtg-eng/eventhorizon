@@ -1,12 +1,11 @@
 {{/* layouts/partials/scripts.html
      Bundle JS via Hugo Pipes (robusto ai file mancanti)
-     Ordine preservato: script.js → subhero.js → links.js → archive.js
+          Ordine preservato: script.js -> links.js -> archive.js
      Sorgenti attesi in: /assets/scripts/
 */}}
 
 {{- $jsPaths := slice
     "scripts/script.js"
-    "scripts/subhero.js"
     "scripts/links.js"
     "scripts/archive.js"
     "scripts/privacy.js"

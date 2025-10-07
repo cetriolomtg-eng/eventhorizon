@@ -124,11 +124,10 @@
   const onChevronClick = (ev) => {
     if (!mqMobile.matches) return;
 
-    // Trova la prossima sezione (sub-hero o cards)
-    const target = document.querySelector('.sub-hero, #subhero') ||
-                   document.querySelector('.cards, #cards');
+    // Trova la prossima sezione principale da mettere in evidenza
+    const target = document.querySelector('.cards, #cards');
 
-    if (!target) return; // nessuna sezione successiva
+    if (!target) return; // nessuna sezione successiva da raggiungere
 
     ev.preventDefault();
     try {
