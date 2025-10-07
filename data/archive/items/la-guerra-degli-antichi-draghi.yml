@@ -1,0 +1,21 @@
+id: Video01
+slug: Episodio1
+kind: video
+title: LA GUERRA DEGLI ANTICHI DRAGHI
+overline: "LA STORIA DI MAGIC #001"
+desc: La Guerra degli Antichi Draghi, nota anche semplicemente come Guerra dei
+  draghi, fu un conflitto svoltosi sul piano di Dominaria in tempi antichi. La
+  Guerra degli Antichi Draghi che durò per millenni, molto prima della nascita
+  dell'Impero Thran, ed è uno dei primi eventi degli di nota che si è svolto
+  nella storia di Magic the Gathering. La fine della guerra ebbe come vincitori
+  solo pochi esemplari della specie draconica, mentre coloro che non perirono
+  ebbero un destino peggiore della morte.
+tags:
+  - nicolbolas
+  - bolas
+  - ugin
+links:
+  - btn_class: null
+    primary: true
+    label: YouTube
+    href: https://www.youtube.com/watch?v=48gYYFzrB-E
