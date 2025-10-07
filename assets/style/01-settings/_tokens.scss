@@ -338,8 +338,20 @@
 
   /* Component tokens */
   --nav-height: 64px;
-  --hero-min-height: clamp(560px, 70vh, 780px);
-  --hero-backdrop: radial-gradient(circle at 20% 15%, rgba(125, 211, 252, 0.24), transparent 55%), radial-gradient(circle at 80% 0%, rgba(244, 114, 182, 0.25), transparent 60%), linear-gradient(180deg, rgba(5, 9, 18, 0.95) 0%, rgba(5, 9, 18, 0.75) 100%);
+  --hero-min-height: clamp(420px, 75vh, 880px);
+  --hero-padding-block: clamp(3rem, 12vh, 6rem);
+  --hero-padding-inline: clamp(1.25rem, 5vw, 3rem);
+  --hero-backdrop:
+    radial-gradient(circle at 18% 18%, color-mix(in srgb, var(--color-primary-400) 42%, transparent) 0%, transparent 58%),
+    radial-gradient(circle at 82% 12%, color-mix(in srgb, var(--color-secondary-400) 38%, transparent) 0%, transparent 65%),
+    linear-gradient(205deg,
+      color-mix(in srgb, var(--color-primary-900) 96%, transparent) 0%,
+      color-mix(in srgb, var(--color-primary-700) 88%, transparent) 52%,
+      color-mix(in srgb, var(--color-secondary-700) 70%, transparent) 100%);
+  --hero-overlay: linear-gradient(180deg,
+    color-mix(in srgb, var(--color-gray-950) 94%, transparent) 0%,
+    color-mix(in srgb, var(--color-gray-950) 70%, transparent) 55%,
+    color-mix(in srgb, var(--color-gray-950) 94%, transparent) 100%);
   --archive-sheet-max: 480px;
 
   /* Legacy aliases kept for scripts/templates */

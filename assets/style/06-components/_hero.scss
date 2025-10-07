@@ -6,17 +6,17 @@
 .hero {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  padding: clamp(48px, 8vw, 80px) clamp(16px, 4vw, 24px);
+  padding-block: var(--hero-padding-block);
+  padding-inline: var(--hero-padding-inline);
   gap: var(--space-md);
   isolation: isolate;
-  min-height: 400px;
-  max-height: 700px;
+  min-height: min(100vh, var(--hero-min-height));
   width: 100%;
-  background:
-    linear-gradient(180deg, var(--color-gray-950) 0%, rgba(0,0,0,0) 86.57%),
-    linear-gradient(195deg, var(--color-primary-700) 10.69%, var(--color-primary-500) 61.97%, var(--color-accent-300) 99.1%);
+  background: var(--hero-backdrop);
+  background-color: var(--color-gray-950);
+  background-repeat: no-repeat;
   position: relative;
 }
 
@@ -28,7 +28,7 @@
   z-index: -1;
   
   background-image: 
-    linear-gradient(180deg, rgba(25, 26, 35, 0.8) 0%, rgba(25, 26, 35, 0.4) 50%, rgba(25, 26, 35, 0.9) 100%),
+    var(--hero-overlay),
     var(--hero-bg-url, url('/images/bg_image.webp'));
     
   background-size: cover;
@@ -97,33 +97,33 @@
 
 @media (max-width: 900px) {
   .hero {
-    padding: clamp(32px, 6vw, 48px) clamp(8px, 2vw, 16px);
-    min-height: 320px;
-    max-height: 500px;
+    padding-block: clamp(2.5rem, 10vh, 4rem);
+    padding-inline: clamp(1rem, 6vw, 1.75rem);
+    min-height: clamp(360px, 78vh, 700px);
   }
   .hero__inner {
-    max-width: 98vw;
-    gap: var(--space-md);
+    max-width: min(94vw, 720px);
+    gap: var(--space-6);
   }
   .hero__title {
-    font-size: clamp(1.5rem, 5vw, 2rem);
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
   }
 }
 
 @media (max-width: 600px) {
   .hero {
-    padding: clamp(16px, 4vw, 24px) clamp(4px, 2vw, 8px);
-    min-height: 220px;
-    max-height: 320px;
+    padding-block: clamp(2rem, 14vh, 3rem);
+    padding-inline: clamp(0.75rem, 6vw, 1.25rem);
+    min-height: clamp(280px, 88vh, 480px);
   }
   .hero__inner {
-    gap: var(--space-sm);
+    gap: var(--space-4);
   }
   .hero__logo {
     width: 72px;
     height: 72px;
   }
   .hero__title {
-    font-size: clamp(1.125rem, 6vw, 1.5rem);
+    font-size: clamp(1.375rem, 7vw, 1.875rem);
   }
 }
