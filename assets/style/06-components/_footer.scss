@@ -1,7 +1,35 @@
+/* ==========================================
+   FOOTER - EventHorizon.mtg 2.0
+   Clean, accessible footer with legal info
+   ========================================== */
+
 .site-footer {
-  background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg) 100%);
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    var(--color-surface) 0%,
+    var(--color-bg) 100%
+  );
   border-top: 1px solid var(--color-border);
-  padding-block: var(--space-8);
+  padding-block: var(--space-10) var(--space-8);
+  margin-block-start: var(--space-16);
+
+  /* Subtle shadow for depth */
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Decorative top line */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(200px, 40%);
+  height: 2px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-full);
+  opacity: 0.6;
 }
 
 .site-footer__inner {
@@ -9,21 +37,33 @@
   max-width: var(--container-max);
   margin-inline: auto;
   padding-inline: var(--container-padding);
+  display: grid;
+  gap: var(--space-4);
+  text-align: center;
 }
 
 .site-footer__disclaimer {
   display: block;
   line-height: 1.8;
   color: var(--color-text-muted);
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
+  max-width: 72ch;
+  margin-inline: auto;
+
+  /* Subtle fade effect */
+  opacity: 0.9;
 }
 
 .site-footer__disclaimer a,
 .privacy-link {
+  position: relative;
   color: var(--color-primary);
+  font-weight: 500;
   text-decoration: underline;
   text-decoration-thickness: 0.1em;
-  text-underline-offset: 0.18em;
+  text-underline-offset: 0.2em;
+  text-decoration-color: var(--color-primary-soft);
+  transition: var(--transition-colors);
 }
 
 .site-footer__disclaimer a:hover,
@@ -31,4 +71,41 @@
 .privacy-link:hover,
 .privacy-link:focus-visible {
   color: var(--color-secondary);
+  text-decoration-color: var(--color-secondary);
+}
+
+.privacy-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  margin-block-start: var(--space-2);
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+
+  /* Focus styles */
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: var(--transition-all);
+}
+
+.privacy-link:hover,
+.privacy-link:focus-visible {
+  background: var(--color-surface-hover);
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.privacy-link:focus-visible {
+  outline-color: var(--color-primary);
+}
+
+/* Tablet and up: horizontal layout */
+@media (min-width: 48rem) {
+  .site-footer__disclaimer {
+    font-size: var(--text-sm);
+  }
 }
