@@ -85,6 +85,7 @@
   color: var(--color-white);
   letter-spacing: 0.02em;
   text-shadow: var(--shadow-soft);
+  margin-bottom: var(--space-2);
 }
 
 .hero__subtitle {
@@ -95,6 +96,7 @@
   text-align: center;
   color: var(--color-text-soft);
   text-shadow: var(--shadow-sm);
+  margin-bottom: 0;
 }
 
 
