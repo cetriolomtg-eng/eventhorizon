@@ -1,103 +1,62 @@
-/* ============================================================
-   Font Loading
-   ============================================================
-   Self-hosted fonts optimized for performance
-   Load order: Display fonts → Body fonts → Italic variants
-   ============================================================ */
-
-/* ========================================
-   Display Fonts (Critical for hero/titles)
-   ======================================== */
-
 @font-face {
-  font-family: 'Lexend Giga';
-  src: url('/fonts/LexendGiga-Regular.woff2') format('woff2'),
-       url('/fonts/LexendGiga-Regular.woff') format('woff');
-  font-weight: 400;
+  font-family: "Lexend";
   font-style: normal;
+  font-weight: 400;
   font-display: swap;
+  src: url("/fonts/Lexend-Regular.woff2") format("woff2"),
+       url("/fonts/Lexend-Regular.woff") format("woff");
 }
 
 @font-face {
-  font-family: 'Lexend Deca';
-  src: url('/fonts/LexendDeca-Regular.woff2') format('woff2'),
-       url('/fonts/LexendDeca-Regular.woff') format('woff');
-  font-weight: 400;
+  font-family: "LexendDeca";
   font-style: normal;
+  font-weight: 400;
   font-display: swap;
+  src: url("/fonts/LexendDeca-Regular.woff2") format("woff2"),
+       url("/fonts/LexendDeca-Regular.woff") format("woff");
 }
 
 @font-face {
-  font-family: 'Lexend';
-  src: url('/fonts/Lexend-Regular.woff2') format('woff2'),
-       url('/fonts/Lexend-Regular.woff') format('woff');
-  font-weight: 400;
+  font-family: "LexendGiga";
   font-style: normal;
-  font-display: swap;
-}
-
-/* ========================================
-   Body Fonts (Regular weight)
-   ======================================== */
-
-@font-face {
-  font-family: 'Roboto';
-  src: url('/fonts/Roboto-Regular.woff2') format('woff2'),
-       url('/fonts/Roboto-Regular.woff') format('woff');
   font-weight: 400;
-  font-style: normal;
   font-display: swap;
+  src: url("/fonts/LexendGiga-Regular.woff2") format("woff2"),
+       url("/fonts/LexendGiga-Regular.woff") format("woff");
 }
 
 @font-face {
-  font-family: 'Merriweather';
-  src: url('/fonts/Merriweather-Light.woff2') format('woff2'),
-       url('/fonts/Merriweather-Light.woff') format('woff');
+  font-family: "Merriweather";
+  font-style: normal;
   font-weight: 300;
-  font-style: normal;
   font-display: swap;
+  src: url("/fonts/Merriweather-Light.woff2") format("woff2"),
+       url("/fonts/Merriweather-Light.woff") format("woff");
 }
 
-/* ========================================
-   Italic Variants
-   ======================================== */
-
 @font-face {
-  font-family: 'Roboto';
-  src: url('/fonts/Roboto-Italic.woff2') format('woff2'),
-       url('/fonts/Roboto-Italic.woff') format('woff');
-  font-weight: 400;
+  font-family: "Merriweather";
   font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Merriweather';
-  src: url('/fonts/Merriweather-LightItalic.woff2') format('woff2'),
-       url('/fonts/Merriweather-LightItalic.woff') format('woff');
   font-weight: 300;
-  font-style: italic;
   font-display: swap;
+  src: url("/fonts/Merriweather-LightItalic.woff2") format("woff2"),
+       url("/fonts/Merriweather-LightItalic.woff") format("woff");
 }
 
-/* ========================================
-   OpenSans Font (if needed)
-   ======================================== */
-
 @font-face {
-  font-family: 'Open Sans';
-  src: url('/fonts/OpenSans-Regular.woff2') format('woff2'),
-       url('/fonts/OpenSans-Regular.woff') format('woff');
-  font-weight: 400;
+  font-family: "Roboto";
   font-style: normal;
+  font-weight: 400;
   font-display: swap;
+  src: url("/fonts/Roboto-Regular.woff2") format("woff2"),
+       url("/fonts/Roboto-Regular.woff") format("woff");
 }
 
 @font-face {
-  font-family: 'Open Sans';
-  src: url('/fonts/OpenSans-Italic.woff2') format('woff2'),
-       url('/fonts/OpenSans-Italic.woff') format('woff');
-  font-weight: 400;
+  font-family: "Roboto";
   font-style: italic;
+  font-weight: 400;
   font-display: swap;
+  src: url("/fonts/Roboto-Italic.woff2") format("woff2"),
+       url("/fonts/Roboto-Italic.woff") format("woff");
 }

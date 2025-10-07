@@ -1,25 +1,25 @@
-<header class="c-navbar" id="site-nav">
-  <div class="c-navbar__inner o-container">
-    <a class="c-navbar__brand" href="{{ "/" | absURL }}" aria-label="Home">
-      <span class="c-navbar__brand-name">{{ .Site.Title }}</span>
+<header class="nav glass-nav" id="site-nav">
+  <div class="nav__inner">
+    <a class="brand" href="{{ "/" | absURL }}" aria-label="Home">
+      <span class="brand__name">{{ .Site.Title }}</span>
     </a>
 
-    <button class="c-navbar__toggle" aria-label="Apri menu" aria-expanded="false">
-      <span class="c-navbar__toggle-bar"></span>
-      <span class="c-navbar__toggle-bar"></span>
-      <span class="c-navbar__toggle-bar"></span>
+    <button class="nav__toggle" aria-label="Apri menu" aria-expanded="false">
+      <span class="nav__toggle-bar"></span>
+      <span class="nav__toggle-bar"></span>
+      <span class="nav__toggle-bar"></span>
     </button>
 
     <!-- Menu: collassato su mobile/tablet, esteso su desktop -->
-    <nav class="c-navbar__menu" aria-label="Navigazione principale">
-      <ul class="c-navbar__list">
-        <li class="c-navbar__item">
-          <a class="c-navbar__link" href="{{ "archive/" | absURL }}">Archivio</a>
+    <nav class="nav__menu" aria-label="Navigazione principale">
+      <ul class="nav__list">
+        <li class="nav__item">
+          <a class="nav__link" href="{{ "archive/" | absURL }}">Archivio</a>
         </li>
       </ul>
-      <ul class="c-navbar__list">
-        <li class="c-navbar__item">
-          <a class="c-navbar__link" href="{{ "/" | absURL }}#contacts">Contatti</a>
+      <ul class="nav__list">
+        <li class="nav__item">
+          <a class="nav__link" href="{{ "/" | absURL }}#contacts">Contatti</a>
         </li>
       </ul>
     </nav>

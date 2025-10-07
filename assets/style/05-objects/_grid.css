@@ -1,91 +1,29 @@
-/* ============================================================
-   Grid Objects
-   ============================================================
-   Flexible grid system for layout composition
-   ============================================================ */
-
-.o-grid {
+.grid {
   display: grid;
-  gap: var(--space-6);
-}
-
-.o-grid--sm {
   gap: var(--space-4);
 }
 
-.o-grid--lg {
-  gap: var(--space-8);
+.grid--2 {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
-/* Auto-fit responsive grid */
-.o-grid--auto {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-.o-grid--auto-sm {
+.grid--3 {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
-.o-grid--auto-lg {
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-}
-
-/* Explicit column grids */
-.o-grid--2-col {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.o-grid--3-col {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.o-grid--4-col {
-  grid-template-columns: repeat(4, 1fr);
-}
-
-/* Responsive column breakpoints */
-@media (max-width: 768px) {
-  .o-grid--2-col,
-  .o-grid--3-col,
-  .o-grid--4-col {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1023px) {
-  .o-grid--3-col,
-  .o-grid--4-col {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Flexbox alternative */
-.o-flex {
+.stack {
   display: flex;
-  gap: var(--space-6);
-}
-
-.o-flex--wrap {
-  flex-wrap: wrap;
-}
-
-.o-flex--column {
   flex-direction: column;
+  gap: var(--space-3);
 }
 
-.o-flex--center {
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
   align-items: center;
-  justify-content: center;
 }
 
-.o-flex--between {
-  justify-content: space-between;
-}
-
-.o-flex--start {
-  align-items: flex-start;
-}
-
-.o-flex--end {
-  align-items: flex-end;
+.flow > * + * {
+  margin-top: var(--space-3);
 }

@@ -1,118 +1,133 @@
-/* ============================================================
-   Base Element Styles
-   ============================================================
-   Styling for base HTML elements
-   ============================================================ */
-
-/* ========================================
-   Typography Elements
-   ======================================== */
-
-h1 {
-  font-family: var(--font-display);
-  font-size: var(--font-size-h1);
-  font-weight: var(--font-weight-bold);
-  line-height: var(--line-height-tight);
-  letter-spacing: var(--letter-spacing-tight-lg);
+:root {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  line-height: var(--leading-normal);
 }
 
-h2 {
-  font-family: var(--font-sans);
-  font-size: var(--font-size-h2);
-  font-weight: var(--font-weight-black);
-  line-height: var(--line-height-tight);
-  letter-spacing: var(--letter-spacing-tight);
+body {
+  background: radial-gradient(circle at 20% 20%, rgba(102, 247, 255, 0.08), transparent 55%),
+              radial-gradient(circle at 80% 10%, rgba(255, 92, 194, 0.06), transparent 50%),
+              var(--color-bg);
+  color: var(--color-text);
+  font-size: var(--text-base);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-h3 {
-  font-family: var(--font-sans);
-  font-size: var(--font-size-h3);
-  font-weight: var(--font-weight-bold);
-  line-height: var(--line-height-snug);
-  letter-spacing: var(--letter-spacing-slight);
+main {
+  flex: 1 0 auto;
+  width: 100%;
+  overflow-x: clip;
 }
 
-h4 {
-  font-family: var(--font-sans);
-  font-size: var(--font-size-h4);
-  font-weight: var(--font-weight-semibold);
-  line-height: var(--line-height-snug);
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast), opacity var(--transition-fast);
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--color-primary);
 }
 
 p {
-  font-family: var(--font-body);
-  font-size: var(--font-size-body);
-  line-height: var(--line-height-normal);
+  margin-bottom: var(--space-4);
+  color: var(--color-text-soft);
+  max-width: 68ch;
 }
 
-/* ========================================
-   Links
-   ======================================== */
-
-a {
-  transition: color var(--duration-fast) var(--easing-standard);
+strong {
+  color: var(--color-primary);
 }
 
-a:hover {
-  text-decoration: underline;
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--color-text);
 }
 
-/* ========================================
-   Main Layout Elements
-   ======================================== */
-
-main {
-  display: block;
-  min-height: 100vh;
+h1 {
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
 }
 
-section {
-  display: block;
+h2 {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
 }
 
-/* ========================================
-   Form Elements
-   ======================================== */
-
-input,
-textarea,
-select {
-  border: 1px solid var(--color-neutral-50);
-  border-radius: var(--radius-md);
-  padding: var(--space-3) var(--space-4);
-  transition: border-color var(--duration-fast) var(--easing-standard);
+h3 {
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: var(--color-accent-primary);
+h4 {
+  font-size: var(--text-lg);
 }
 
-/* ========================================
-   Code Elements
-   ======================================== */
+small {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
 
 code,
 pre {
-  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-  font-size: 0.9em;
-}
-
-code {
-  background: var(--color-surface-1);
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-sm);
+  font-family: ui-monospace, SFMono-Regular, SFMono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.95em;
 }
 
 pre {
-  background: var(--color-surface-1);
-  padding: var(--space-4);
-  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--app-radius-sm);
   overflow-x: auto;
 }
 
-pre code {
-  background: transparent;
+hr {
+  margin: var(--space-6) 0;
+  border: 0;
+  height: 1px;
+  background: var(--color-border);
+}
+
+button:focus-visible,
+[tabindex]:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
   padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.17);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
 }

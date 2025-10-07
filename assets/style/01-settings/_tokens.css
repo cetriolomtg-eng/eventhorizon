@@ -1,196 +1,96 @@
-/* ============================================================
-   Design Tokens
-   ============================================================
-   Global design tokens following a systematic approach
-   Organized by: Colors → Typography → Spacing → Shadows → Motion
-   ============================================================ */
-
 :root {
-  /* ========================================
-     Color System
-     ======================================== */
-  
-  /* Base color palette */
-  --color-indigo-900: #2F2760;
-  --color-indigo-700: #5B4E9D;
-  --color-indigo-600: #4A3F81;
-  --color-indigo-500: #9F7BB8;
-  
-  --color-neutral-00: #FFFFFF;
-  --color-neutral-50: #F3F2F7;
-  --color-neutral-900: #0E0F1A;
-  
-  --color-teal-300: #00ADB1;
-  --color-teal-600: #007A7C;
-  --color-teal-700: #006668;
-  
-  --color-gold-500: #E0A402;
-  --color-gold-600: #E0A402;
-  --color-gold-700: #A37500;
-  
-  --color-pink-600: #D00093;
-  --color-pink-700: #B3007F;
-  
-  --color-orange-500: #FE771D;
-  --color-orange-600: #DB6A1A;
-  
-  --color-acid-600: #5CC800;
-  --color-acid-hover: #EC3DE6;
-  
-  /* Semantic color tokens */
-  --color-bg-primary: var(--color-neutral-00);
-  --color-bg-secondary: var(--color-neutral-50);
-  --color-bg-dark: var(--color-neutral-900);
-  
-  --color-text-primary: var(--color-neutral-900);
-  --color-text-secondary: #4A4A5E;
-  --color-text-on-dark: var(--color-neutral-00);
-  
-  --color-surface-0: #FFFFFF;
-  --color-surface-1: #F9F9FB;
-  
-  --color-accent-primary: var(--color-teal-600);
-  --color-accent-secondary: var(--color-gold-600);
-  
-  /* ========================================
-     Typography System
-     ======================================== */
-  
-  /* Font stacks */
-  --font-sans: "Lexend Deca", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Lexend Giga", var(--font-sans);
-  --font-body: "Roboto", var(--font-sans);
-  --font-serif: "Merriweather", Georgia, serif;
-  
-  /* Font sizes (fluid typography) */
-  --font-size-h1: clamp(2rem, 4.5vw + 0.3rem, 3.25rem);
-  --font-size-h2: clamp(1.5rem, 2.8vw + 0.25rem, 2.25rem);
-  --font-size-h3: clamp(1.25rem, 2vw + 0.2rem, 1.75rem);
-  --font-size-h4: clamp(1.125rem, 1.5vw + 0.15rem, 1.5rem);
-  --font-size-body: clamp(1rem, 0.5vw + 0.9rem, 1.125rem);
-  --font-size-small: clamp(0.875rem, 0.3vw + 0.8rem, 1rem);
-  --font-size-xs: 0.75rem;
-  
-  /* Font weights */
-  --font-weight-light: 300;
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-  --font-weight-black: 800;
-  
+  color-scheme: dark;
+
+  /* Layout */
+  --app-max-width: 1200px;
+  --app-gutter: clamp(1.2rem, 3vw, 2.5rem);
+  --app-radius-xs: 0.375rem;
+  --app-radius-sm: 0.5rem;
+  --app-radius-md: 0.875rem;
+  --app-radius-lg: 1.5rem;
+  --app-radius-pill: 999px;
+
+  /* Typography */
+  --font-sans: "Lexend", "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-alt: "LexendDeca", "Roboto", sans-serif;
+  --font-display: "LexendGiga", "Lexend", "Roboto", sans-serif;
+  --font-serif: "Merriweather", "Georgia", serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: clamp(1.3rem, 1vw + 1.2rem, 1.6rem);
+  --text-xl: clamp(1.6rem, 1.3vw + 1.4rem, 2rem);
+  --text-2xl: clamp(2.1rem, 2vw + 1.6rem, 2.7rem);
+  --text-3xl: clamp(2.8rem, 3vw + 2rem, 3.8rem);
+
   /* Line heights */
-  --line-height-tight: 1.15;
-  --line-height-snug: 1.25;
-  --line-height-normal: 1.45;
-  --line-height-relaxed: 1.6;
-  
-  /* Letter spacing */
-  --letter-spacing-tight: -0.4px;
-  --letter-spacing-tight-lg: -0.6px;
-  --letter-spacing-slight: -0.2px;
-  --letter-spacing-normal: 0;
-  --letter-spacing-wide: 0.04em;
-  
-  /* ========================================
-     Spacing System
-     ======================================== */
-  
-  /* Base spacing scale (4pt grid) */
-  --space-1: 0.25rem;   /* 4px */
-  --space-2: 0.5rem;    /* 8px */
-  --space-3: 0.75rem;   /* 12px */
-  --space-4: 1rem;      /* 16px */
-  --space-5: 1.25rem;   /* 20px */
-  --space-6: 1.5rem;    /* 24px */
-  --space-8: 2rem;      /* 32px */
-  --space-10: 2.5rem;   /* 40px */
-  --space-12: 3rem;     /* 48px */
-  --space-16: 4rem;     /* 64px */
-  --space-20: 5rem;     /* 80px */
-  --space-24: 6rem;     /* 96px */
-  
-  /* Fluid section spacing */
-  --space-section-xs: clamp(2rem, 5vw, 3.5rem);
-  --space-section-sm: clamp(3rem, 7vw, 5rem);
-  --space-section-md: clamp(4rem, 9vw, 6.5rem);
-  --space-section-lg: clamp(5rem, 11vw, 8rem);
-  
-  /* Container system */
-  --container-max-width: 1200px;
-  --container-padding-x: clamp(1rem, 4vw, 2rem);
-  
-  /* ========================================
-     Visual Effects
-     ======================================== */
-  
-  /* Border radius */
-  --radius-sm: 0.25rem;   /* 4px */
-  --radius-md: 0.5rem;    /* 8px */
-  --radius-lg: 0.75rem;   /* 12px */
-  --radius-xl: 1rem;      /* 16px */
-  --radius-full: 50%;
-  
+  --leading-tight: 1.15;
+  --leading-snug: 1.3;
+  --leading-normal: 1.55;
+
+  /* Spacing scale */
+  --space-0: 0;
+  --space-1: 0.375rem;
+  --space-2: 0.625rem;
+  --space-3: 0.875rem;
+  --space-4: 1.25rem;
+  --space-5: 1.75rem;
+  --space-6: 2.25rem;
+  --space-7: clamp(2.75rem, 4vw, 3.75rem);
+  --space-8: clamp(3.5rem, 5vw, 5rem);
+
+  /* Colors */
+  --color-bg: #05060f;
+  --color-surface: #0d101f;
+  --color-surface-elevated: rgba(22, 26, 44, 0.9);
+  --color-surface-soft: rgba(33, 41, 71, 0.65);
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.15);
+  --color-overlay: rgba(6, 8, 17, 0.82);
+
+  --color-text: #f5f7ff;
+  --color-text-soft: rgba(241, 243, 255, 0.7);
+  --color-text-muted: rgba(241, 243, 255, 0.52);
+  --color-text-invert: #05060f;
+
+  --color-primary: #66f7ff;
+  --color-primary-strong: #4cd7ff;
+  --color-primary-soft: rgba(102, 247, 255, 0.18);
+  --color-accent: #ff5cc2;
+  --color-gold: #f6c55f;
+  --color-danger: #ff6b6b;
+  --color-disabled: rgba(255, 255, 255, 0.22);
+
   /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-  --shadow-nav: 0 8px 20px rgba(0, 0, 0, 0.16);
-  --shadow-nav-strong: 0 12px 28px rgba(0, 0, 0, 0.22);
-  
-  /* ========================================
-     Motion System
-     ======================================== */
-  
-  /* Duration */
-  --duration-fast: 140ms;
-  --duration-normal: 180ms;
-  --duration-slow: 240ms;
-  --duration-slower: 320ms;
-  
-  /* Easing curves */
-  --easing-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --easing-accelerate: cubic-bezier(0.4, 0, 1, 1);
-  --easing-decelerate: cubic-bezier(0, 0, 0.2, 1);
-  
-  /* ========================================
-     Z-index Scale
-     ======================================== */
-  --z-index-dropdown: 1000;
-  --z-index-sticky: 1020;
-  --z-index-fixed: 1030;
-  --z-index-modal-backdrop: 1040;
-  --z-index-modal: 1050;
-  --z-index-popover: 1060;
-  --z-index-tooltip: 1070;
-  
-  /* Component-specific z-indexes */
-  --z-index-navbar: var(--z-index-fixed);
-  --z-index-hero-bg: 1;
-  --z-index-hero-content: 2;
+  --shadow-soft: 0 18px 38px rgba(4, 7, 20, 0.35);
+  --shadow-elevated: 0 24px 60px rgba(4, 7, 22, 0.45);
+
+  /* Blur */
+  --blur-nav: 32px;
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-smooth: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --transition-base: 220ms var(--ease-standard);
+  --transition-fast: 160ms var(--ease-standard);
+  --transition-slow: 360ms var(--ease-smooth);
+
+  /* Component specific */
+  --nav-height: 68px;
+  --hero-min-height: clamp(620px, 70vh, 780px);
+  --archive-sheet-max: 480px;
 }
 
-/* ========================================
-   Responsive breakpoint tokens
-   ======================================== */
-
-/* Media query tokens (use in @media rules) */
-:root {
-  --breakpoint-sm: 480px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-  --breakpoint-xl: 1280px;
-}
-
-/* Container max-width adjustments per breakpoint */
-@media (min-width: 1024px) {
+@media (min-width: 48rem) {
   :root {
-    --container-max-width: 1200px;
-  }
-}
-
-@media (min-width: 1280px) {
-  :root {
-    --container-max-width: 1320px;
+    --nav-height: 76px;
+    --space-1: 0.5rem;
+    --space-2: 0.75rem;
+    --space-3: 1rem;
+    --space-4: 1.5rem;
+    --space-5: 2rem;
+    --space-6: 2.75rem;
   }
 }

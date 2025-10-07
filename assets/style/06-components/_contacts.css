@@ -1,258 +1,116 @@
-/* ============================================================
-   Contacts Component
-   ============================================================
-   Contact section with social media links and contact information
-   ============================================================ */
-
-/* ========================================
-   Contacts section
-   ======================================== */
-
 .c-contacts {
-  background: var(--color-bg-secondary);
-  color: var(--color-indigo-900);
-  padding: var(--space-section-sm) 0;
-}
-
-.c-contacts__inner {
-  width: min(100%, var(--container-max-width));
-  margin-inline: auto;
-  padding-inline: var(--container-padding-x);
+  padding-block: calc(var(--space-8) * 0.85);
+  background: linear-gradient(180deg, rgba(5, 6, 15, 0) 0%, rgba(5, 6, 15, 0.85) 85%);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .c-contacts__grid {
   display: grid;
-  gap: clamp(20px, 5vw, 32px);
-  justify-items: center;
-  text-align: center;
-}
-
-/* ========================================
-   Contacts content
-   ======================================== */
-
-.c-contacts__content {
-  display: grid;
-  gap: var(--space-3);
+  gap: var(--space-5);
 }
 
 .c-contacts__title {
-  font-family: var(--font-sans);
-  font-size: var(--font-size-h2);
-  font-weight: var(--font-weight-black);
-  line-height: var(--line-height-tight);
-  color: var(--color-text-primary);
-  margin: 0 0 var(--space-2);
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-2);
 }
 
 .c-contacts__intro {
-  max-width: 68ch;
-  font-size: var(--font-size-body);
-  line-height: var(--line-height-normal);
-  color: var(--color-text-secondary);
-  margin: 0 auto;
+  color: var(--color-text-soft);
 }
 
-.c-contacts__subtitle {
-  font-size: var(--font-size-body);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: var(--letter-spacing-slight);
-  color: var(--color-text-primary);
-  margin: var(--space-3) 0 var(--space-4);
+.c-contacts__sub {
+  font-family: var(--font-alt);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--color-primary);
+  margin-top: var(--space-3);
 }
 
-/* ========================================
-   Social media links
-   ======================================== */
-
-.c-contacts__social {
-  display: grid;
-  gap: clamp(16px, 4vw, 24px);
-  justify-items: center;
-}
-
-.c-contacts__social-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
-  gap: var(--space-4);
-  max-width: 400px;
-  width: 100%;
-}
-
-.c-contacts__social-item {
+.c-contacts__actions {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
 }
 
-.c-contacts__social-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--color-surface-0);
-  color: var(--color-text-secondary);
-  text-decoration: none;
-  box-shadow: var(--shadow-sm);
-  transition: 
-    transform var(--duration-fast) var(--easing-standard),
-    box-shadow var(--duration-fast) var(--easing-standard),
-    background-color var(--duration-fast) var(--easing-standard);
-}
-
-.c-contacts__social-link:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  background: var(--color-accent-primary);
-  color: var(--color-text-on-dark);
-}
-
-.c-contacts__social-link:focus-visible {
-  outline: 2px solid var(--color-accent-primary);
-  outline-offset: 2px;
-}
-
-.c-contacts__social-icon {
-  width: 20px;
-  height: 20px;
-  fill: currentColor;
-}
-
-/* ========================================
-   Contact form or additional info
-   ======================================== */
-
-.c-contacts__form {
-  max-width: 500px;
-  width: 100%;
-  display: grid;
-  gap: var(--space-4);
-}
-
-.c-contacts__field {
-  display: grid;
+.c-contacts__list {
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-2);
 }
 
-.c-contacts__label {
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-primary);
-  font-size: var(--font-size-small);
+.c-contact {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--app-radius-pill);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
 }
 
-.c-contacts__input,
-.c-contacts__textarea {
-  padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--color-neutral-50);
-  border-radius: var(--radius-md);
-  font-family: var(--font-body);
-  font-size: var(--font-size-body);
-  background: var(--color-surface-0);
-  transition: border-color var(--duration-fast) var(--easing-standard);
+.c-contact:hover,
+.c-contact:focus-visible {
+  transform: translateY(-3px);
+  background: rgba(102, 247, 255, 0.1);
+  border-color: rgba(102, 247, 255, 0.4);
 }
 
-.c-contacts__input:focus,
-.c-contacts__textarea:focus {
-  border-color: var(--color-accent-primary);
-  outline: none;
+.c-contact__icon {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  background: var(--color-text);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
 }
 
-.c-contacts__textarea {
-  min-height: 120px;
-  resize: vertical;
+.icon-tiktok {
+  mask-image: url("/icons/tiktok.svg");
 }
 
-.c-contacts__submit {
-  padding: var(--space-3) var(--space-6);
-  background: var(--color-accent-primary);
-  color: var(--color-text-on-dark);
-  border: none;
-  border-radius: var(--radius-md);
-  font-weight: var(--font-weight-medium);
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--easing-standard);
+.icon-instagram {
+  mask-image: url("/icons/instagram.svg");
 }
 
-.c-contacts__submit:hover {
-  background: var(--color-teal-700);
+.icon-youtube {
+  mask-image: url("/icons/youtube.svg");
 }
 
-.c-contacts__submit:focus-visible {
-  outline: 2px solid var(--color-accent-primary);
-  outline-offset: 2px;
+.icon-telegram {
+  mask-image: url("/icons/telegram.svg");
 }
 
-/* ========================================
-   Social platform specific colors
-   ======================================== */
-
-.c-contacts__social-link--discord:hover {
-  background: #5865F2;
+.icon-discord {
+  mask-image: url("/icons/discord.svg");
 }
 
-.c-contacts__social-link--instagram:hover {
-  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+.icon-mail {
+  mask-image: url("/icons/mail.svg");
 }
 
-.c-contacts__social-link--youtube:hover {
-  background: #FF0000;
+.c-contact--mail {
+  width: 58px;
+  height: 58px;
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.c-contacts__social-link--telegram:hover {
-  background: #0088cc;
+.c-contact--mail .c-contact__icon {
+  width: 26px;
+  height: 26px;
 }
 
-.c-contacts__social-link--tiktok:hover {
-  background: #000000;
-}
-
-.c-contacts__social-link--email:hover {
-  background: var(--color-gold-600);
-}
-
-/* ========================================
-   Responsive adjustments
-   ======================================== */
-
-@media (max-width: 640px) {
-  .c-contacts__social-list {
-    grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
-    gap: var(--space-3);
-  }
-
-  .c-contacts__social-link {
-    width: 44px;
-    height: 44px;
-  }
-
-  .c-contacts__social-icon {
-    width: 18px;
-    height: 18px;
-  }
-}
-
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .c-contacts__grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-8);
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+    align-items: center;
   }
 
-  .c-contacts__content {
-    text-align: center;
-  }
-}
-
-/* ========================================
-   Accessibility improvements
-   ======================================== */
-
-/* Respect motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .c-contacts__social-link {
-    transition: none;
+  .c-contacts__actions {
+    align-items: flex-end;
   }
 }

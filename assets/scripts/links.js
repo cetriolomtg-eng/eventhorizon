@@ -7,15 +7,15 @@
   const DEFAULT_DURATION = 400;     // ms animazione transizione
 
   function initStackCarousel() {
-    const section = document.querySelector('.c-links');
+    const section = document.querySelector('.links');
     if (!section) return;
 
-    const carousel = section.querySelector('.c-links__carousel');
-    const track = section.querySelector('.c-links__track');
+    const carousel = section.querySelector('.links__carousel');
+    const track = section.querySelector('.links__track');
     if (!track) return;
 
     // Raccogli tutte le card
-    const cards = Array.from(track.querySelectorAll('.c-link-card'));
+    const cards = Array.from(track.querySelectorAll('.link-card'));
     if (cards.length === 0) return;
 
     // Media query per prefers-reduced-motion
@@ -116,21 +116,21 @@
     };
 
     // ===== Dots =====
-    let dotsContainer = section.querySelector('.c-links__dots');
+    let dotsContainer = section.querySelector('.links__dots');
 
     const createDots = () => {
       if (!dotsContainer) {
         // Crea container controlli se non esiste
-        let controlsContainer = section.querySelector('.c-links__controls');
+        let controlsContainer = section.querySelector('.links__controls');
         if (!controlsContainer) {
           controlsContainer = document.createElement('div');
-          controlsContainer.className = 'c-links__controls';
+          controlsContainer.className = 'links__controls';
           carousel.parentElement.appendChild(controlsContainer);
         }
 
         // Crea freccia prev
         const prevArrow = document.createElement('button');
-        prevArrow.className = 'c-links__arrow c-links__arrow--prev';
+        prevArrow.className = 'links__arrow prev';
         prevArrow.setAttribute('type', 'button');
         prevArrow.setAttribute('aria-label', 'Card precedente');
         prevArrow.innerHTML = '‹';
@@ -138,14 +138,14 @@
 
         // Crea dots container
         dotsContainer = document.createElement('div');
-        dotsContainer.className = 'c-links__dots';
+        dotsContainer.className = 'links__dots';
         dotsContainer.setAttribute('role', 'tablist');
         dotsContainer.setAttribute('aria-label', 'Selettore card');
         controlsContainer.appendChild(dotsContainer);
 
         // Crea freccia next
         const nextArrow = document.createElement('button');
-        nextArrow.className = 'c-links__arrow c-links__arrow--next';
+        nextArrow.className = 'links__arrow next';
         nextArrow.setAttribute('type', 'button');
         nextArrow.setAttribute('aria-label', 'Card successiva');
         nextArrow.innerHTML = '›';
@@ -167,7 +167,7 @@
       dotsContainer.innerHTML = '';
       cards.forEach((card, i) => {
         const dot = document.createElement('button');
-        dot.className = 'c-links__dot';
+        dot.className = 'links__dot';
         dot.setAttribute('type', 'button');
         dot.setAttribute('role', 'tab');
         dot.setAttribute('aria-label', `Vai alla card ${i + 1} di ${cards.length}`);
@@ -189,7 +189,7 @@
 
     const updateDots = () => {
       if (!dotsContainer) return;
-      const dots = dotsContainer.querySelectorAll('.c-links__dot');
+      const dots = dotsContainer.querySelectorAll('.links__dot');
       dots.forEach((dot, i) => {
         if (i === currentIndex) {
           dot.classList.add('is-active');
