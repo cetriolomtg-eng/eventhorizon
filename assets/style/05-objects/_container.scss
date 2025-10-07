@@ -1,29 +1,77 @@
+/* ==========================================
+   CONTAINER SYSTEM - EventHorizon.mtg 2.0
+   Modern responsive containers
+   ========================================== */
+
 .container {
   width: 100%;
-  max-width: var(--app-max-width);
+  max-width: var(--container-max);
   margin-inline: auto;
-  padding-inline: var(--app-gutter);
-  padding-inline-start: calc(var(--app-gutter) + env(safe-area-inset-left));
-  padding-inline-end: calc(var(--app-gutter) + env(safe-area-inset-right));
+  padding-inline: var(--container-padding);
+  
+  /* Safe area support for mobile */
+  padding-inline-start: calc(var(--container-padding) + env(safe-area-inset-left));
+  padding-inline-end: calc(var(--container-padding) + env(safe-area-inset-right));
 }
 
-.container--compact {
-  max-width: 56rem;
+/* Container Variants */
+.container--xs {
+  max-width: 32rem; /* ~512px */
 }
 
-.container--wide {
-  max-width: 86rem;
+.container--sm {
+  max-width: 42rem; /* ~672px */
+}
+
+.container--md {
+  max-width: 56rem; /* ~896px */
+}
+
+.container--lg {
+  max-width: 72rem; /* ~1152px */
+}
+
+.container--xl {
+  max-width: var(--container-max); /* Default: 88rem */
+}
+
+.container--2xl {
+  max-width: 100rem; /* ~1600px */
 }
 
 .container--full {
-  width: 100%;
   max-width: none;
-  padding-inline: var(--space-2);
+  padding-inline: var(--space-4);
 }
 
-.section-shell {
+.container--fluid {
+  max-width: none;
   width: 100%;
-  max-width: calc(var(--app-max-width) + 2 * var(--app-gutter));
-  margin-inline: auto;
-  padding-inline: var(--app-gutter);
+}
+
+/* Content containers for optimal reading */
+.container--content {
+  max-width: var(--content-max); /* 65ch */
+}
+
+.container--prose {
+  max-width: 75ch;
+}
+
+/* Section wrapper - for full-width backgrounds with contained content */
+.section {
+  width: 100%;
+  padding-block: var(--space-12);
+}
+
+.section--sm {
+  padding-block: var(--space-8);
+}
+
+.section--lg {
+  padding-block: var(--space-16);
+}
+
+.section--xl {
+  padding-block: var(--space-20);
 }

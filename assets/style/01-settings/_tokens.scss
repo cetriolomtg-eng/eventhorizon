@@ -1,53 +1,264 @@
 :root {
   color-scheme: dark;
 
-  /* Layout */
-  --app-max-width: 74rem;
-  --app-gutter: clamp(1.25rem, 3vw, 3.5rem);
-  --app-radius-xs: 0.35rem;
-  --app-radius-sm: 0.6rem;
-  --app-radius-md: 1rem;
-  --app-radius-lg: 1.75rem;
-  --app-radius-pill: 999px;
+  /* ==========================================
+     DESIGN SYSTEM 2.0 - EventHorizon.mtg
+     Modern MTG-inspired dark theme
+     ========================================== */
 
-  /* Typography */
-  --font-sans: "Lexend", "Segoe UI", "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-alt: "LexendDeca", "Lexend", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: "LexendGiga", "Lexend", "Roboto", "Segoe UI", sans-serif;
+  /* Layout & Containers */
+  --container-max: 88rem;
+  --container-padding: clamp(1rem, 4vw, 2.5rem);
+  --content-max: 65ch;
+  --sidebar-width: 20rem;
+  
+  /* Border Radius System */
+  --radius-none: 0;
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+  --radius-full: 9999px;
+
+  /* Breakpoints (for JS consumption) */
+  --bp-sm: 640px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+  --bp-2xl: 1536px;
+
+  /* Typography Scale - Perfect Fourth (1.333) */
+  --text-xs: clamp(0.75rem, 0.8vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 1vw, 1rem);
+  --text-base: clamp(1rem, 1.2vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1.4vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.8vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 2.4vw, 2rem);
+  --text-3xl: clamp(2rem, 3.2vw, 2.625rem);
+  --text-4xl: clamp(2.625rem, 4vw, 3.5rem);
+  --text-5xl: clamp(3.5rem, 5vw, 4.5rem);
+  --text-6xl: clamp(4.5rem, 6vw, 6rem);
+
+  /* Font Families */
+  --font-sans: "Inter", "Lexend", system-ui, -apple-system, sans-serif;
+  --font-display: "LexendGiga", "Inter", system-ui, sans-serif;
   --font-serif: "Merriweather", "Georgia", serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", "Fira Code", monospace;
 
-  --text-xs: clamp(0.78rem, calc(0.72rem + 0.18vw), 0.88rem);
-  --text-sm: clamp(0.9rem, calc(0.84rem + 0.2vw), 1.02rem);
-  --text-base: clamp(1rem, calc(0.96rem + 0.24vw), 1.12rem);
-  --text-md: clamp(1.13rem, calc(1.05rem + 0.32vw), 1.28rem);
-  --text-lg: clamp(1.3rem, calc(1.18rem + 0.54vw), 1.55rem);
-  --text-xl: clamp(1.62rem, calc(1.42rem + 0.8vw), 1.95rem);
-  --text-2xl: clamp(2.1rem, calc(1.75rem + 1.2vw), 2.6rem);
-  --text-3xl: clamp(2.6rem, calc(2.15rem + 1.8vw), 3.4rem);
+  /* Line Heights */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
 
-  /* Line heights */
-  --leading-tight: 1.12;
-  --leading-snug: 1.32;
-  --leading-normal: 1.58;
-  --leading-loose: 1.75;
+  /* Letter Spacing */
+  --tracking-tighter: -0.05em;
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
 
-  /* Spacing scale */
+  /* Spacing Scale - Perfect Fifth (1.5) + Fluid */
+  --space-px: 1px;
   --space-0: 0;
-  --space-1: clamp(0.4rem, calc(0.32rem + 0.3vw), 0.7rem);
-  --space-2: clamp(0.62rem, calc(0.48rem + 0.45vw), 1rem);
-  --space-3: clamp(0.9rem, calc(0.68rem + 0.65vw), 1.5rem);
-  --space-4: clamp(1.25rem, calc(0.95rem + 0.9vw), 2rem);
-  --space-5: clamp(1.7rem, calc(1.3rem + 1.05vw), 2.6rem);
-  --space-6: clamp(2.2rem, calc(1.7rem + 1.25vw), 3.4rem);
-  --space-7: clamp(2.9rem, calc(2.2rem + 1.6vw), 4.4rem);
-  --space-8: clamp(3.6rem, calc(2.8rem + 2vw), 5.8rem);
-  --space-9: clamp(4.6rem, calc(3.6rem + 2.4vw), 7rem);
+  --space-0-5: clamp(0.125rem, 0.5vw, 0.25rem);
+  --space-1: clamp(0.25rem, 1vw, 0.5rem);
+  --space-1-5: clamp(0.375rem, 1.5vw, 0.75rem);
+  --space-2: clamp(0.5rem, 2vw, 1rem);
+  --space-2-5: clamp(0.625rem, 2.5vw, 1.25rem);
+  --space-3: clamp(0.75rem, 3vw, 1.5rem);
+  --space-3-5: clamp(0.875rem, 3.5vw, 1.75rem);
+  --space-4: clamp(1rem, 4vw, 2rem);
+  --space-5: clamp(1.25rem, 5vw, 2.5rem);
+  --space-6: clamp(1.5rem, 6vw, 3rem);
+  --space-7: clamp(1.75rem, 7vw, 3.5rem);
+  --space-8: clamp(2rem, 8vw, 4rem);
+  --space-9: clamp(2.25rem, 9vw, 4.5rem);
+  --space-10: clamp(2.5rem, 10vw, 5rem);
+  --space-11: clamp(2.75rem, 11vw, 5.5rem);
+  --space-12: clamp(3rem, 12vw, 6rem);
+  --space-14: clamp(3.5rem, 14vw, 7rem);
+  --space-16: clamp(4rem, 16vw, 8rem);
+  --space-20: clamp(5rem, 20vw, 10rem);
+  --space-24: clamp(6rem, 24vw, 12rem);
+  --space-28: clamp(7rem, 28vw, 14rem);
+  --space-32: clamp(8rem, 32vw, 16rem);
 
-  /* Chromatic system */
-  --color-bg: #050910;
-  --color-surface: #0a1322;
-  --color-surface-elevated: rgba(19, 32, 53, 0.92);
-  --color-surface-muted: rgba(21, 32, 51, 0.66);
+  /* MTG-Inspired Color Palette */
+  
+  /* Base Colors */
+  --color-black: #000000;
+  --color-white: #ffffff;
+  
+  /* Grays - Deep Space Theme */
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+  --color-gray-950: #020617;
+  
+  /* Brand Colors - Magic Mana Colors */
+  --color-white-mana: #fffbd5;    /* White mana inspired */
+  --color-blue-mana: #0e4b99;     /* Blue mana inspired */
+  --color-black-mana: #150b00;    /* Black mana inspired */
+  --color-red-mana: #d00;         /* Red mana inspired */
+  --color-green-mana: #00733e;    /* Green mana inspired */
+  
+  /* Primary Palette - Mystical Blue */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+  --color-primary-950: #172554;
+  
+  /* Secondary Palette - Magic Purple */
+  --color-secondary-50: #faf5ff;
+  --color-secondary-100: #f3e8ff;
+  --color-secondary-200: #e9d5ff;
+  --color-secondary-300: #d8b4fe;
+  --color-secondary-400: #c084fc;
+  --color-secondary-500: #a855f7;
+  --color-secondary-600: #9333ea;
+  --color-secondary-700: #7c3aed;
+  --color-secondary-800: #6b21a8;
+  --color-secondary-900: #581c87;
+  --color-secondary-950: #3b0764;
+  
+  /* Accent Palette - Gold */
+  --color-accent-50: #fffbeb;
+  --color-accent-100: #fef3c7;
+  --color-accent-200: #fde68a;
+  --color-accent-300: #fcd34d;
+  --color-accent-400: #fbbf24;
+  --color-accent-500: #f59e0b;
+  --color-accent-600: #d97706;
+  --color-accent-700: #b45309;
+  --color-accent-800: #92400e;
+  --color-accent-900: #78350f;
+  --color-accent-950: #451a03;
+
+  /* Semantic Colors */
+  --color-success-50: #f0fdf4;
+  --color-success-500: #22c55e;
+  --color-success-900: #14532d;
+  
+  --color-warning-50: #fffbeb;
+  --color-warning-500: #f59e0b;
+  --color-warning-900: #78350f;
+  
+  --color-error-50: #fef2f2;
+  --color-error-500: #ef4444;
+  --color-error-900: #7f1d1d;
+  
+  --color-info-50: #eff6ff;
+  --color-info-500: #3b82f6;
+  --color-info-900: #1e3a8a;
+
+  /* Dark Theme Surface System */
+  --color-bg: var(--color-gray-950);
+  --color-surface: var(--color-gray-900);
+  --color-surface-variant: var(--color-gray-800);
+  --color-surface-elevated: var(--color-gray-700);
+  --color-surface-hover: rgba(148, 163, 184, 0.08);
+  --color-surface-selected: rgba(59, 130, 246, 0.12);
+  --color-surface-disabled: rgba(148, 163, 184, 0.04);
+  --color-surface-glass: rgba(15, 23, 42, 0.6);
+  --color-overlay: rgba(2, 6, 23, 0.85);
+
+  /* Border System */
+  --color-border: var(--color-gray-700);
+  --color-border-strong: var(--color-gray-600);
+  --color-border-soft: var(--color-gray-800);
+  --color-border-muted: rgba(148, 163, 184, 0.1);
+
+  /* Text System */
+  --color-text: var(--color-gray-50);
+  --color-text-secondary: var(--color-gray-300);
+  --color-text-muted: var(--color-gray-400);
+  --color-text-disabled: var(--color-gray-500);
+  --color-text-inverse: var(--color-gray-900);
+
+  /* Interactive States */
+  --color-primary: var(--color-primary-500);
+  --color-primary-hover: var(--color-primary-400);
+  --color-primary-active: var(--color-primary-600);
+  --color-primary-text: var(--color-white);
+
+  --color-secondary: var(--color-secondary-500);
+  --color-secondary-hover: var(--color-secondary-400);
+  --color-secondary-active: var(--color-secondary-600);
+
+  --color-accent: var(--color-accent-500);
+  --color-accent-hover: var(--color-accent-400);
+  --color-accent-active: var(--color-accent-600);
+
+  /* Shadows & Effects */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  --shadow-focus: 0 0 0 3px rgba(59, 130, 246, 0.4);
+  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3);
+
+  /* Modern MTG-inspired gradients */
+  --gradient-primary: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-primary-400) 100%);
+  --gradient-secondary: linear-gradient(135deg, var(--color-secondary-600) 0%, var(--color-secondary-400) 100%);
+  --gradient-accent: linear-gradient(135deg, var(--color-accent-600) 0%, var(--color-accent-400) 100%);
+  --gradient-mana: linear-gradient(135deg, var(--color-blue-mana) 0%, var(--color-secondary-500) 50%, var(--color-accent-500) 100%);
+  --gradient-surface: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-variant) 100%);
+
+  /* Animation & Transitions */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 500ms;
+
+  --transition-all: all var(--duration-normal) var(--ease-out);
+  --transition-colors: color var(--duration-fast) var(--ease-out), 
+                       background-color var(--duration-fast) var(--ease-out), 
+                       border-color var(--duration-fast) var(--ease-out);
+  --transition-transform: transform var(--duration-normal) var(--ease-out);
+  --transition-opacity: opacity var(--duration-fast) var(--ease-out);
+
+  /* Z-Index Scale */
+  --z-behind: -1;
+  --z-base: 0;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-popover: 500;
+  --z-tooltip: 600;
+  --z-toast: 700;
+  --z-max: 999;
   --color-surface-glass: rgba(12, 21, 36, 0.52);
   --color-overlay: rgba(4, 9, 18, 0.8);
 
