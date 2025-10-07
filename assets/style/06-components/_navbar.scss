@@ -8,18 +8,18 @@
   top: 0;
   z-index: var(--z-sticky);
   width: 100%;
-  
+
   /* Glass morphism effect */
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  background: var(--color-surface-glass);
-  border-bottom: 1px solid var(--color-border-muted);
-  
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(10, 10, 15, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
   /* Modern transitions */
   transition: var(--transition-all);
-  
+
   /* Enhanced shadow for depth */
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
 /* Subtle accent line */
@@ -71,7 +71,7 @@
   gap: var(--space-2);
 
   font-family: var(--font-display);
-  font-size: var(--text-lg);
+  font-size: var(--text-sm);
   font-weight: 600;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
@@ -86,6 +86,10 @@
 
   /* Subtle glow effect */
   text-shadow: var(--shadow-glow);
+
+  @media (min-width: 48rem) {
+    font-size: var(--text-lg);
+  }
 }
 
 .brand__name {
@@ -162,19 +166,21 @@
 
 /* Navigation Menu */
 .nav__menu {
-  /* Mobile: overlay menu */
+  /* Mobile: compact dropdown menu on the right */
   position: fixed;
-  top: calc(var(--nav-height) + var(--space-1));
-  left: var(--container-padding);
+  top: calc(var(--nav-height) + var(--space-2));
   right: var(--container-padding);
+  width: auto;
+  min-width: 180px;
 
-  background: var(--color-surface-elevated);
-  border: 1px solid var(--color-border);
+  background: rgba(15, 15, 20, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-2xl);
-  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 
-  padding: var(--space-3);
+  padding: var(--space-2);
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
@@ -182,10 +188,13 @@
   /* Hidden by default */
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-var(--space-2)) scale(0.98);
+  transform: translateY(-8px) scale(0.95);
+  transform-origin: top right;
   pointer-events: none;
 
-  transition: var(--transition-all);
+  transition: opacity 0.2s ease,
+              transform 0.2s ease,
+              visibility 0.2s;
 }
 
 /* Open state */
@@ -210,20 +219,22 @@
 
 .nav__link {
   position: relative;
-  display: flex;
-  align-items: center;
+  display: block;
+  width: 100%;
 
   font-family: var(--font-sans);
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   font-weight: 500;
-  letter-spacing: var(--tracking-normal);
-  color: var(--color-text-secondary);
+  letter-spacing: 0.01em;
+  color: var(--color-text);
   text-decoration: none;
+  text-align: left;
+  white-space: nowrap;
 
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
 
-  transition: var(--transition-colors);
+  transition: all 0.2s ease;
 
   /* Focus styles */
   outline: 2px solid transparent;
@@ -232,20 +243,19 @@
 
 /* Hover effect with background */
 .nav__link:hover {
-  color: var(--color-text);
-  background: var(--color-surface-hover);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-primary);
 }
 
 .nav__link:focus-visible {
-  color: var(--color-text);
-  background: var(--color-surface-hover);
+  background: rgba(255, 255, 255, 0.1);
   outline-color: var(--color-primary);
 }
 
 /* Active/current page state */
 .nav__link[aria-current="page"] {
   color: var(--color-primary);
-  background: var(--color-surface-selected);
+  background: rgba(255, 255, 255, 0.08);
   font-weight: 600;
 }
 
@@ -283,8 +293,10 @@
     position: static;
     flex-direction: row;
     align-items: center;
-    gap: var(--space-6);
-    
+    gap: var(--space-2);
+    width: auto;
+    min-width: auto;
+
     /* Reset mobile styles */
     opacity: 1;
     visibility: visible;
@@ -301,10 +313,12 @@
   .nav__list {
     flex-direction: row;
     align-items: center;
-    gap: var(--space-5);
+    gap: var(--space-2);
   }
 
   .nav__link {
+    display: inline-flex;
+    width: auto;
     font-size: var(--text-sm);
     font-weight: 500;
     letter-spacing: var(--tracking-wide);
