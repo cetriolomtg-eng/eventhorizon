@@ -1,23 +1,23 @@
-id: eh-0002
-slug: portale-risorse
-kind: content
+id: Video001
+slug: Episodio001
+kind: video
 date: 2025-08-28
-title: Portale Risorse MTG
+title: LA GUERRA DEGLI ANTICHI DRAGHI
 overline: Link utili
-desc: "Raccolta di risorse: regole, database carte, strumenti per deckbuilding."
-thumb: /images/cards/fblthp_placeholder.webp
+desc: La Guerra degli Antichi Draghi, nota anche semplicemente come Guerra dei
+  draghi, fu un conflitto svoltosi sul piano di Dominaria in tempi antichi. La
+  Guerra degli Antichi Draghi che durò per millenni, molto prima della nascita
+  dell'Impero Thran, ed è uno dei primi eventi degli di nota che si è svolto
+  nella storia di Magic the Gathering. La fine della guerra ebbe come vincitori
+  solo pochi esemplari della specie draconica, mentre coloro che non perirono
+  ebbero un destino peggiore della morte.
+thumb: ""
 tags:
-  - risorse
-  - tool
-  - database
+  - bolas
+  - ugin
 links:
-  - label: Scryfall
-    href: "#"
-    btn_class: btn--base
-    sort_order: 1
-    primary: false
-  - label: EDHREC
-    href: "#"
-    btn_class: btn--base
-    sort_order: 2
-    primary: false
+  - btn_class: btn--yt
+    primary: true
+    label: YouTube
+    href: https://www.youtube.com/watch?v=48gYYFzrB-E
+    sort_order: 10
