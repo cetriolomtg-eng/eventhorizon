@@ -349,12 +349,12 @@
   --hero-padding-block: clamp(3rem, 12vh, 6rem);
   --hero-padding-inline: clamp(1.25rem, 5vw, 3rem);
   --hero-backdrop:
-    radial-gradient(circle at 18% 18%, color-mix(in srgb, var(--color-primary-300) 65%, transparent) 0%, transparent 60%),
-    radial-gradient(circle at 78% 14%, color-mix(in srgb, var(--color-secondary-300) 60%, transparent) 0%, transparent 68%),
+    radial-gradient(circle at 18% 18%, color-mix(in srgb, var(--color-primary-300) 82%, transparent) 0%, transparent 60%),
+    radial-gradient(circle at 78% 14%, color-mix(in srgb, var(--color-secondary-300) 78%, transparent) 0%, transparent 68%),
     linear-gradient(205deg,
-      color-mix(in srgb, var(--color-primary-700) 70%, var(--color-gray-900) 30%) 0%,
-      color-mix(in srgb, var(--color-primary-500) 55%, transparent) 52%,
-      color-mix(in srgb, var(--color-secondary-500) 55%, transparent) 100%);
+      color-mix(in srgb, var(--color-primary-600) 88%, var(--color-gray-900) 12%) 0%,
+      color-mix(in srgb, var(--color-primary-500) 72%, transparent) 52%,
+      color-mix(in srgb, var(--color-secondary-500) 72%, transparent) 100%);
   --hero-overlay: linear-gradient(180deg,
     color-mix(in srgb, var(--color-gray-950) 60%, transparent) 0%,
     color-mix(in srgb, var(--color-gray-900) 45%, transparent) 55%,

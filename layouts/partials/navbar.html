@@ -1,10 +1,8 @@
 <header class="nav glass-nav" id="site-nav">
   <div class="nav__inner">
-    {{ $ogImage := or .Site.Params.ogImage (index .Site.Params.og "image") }}
+    {{ $mobileBrand := "icons/favicon/favicon-512-maskable.png" | absURL }}
     <a class="brand" href="{{ "/" | absURL }}" aria-label="Home">
-      {{- with $ogImage }}
-        <img class="brand__logo" src="{{ . | absURL }}" alt="{{ $.Site.Title }}" width="144" height="76" decoding="async" />
-      {{- end }}
+      <img class="brand__logo" src="{{ $mobileBrand }}" alt="{{ .Site.Title }}" width="144" height="76" decoding="async" />
       <span class="brand__name">{{ .Site.Title }}</span>
     </a>
 
