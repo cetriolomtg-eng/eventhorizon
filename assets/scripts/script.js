@@ -63,7 +63,10 @@
   // Chiudi quando si clicca un link del menu (solo mobile/tablet)
   menu.addEventListener('click', (e) => {
     const link = e.target.closest('a');
-    if (!link) return;
+    if (!link) {
+      e.stopPropagation();
+      return;
+    }
     if (!mqDesktop.matches) closeMenu();
   });
 
@@ -85,10 +88,12 @@
     if (document.querySelector('.' + BACKDROP_CLASS)) return;
     const bd = document.createElement('div');
     bd.className = BACKDROP_CLASS;
-    bd.addEventListener('click', () => {
-      // Usa la tua logica esistente: simula il click sul toggle per chiudere
-      toggle.click();
-    }, { passive: true });
+    bd.addEventListener('click', (e) => {
+      // Chiudi solo se il click è sul backdrop, non sul menu
+      if (e.target === bd) {
+        toggle.click();
+      }
+    });
     document.body.appendChild(bd);
   }
 
