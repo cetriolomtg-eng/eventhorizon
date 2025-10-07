@@ -12,11 +12,11 @@
         <div class="hero__content">
           <!-- >>> START HERO LOGO -->
           <img class="hero__logo"
-               src="{{ ("images/logo.webp" | absURL) }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
-               alt="Logo {{ .Site.Title }}"
-               width="115" height="115"
-               decoding="async"
-               fetchpriority="high" />
+                src="{{ ("images/logo.webp" | absURL) }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
+                alt="Logo {{ .Site.Title }}"
+                width="140" height="140"
+                decoding="async"
+                fetchpriority="high" />
           <!-- <<< END HERO LOGO -->
 
           <!-- Text hero -->
@@ -25,6 +25,10 @@
             Narrativa e mazzi Commander.
             <br>Tutto su un'unica rotta!
           </p>
+          <div class="hero__actions">
+            <a class="btn btn--base" href="{{ "/archive/" | absURL }}">Esplora l'Archivio</a>
+            <a class="btn btn--tealstroke" href="{{ "/" | absURL }}#contacts">Contattaci</a>
+          </div>
         </div>
       </div>
 
