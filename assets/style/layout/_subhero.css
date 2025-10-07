@@ -41,34 +41,40 @@
 .sub-hero__inner > .pager__dots{ justify-self: center; }
 .sub-hero__inner > .pager__controls{ justify-self: end; }
 
-.hero__deck{
+.hero__slider{
   width: 100%;
-  margin-top: clamp(28px, 6vw, 40px);
+  margin-top: clamp(28px, 6vw, 44px);
 }
-.hero__deck .sub-hero{
+.hero__slider .sub-hero{
   padding: 0;
   background: transparent;
 }
-.hero__deck .sub-hero::before{ display: none; }
-.hero__deck .sub-hero__inner{
+.hero__slider .sub-hero::before{ display: none; }
+.hero__slider .sub-hero__inner{
   width: 100%;
-  max-width: 420px;
-  margin-inline: 0;
-  padding-inline: 0;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  display: grid;
   gap: clamp(18px, 4vw, 26px);
   justify-items: center;
+}
+.hero__slider .pager__viewport{
+  width: 100%;
+  min-height: clamp(360px, 40vh, 460px);
+  border-radius: clamp(24px, 4vw, 32px);
+  overflow: hidden;
+  background: linear-gradient(130deg, #1a1536 0%, #0d0f24 55%, #121230 100%);
   position: relative;
 }
-.hero__deck .pager__viewport{
-  border-radius: 20px;
-  overflow: hidden;
-  width: 100%;
-  min-height: clamp(360px, 38vh, 460px); }
-.hero__deck .pager__dots{
-  margin-top: clamp(14px, 3vw, 20px);
+.hero__slider .pager__dots{
+  margin-top: clamp(16px, 3vw, 24px);
+  justify-self: center;
 }
-.hero__deck .pager__controls{
-  margin-top: clamp(8px, 2vw, 16px);
+.hero__slider .pager__controls{
+  position: absolute;
+  inset: 0;
+  display: none;
 }
 
 .sub-hero::before{
@@ -98,18 +104,10 @@
   justify-items: start;
   align-items: start;
   padding: var(--subhero-card-pad);
-  color: #fff;
+  color: #f0f3ff;
   min-height: 100%;
   transition: opacity 360ms cubic-bezier(0.22, 1, 0.36, 1);
-  border-radius: 20px;
-  background: rgba(12, 13, 24, 0.88);
-  box-shadow:
-    0 24px 48px rgba(8, 10, 24, 0.35),
-    0 4px 16px rgba(8, 10, 24, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
   overflow: hidden;
-  display: grid;
 }
 .pager__slide.is-active{ opacity: 1; pointer-events: auto; z-index: 2; }
 
@@ -129,8 +127,7 @@
   background-image: var(--slide-bg-url);
   background-size: cover;
   background-position: center;
-  opacity: .38;
-  border-radius: inherit;
+  opacity: .42;
 }
 /* Overlay diagonale per contrasto testo */
 .pager__slide::after{
@@ -139,13 +136,13 @@
   inset: 0;
   z-index: 0;
   background: linear-gradient(
-    to top right,
-    rgba(25, 26, 35, 0.85) 0%,
-    rgba(25, 26, 35, 0.6) 40%,
-    rgba(25, 26, 35, 0.0) 75%
+    120deg,
+    rgba(8, 9, 22, 0.88) 0%,
+    rgba(12, 14, 30, 0.78) 40%,
+    rgba(20, 18, 45, 0.65) 72%,
+    rgba(22, 20, 50, 0.0) 100%
   );
   pointer-events: none;
-  border-radius: inherit;
 }
 .pager__slide > *{ position: relative; z-index: 1; }
 
@@ -171,58 +168,45 @@
 
 /* Overlay in Hero su desktop */
 @media (min-width: 1024px){
-  .hero__deck{
-    margin-top: 0;
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
+.hero__slider{
+    margin-top: clamp(20px, 5vw, 36px);
   }
-  .hero__deck .sub-hero{
-    padding: 0;
-    background: transparent;
-  }
-  .hero__deck .sub-hero::before{ display: none; }
-  .hero__deck .sub-hero__inner{
+  .hero__slider .sub-hero__inner{
     width: 100%;
-    max-width: 420px;
-    margin-inline: 0;
-    padding-inline: 0;
-    gap: clamp(16px, 3vw, 24px);
+    max-width: none;
+    gap: clamp(20px, 3vw, 32px);
   }
-  .hero__deck .pager__viewport{
-    transform: none;
-    border-radius: 20px;
-    overflow: hidden;
-    min-height: clamp(360px, 38vh, 460px); }
-  .hero__deck .pager__dots{
-    justify-self: center;
-    margin-top: clamp(12px, 2vh, 18px);
+  .hero__slider .pager__viewport{
+    border-radius: clamp(26px, 4vw, 34px);
+    min-height: clamp(420px, 48vh, 520px);
+    background: linear-gradient(125deg, #161131 0%, #0a0c1f 50%, #171439 100%);
   }
-  .hero__deck .pager__controls{
-    position: absolute;
-    inset: 0;
+  .hero__slider .pager__controls{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-inline: clamp(8px, 1.6vw, 16px);
     pointer-events: none;
+    position: absolute;
+    inset-block: calc(var(--subhero-card-pad) * 0.35);
+    inset-inline: clamp(20px, 3vw, 36px);
   }
-  .hero__deck .pager__controls .pager__arrow{
+  .hero__slider .pager__controls .pager__arrow{
     pointer-events: auto;
-    width: 44px;
-    height: 44px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
-    background: rgba(12, 13, 24, 0.65);
+    background: rgba(12, 13, 26, 0.68);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 12px 24px rgba(8, 10, 24, 0.35);
     color: rgba(255, 255, 255, 0.88);
-    transition: background 180ms ease, transform 180ms ease;
+    display: grid;
+    place-items: center;
+    transition: background 200ms ease, transform 200ms ease;
   }
-  .hero__deck .pager__controls .pager__arrow:hover{
+  .hero__slider .pager__controls .pager__arrow:hover{
     background: rgba(0, 173, 177, 0.55);
     transform: translateY(-1px);
   }
-  .hero__deck .pager__controls .pager__arrow:active{
+  .hero__slider .pager__controls .pager__arrow:active{
     transform: translateY(1px);
   }
 }
@@ -244,29 +228,23 @@
 .sub-hero .pager__dots button.is-active,
 .sub-hero .pager__dots .dot.is-active{ transform: scale(1.0); }
 
-
-/* Hero deck typography tweaks */
-.hero__deck .slide__title{
+/* Hero slider typography & details */
+.hero__slider .slide__title{
+  font-size: clamp(1.55rem, 0.9vw + 1.6rem, 2.05rem);
   background: linear-gradient(135deg, #E0A402 0%, #5B4E9D 50%, #00ADB1 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: #E0A402; /* fallback */
   letter-spacing: var(--trk-tight);
 }
-.hero__deck .slide__desc{
+.hero__slider .slide__desc{
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  opacity: 0.9;
 }
-.hero__deck .pager__slide{
-  border: 1px solid transparent;
-  background: linear-gradient(rgba(12,13,24,0.88), rgba(12,13,24,0.88)) padding-box, linear-gradient(135deg, rgba(224,164,2,0.32), rgba(91,78,157,0.26), rgba(0,173,177,0.26)) border-box;
+.hero__slider .slide__cta{
+  gap: clamp(12px, 2vw, 20px);
 }
-.hero__deck .pager__slide:hover{
-  box-shadow: 0 28px 56px rgba(8,10,24,0.42), 0 6px 20px rgba(8,10,24,0.30);
-}
-@media (min-width: 1024px){
-  .hero__deck{ align-self: center; justify-self: end; }
-}
+
 
