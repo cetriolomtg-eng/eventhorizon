@@ -1,5 +1,5 @@
 /* ============================================================
-   Links.css
+   Links.css - Carousel universale mobile-first
    ============================================================ */
 .links {
   /* Tema sezione (scuro) */
@@ -8,6 +8,8 @@
   background: var(--links-bg);
   color: var(--links-text);
   padding: clamp(32px, 6vw, 72px) 0;
+  position: relative;
+  overflow: hidden;
 
   /* Container identico a Cards (4 colonne virtuali) */
   --card-w: 320px;
@@ -19,14 +21,15 @@
     (2 * var(--container-pad-x, 16px))
   );
 
-  /* Parametri autoplay letti da links.js */
-  --links-auto-speed: 36;   /* px/s (cambia qui per più lento/veloce) */
+  /* Parametri autoplay letti da links.js - responsivi */
+  --links-auto-speed: 16;   /* px/s - più lento su mobile */
   --links-auto-ignore-rmw: 0; /* 0 = rispetta "Riduci animazioni" */
 }
 @media (min-width: 480px){
   .links{
     --card-w: 340px;
     --grid-gap: 20px;
+    --links-auto-speed: 20;
     --container-max: calc(
       (4 * var(--card-w)) +
       (3 * var(--grid-gap)) +
@@ -34,10 +37,16 @@
     );
   }
 }
+@media (min-width: 768px){
+  .links{
+    --links-auto-speed: 28;
+  }
+}
 @media (min-width: 1024px){
   .links{
     --card-w: 360px;
     --grid-gap: 22px;
+    --links-auto-speed: 32;
     --container-max: calc(
       (4 * var(--card-w)) +
       (3 * var(--grid-gap)) +
@@ -62,24 +71,40 @@
 }
 
 /* =========================
-   Track: reset UL + griglia (mobile/tablet)
+   Track: carousel orizzontale su tutti i dispositivi
    ========================= */
-.links__carousel{ position: relative; }
+.links__carousel{
+  position: relative;
+  overflow: hidden; /* viewport per edge-fade */
+}
 
 .links__track{
   list-style: none;
   padding-left: 0;
   margin: 0;
 
+  /* Carousel sempre attivo - mobile first */
   display: flex;
-  flex-wrap: wrap;                /* griglia per mobile/tablet */
-  justify-content: center;        /* come le Cards */
+  flex-wrap: nowrap;              /* riga singola per carosello */
+  justify-content: flex-start;    /* fondamentale per loop infinito */
   align-items: stretch;
 
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;          /* Firefox: nasconde scrollbar */
+  scroll-snap-type: x proximity;  /* snap dolce */
+
   gap: var(--grid-gap);
-  column-gap: var(--grid-gap);
-  row-gap: var(--grid-gap);
+  padding-bottom: 8px;            /* evita ritaglio ombre */
+  padding-inline: var(--container-pad-x, 16px); /* padding laterale */
+
+  overscroll-behavior-x: contain;
+  scrollbar-gutter: stable both-edges;
+
+  cursor: grab;
 }
+.links__track::-webkit-scrollbar{ display: none; } /* WebKit: nasconde scrollbar */
 .links__track > li{ list-style: none; }
 .links__track > li::marker{ content: ''; }
 
@@ -87,20 +112,33 @@
    Card compatte (chiare) — altezza uniforme
    ========================= */
 .link-card{
-  --link-w: 240px;                 /* aumenta a 260px per meno colonne */
+  --link-w: 200px;                 /* mobile: più compatte */
   flex: 0 0 var(--link-w);
   max-width: var(--link-w);
   box-sizing: border-box;
+  scroll-snap-align: start;        /* snap per ogni card */
+}
+
+/* Breakpoint responsive per larghezza card */
+@media (min-width: 480px){
+  .link-card{ --link-w: 220px; }
+}
+@media (min-width: 768px){
+  .link-card{ --link-w: 240px; }
+}
+@media (min-width: 1024px){
+  .link-card{ --link-w: 260px; }
 }
 
 .link-card__link{
-  --link-h: 96px;                  /* 92—100px suggerito */
+  --link-h: 88px;                  /* mobile: più compatto */
   height: var(--link-h);
+  min-height: 88px;                /* garantisce touch target */
 
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
+  gap: 10px;
+  padding: 12px 14px;
 
   background: #ffffff;             /* cards chiare su sezione scura */
   color: var(--text-900, #0E0F1A);
@@ -115,15 +153,25 @@
   overflow: hidden;                /* sicurezza anti overflow */
 }
 
+/* Altezza responsive */
+@media (min-width: 480px){
+  .link-card__link{ --link-h: 92px; padding: 14px 15px; gap: 11px; }
+}
+@media (min-width: 768px){
+  .link-card__link{ --link-h: 96px; padding: 14px 16px; gap: 12px; }
+}
+
 .link-card__logo{
   display: block;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   aspect-ratio: 1 / 1;
   object-fit: contain;
   flex: 0 0 auto;
 }
-@media (min-width: 768px){  .link-card__logo{ width: 44px; height: 44px; } }
+@media (min-width: 480px){ .link-card__logo{ width: 40px; height: 40px; } }
+@media (min-width: 768px){ .link-card__logo{ width: 44px; height: 44px; } }
+@media (min-width: 1024px){ .link-card__logo{ width: 48px; height: 48px; } }
 @media (min-width: 1280px){ .link-card__logo{ width: 52px; height: 52px; } }
 
 .link-card__meta{ display: grid; min-width: 0; }
@@ -166,130 +214,54 @@
 }
 
 /* =========================
-   Desktop (≥1024px): riga scrollabile con snap + edge-fade
+   Edge-fade universale (tutti i dispositivi)
    ========================= */
-@media (min-width: 1024px){
-  .links__carousel{
-    overflow: hidden;              /* viewport per edge-fade */
-  }
 
-  .links__track{
-    flex-wrap: nowrap;             /* riga singola */
-    justify-content: flex-start;   /* fondamentale per il loop JS */
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;         /* FF: nasconde scrollbar */
-    scroll-snap-type: x proximity; /* snap dolce */
-    gap: var(--grid-gap);
-    padding-bottom: 8px;           /* evita ritaglio delle ombre */
+/* Edge-fade ai lati del viewport (fallback gradient) */
+.links__carousel::before,
+.links__carousel::after{
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 24px;                   /* mobile: dissolvenza più leggera */
+  pointer-events: none;
+  z-index: 1;
+}
+.links__carousel::before{
+  left: 0;
+  background: linear-gradient(to right, var(--links-bg) 0%, rgba(14,15,26,0) 100%);
+}
+.links__carousel::after{
+  right: 0;
+  background: linear-gradient(to left, var(--links-bg) 0%, rgba(14,15,26,0) 100%);
+}
 
-    overscroll-behavior-x: contain;       /* evita lo "scroll chaining" verso la pagina */
-    scrollbar-gutter: stable both-edges;  /* stabilizza il layout quando appare la scrollbar */
-  }
-  .links__track::-webkit-scrollbar{ display: none; } /* WebKit: nasconde scrollbar */
-
-  .link-card{
-    flex: 0 0 var(--link-w);       /* larghezza fissa per snap */
-    scroll-snap-align: start;
-  }
-
-  /* Edge-fade ai lati del viewport (fallback) */
+/* Desktop: dissolvenza più intensa */
+@media (min-width: 768px){
   .links__carousel::before,
   .links__carousel::after{
-    content: "";
-    position: absolute;
-    top: 0; bottom: 0;
-    width: 36px;                   /* intensità dissolvenza */
-    pointer-events: none;          /* non blocca i click/scroll */
-    z-index: 1;
+    width: 32px;
   }
-  .links__carousel::before{
-    left: 0;
-    background: linear-gradient(to right, var(--links-bg) 0%, rgba(25,26,35,0) 100%);
-  }
+}
+@media (min-width: 1024px){
+  .links__carousel::before,
   .links__carousel::after{
-    right: 0;
-    background: linear-gradient(to left, var(--links-bg) 0%, rgba(25,26,35,0) 100%);
+    width: 36px;
   }
 }
-
-/* Nascondi scrollbar orizzontale tra 790px e 1023px */
-@media (min-width: 790px) and (max-width: 1023.98px){
-  .links__track{
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;      /* Firefox */
-  }
-  .links__track::-webkit-scrollbar{
-    display: none;              /* WebKit */
-  }
-}
-/* Nascondi scrollbar orizzontale tra 790px e 1023px */
 
 /* =========================
-   UX drag + init fade + mobile sizing
+   UX drag + init fade
    ========================= */
 /* Drag: cursore e blocco click durante trascinamento */
-.links__track { cursor: grab; }
 .links__track.is-dragging { cursor: grabbing; user-select: none; }
 .links__track.is-dragging .link-card__link { pointer-events: none; }
 
-/* Fade-in all'abilitazione desktop (gestito dal JS) */
+/* Fade-in all'abilitazione carosello (gestito dal JS) */
 .links__track.is-initializing { opacity: 0; }
 .links__track.is-ready { opacity: 1; transition: opacity 200ms ease; }
 @media (prefers-reduced-motion: reduce){
   .links__track.is-ready { transition: none; }
-}
-
-/* Mobile: card più piccole (baseline) */
-@media (max-width: 479.98px){
-  .link-card { --link-w: 200px; }
-  .link-card__link { --link-h: 88px; padding: 12px 14px; }
-  .link-card__logo { width: 36px; height: 36px; }
-}
-
-@media (min-width: 1024px){
-  .links{
-    --links-auto-speed: 32; /* più fluido, non eccessivo */
-  }
-}
-
-/* =========================
-   Extra-compact Mobile (<768px)
-   ========================= */
-@media (max-width: 767.98px){
-  /* Card extra-compatte */
-  .links .link-card {
-    --link-w: 150px;
-    max-width: var(--link-w);
-    flex: 0 0 var(--link-w);
-  }
-
-  /* Contenuto più ridotto */
-  .links .link-card__link {
-    --link-h: 70px;
-    height: var(--link-h);
-    padding: 8px 10px;
-    gap: 6px;
-  }
-
-  /* Logo più piccolo */
-  .links .link-card__logo {
-    width: 24px;
-    height: 24px;
-  }
-
-  /* Nascondi testo descrittivo */
-  .links .link-card__copy {
-    display: none !important;
-  }
-
-  /* Track con gap minore */
-  .links .links__track {
-    gap: 6px;
-  }
 }
 
 /* =========================
@@ -326,32 +298,63 @@
 .links .link-card__name{ letter-spacing: var(--trk-slight); }
 .links .link-card__copy{ letter-spacing: 0; }
 
-/* Edge-fade via mask-image (fallback: ::before/::after) >>> */
+/* Edge-fade via mask-image (più performante, tutti i dispositivi) */
 @supports ((-webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0), #000)) or
            (mask-image: linear-gradient(to right, rgba(0,0,0,0), #000))) {
+  .links__carousel{
+    position: relative;
+    /* Mobile: 24px fade */
+    -webkit-mask-image: linear-gradient(to right,
+      transparent 0,
+      #000 24px,
+      #000 calc(100% - 24px),
+      transparent 100%);
+    mask-image: linear-gradient(to right,
+      transparent 0,
+      #000 24px,
+      #000 calc(100% - 24px),
+      transparent 100%);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+
+  /* Tablet: 32px fade */
+  @media (min-width: 768px){
+    .links__carousel{
+      -webkit-mask-image: linear-gradient(to right,
+        transparent 0,
+        #000 32px,
+        #000 calc(100% - 32px),
+        transparent 100%);
+      mask-image: linear-gradient(to right,
+        transparent 0,
+        #000 32px,
+        #000 calc(100% - 32px),
+        transparent 100%);
+    }
+  }
+
+  /* Desktop: 36px fade */
   @media (min-width: 1024px){
     .links__carousel{
-      position: relative; /* garanzia */
-      /* Opaco al centro, trasparente ai lati (36px come UI attuale) */
       -webkit-mask-image: linear-gradient(to right,
         transparent 0,
         #000 36px,
         #000 calc(100% - 36px),
         transparent 100%);
-              mask-image: linear-gradient(to right,
+      mask-image: linear-gradient(to right,
         transparent 0,
         #000 36px,
         #000 calc(100% - 36px),
         transparent 100%);
-      -webkit-mask-size: 100% 100%;
-              mask-size: 100% 100%;
-      -webkit-mask-repeat: no-repeat;
-              mask-repeat: no-repeat;
     }
-    /* Evita doppio effetto quando la mask è disponibile */
-    .links__carousel::before,
-    .links__carousel::after{
-      display: none !important;
-    }
+  }
+
+  /* Evita doppio effetto quando la mask è disponibile */
+  .links__carousel::before,
+  .links__carousel::after{
+    display: none !important;
   }
 }

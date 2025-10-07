@@ -3,9 +3,9 @@
    ============================================================ */
 (() => {
   // ===== Config =====
-  const DESKTOP_BP = 1024;         // modalità carosello da desktop in su (>=1024px)
+  const MOBILE_BP = 0;             // carosello sempre attivo (mobile-first)
   const IDLE_RESUME_MS = 3000;     // pausa autoplay dopo interazione manuale
-  const DEFAULT_SPEED  = 24;       // px/sec (override via CSS: --links-auto-speed)
+  const DEFAULT_SPEED  = 16;       // px/sec mobile (override via CSS: --links-auto-speed)
   const DRAG_THRESHOLD = 8;        // px per distinguere click vs drag (hardening)
 
   function initLinksLoop() {
@@ -21,7 +21,7 @@
     track.setAttribute('aria-label', 'Elenco collegamenti scorrevole orizzontale');
 
     // Media queries & prefers
-    const mqDesktop      = window.matchMedia(`(min-width: ${DESKTOP_BP}px)`);
+    const mqCarousel     = window.matchMedia(`(min-width: ${MOBILE_BP}px)`); // sempre true
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     // ===== Stato misure/loop =====
@@ -117,27 +117,14 @@
       wrapMargin = Math.max(cardStep * 3, Math.round(vw * 0.5));
     };
 
-    // ===== Stili forzati in modalità carosello =====
-    const forceDesktopStyles = () => {
-      track.style.flexWrap = 'nowrap';
-      track.style.justifyContent = 'flex-start';
-      track.style.overflowX = 'auto';
-      track.style.overflowY = 'hidden';
-      track.style.webkitOverflowScrolling = 'touch';
-      track.style.scrollSnapType = 'x proximity';
-      track.style.touchAction = 'none';
-      track.style.userSelect  = 'none';
+    // ===== Stili forzati in modalità carosello (JS garantisce funzionamento) =====
+    const forceCarouselStyles = () => {
+      // CSS già imposta nowrap/overflow, qui aggiungiamo JS safety
+      track.style.touchAction = 'pan-y pinch-zoom'; // permette scroll verticale pagina
       track.classList.add('is-initializing');
     };
-    const clearDesktopStyles = () => {
-      track.style.flexWrap = '';
-      track.style.justifyContent = '';
-      track.style.overflowX = '';
-      track.style.overflowY = '';
-      track.style.webkitOverflowScrolling = '';
-      track.style.scrollSnapType = '';
+    const clearCarouselStyles = () => {
       track.style.touchAction = '';
-      track.style.userSelect = '';
       track.classList.remove('is-initializing', 'is-ready', 'is-dragging');
     };
 
@@ -361,19 +348,19 @@
         if (rafId) stopAutoplay();
       } else {
         const rmwActive = prefersReduced.matches && !ignoreRMW();
-        if (mqDesktop.matches && !rmwActive && section.dataset.linksReady === '1') {
+        if (mqCarousel.matches && !rmwActive && section.dataset.linksReady === '1') {
           startAutoplay();
         }
       }
     };
 
     // ===== Mount / Unmount =====
-    const enableDesktop = () => {
+    const enableCarousel = () => {
       if (section.dataset.linksReady === '1') return;
       section.dataset.linksReady = '1';
       carousel.dataset.linksReady = '1';
 
-      forceDesktopStyles();
+      forceCarouselStyles();
       buildLoopAdaptive();
 
       // Bind eventi
@@ -436,7 +423,7 @@
       });
     };
 
-    const disableDesktop = () => {
+    const disableCarousel = () => {
       if (!section.dataset.linksReady) return;
       delete section.dataset.linksReady;
       delete carousel.dataset.linksReady;
@@ -460,20 +447,21 @@
       // Disconnetti IO
       if (io) { try { io.disconnect(); } catch(_) {} io = null; }
 
-      clearDesktopStyles();
+      clearCarouselStyles();
       cleanupClones();
       track.scrollTo({ left: 0, behavior: 'auto' });
       virtualX = 0;
       loopEnabled = false;
     };
 
-    // ===== Attivazione modalità carosello =====
+    // ===== Attivazione modalità carosello (sempre, mobile-first) =====
     const handleMQ = () => {
       const hasCards = originals().length > 0;
-      if (mqDesktop.matches && hasCards) {
-        enableDesktop();
+      // Carosello sempre attivo se ci sono card
+      if (hasCards) {
+        enableCarousel();
       } else {
-        disableDesktop();
+        disableCarousel();
       }
     };
     let _mqResizeT;
@@ -483,10 +471,8 @@
     };
     window.addEventListener('resize', onGlobalResize, { passive: true });
 
-    // Avvio + compat vecchie API MQ
+    // Avvio immediato
     handleMQ();
-    if (mqDesktop.addEventListener) mqDesktop.addEventListener('change', handleMQ);
-    else if (mqDesktop.addListener) mqDesktop.addListener(handleMQ);
   }
 
   if (document.readyState === 'loading') {
