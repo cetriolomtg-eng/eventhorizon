@@ -93,7 +93,7 @@
      Usa il file main.css che importa tutta la nuova architettura
 ---------------------------------------- */}}
 {{- with resources.Get "style/main.css" -}}
-  {{- $mainCss := . | resources.ToCSS | resources.Minify | resources.Fingerprint -}}
+  {{- $mainCss := . | css.Sass | resources.Minify | resources.Fingerprint -}}
   <link rel="stylesheet" href="{{ $mainCss.RelPermalink }}" integrity="{{ $mainCss.Data.Integrity }}" crossorigin="anonymous">
 {{- end -}}
 
