@@ -1,31 +1,23 @@
 /* ============================================================
-   Portal.css
+   Portal Section - CTA Component
    ============================================================ */
 .portal {
-  /* Tema sezione (chiaro) - matching cards */
+  /* Theme variables */
   --portal-bg: var(--neutral-50, #F3F2F7);
   --portal-text: var(--neutral-900, #191A23);
 
-  /* Background stratificato con effetto portal/vortex */
-  position: relative;
-  isolation: isolate;
-  background: var(--portal-bg);
-  color: var(--portal-text);
-  padding: clamp(48px, 8vw, 96px) 0;
-  overflow: hidden;
-
-  /* Anchor safety: evita overlap con navbar fissa */
-  scroll-margin-top: 80px;
-
-  /* Container identico a Cards (4 colonne virtuali) */
+  /* Container calculation (4-column grid) */
   --card-w: 320px;
   --grid-gap: 16px;
-  --container-pad-x: var(--container-pad-x, 16px);
-  --container-max: calc(
-    (4 * var(--card-w)) +
-    (3 * var(--grid-gap)) +
-    (2 * var(--container-pad-x, 16px))
-  );
+  --container-max: calc((4 * var(--card-w)) + (3 * var(--grid-gap)) + (2 * var(--container-pad-x, 16px)));
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(48px, 8vw, 96px) 0;
+  background: var(--portal-bg);
+  color: var(--portal-text);
+  scroll-margin-top: 80px;
 }
 
 /* Background layers: gradient radial portal effect - tema chiaro */

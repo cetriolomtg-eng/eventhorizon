@@ -1,26 +1,37 @@
 /* ============================================================
-   Style.css
+   Main Stylesheet
+   ============================================================
+   Table of Contents:
+   1. Design Tokens
+   2. Base & Reset
+   3. Navbar
+   4. Hero Section
+   5. CTA Variants
+   6. Footer
+   7. Utility Classes
    ============================================================ */
-/* Smooth scroll globale */
-html{ scroll-behavior: smooth; }
 
-/* =======================
-   DESIGN TOKENS
-   ======================= */
-:root{
-  /* Indigo */
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ============================================================
+   1. DESIGN TOKENS
+   ============================================================ */
+:root {
+  /* Color Palette - Indigo */
   --indigo-900: #2F2760;
   --indigo-700: #5B4E9D;
-  --indigo-500: #9F7BB8;
-  /* add (per hover alphab) */
   --indigo-600: #4A3F81;
+  --indigo-500: #9F7BB8;
 
-  /* Neutral (Light Mode) */
-  --neutral-00:  #FFFFFF;
-  --neutral-50:  #F3F2F7;
+  /* Color Palette - Neutral */
+  --neutral-00: #FFFFFF;
+  --neutral-50: #F3F2F7;
   --neutral-900: #0E0F1A;
 
-  /* Theme colors (Light Mode defaults) */
+  /* Semantic colors - Theme defaults */
   --bg-primary: var(--neutral-00);
   --bg-secondary: var(--neutral-50);
   --text-primary: var(--neutral-900);
@@ -28,86 +39,89 @@ html{ scroll-behavior: smooth; }
   --surface-0: #FFFFFF;
   --surface-1: #F9F9FB;
 
-  /* Teal CTA */
+  /* Color Palette - Teal (CTA) */
   --teal-300: #00ADB1;
   --teal-600: #007A7C;
   --teal-700: #006668;
 
-  /* Gold (focus) */
-  --gold-600: #E0A402;
-  /* add scala Gold per hover/focus coerenti */
+  /* Color Palette - Gold (Focus/Accent) */
   --gold-500: #E0A402;
+  --gold-600: #E0A402;
   --gold-700: #A37500;
 
-  /* Pink */
+  /* Color Palette - Pink */
   --pink-600: #D00093;
   --pink-700: #B3007F;
 
-  /* Orange */
-  --orange-600: #DB6A1A;
+  /* Color Palette - Orange */
   --orange-500: #FE771D;
+  --orange-600: #DB6A1A;
 
-  /* Acid (verde acceso) + hover speciale */
+  /* Color Palette - Acid (Special effects) */
   --acid-600: #5CC800;
   --acid-hover: #EC3DE6;
 
-  /* Tipografia */
+  /* Typography - Fonts */
   --font-sans: "Lexend Deca", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   --font-display: "Lexend Giga", var(--font-sans);
 
-  /* Scala font */
+  /* Typography - Font sizes (fluid) */
   --fs-h1: clamp(2rem, 4.5vw + 0.3rem, 3.25rem);
   --fs-h2: clamp(1.5rem, 2.8vw + 0.25rem, 2.25rem);
   --fs-h3: clamp(1.25rem, 2vw + 0.2rem, 1.75rem);
   --fs-body: clamp(1rem, 0.5vw + 0.9rem, 1.125rem);
 
-  /* Line-height & weight */
+  /* Typography - Line height & weight */
   --lh-tight: 1.15;
   --lh-normal: 1.45;
   --fw-medium: 500;
   --fw-bold: 700;
   --fw-black: 800;
 
-  /* Spaziature (4pt) */
-  --space-1: 4px;  --space-2: 8px;  --space-3: 12px;
-  --space-4: 16px; --space-5: 20px; --space-6: 24px;
+  /* Typography - Letter spacing */
+  --trk-tight: -0.4px;
+  --trk-tight-lg: -0.6px;
+  --trk-slight: -0.2px;
+  --trk-wide: 0.04em;
 
-  /* Section spacing scale (8pt base) - uniformato */
-  --section-xs: clamp(32px, 5vw, 56px);   /* small separators */
-  --section-sm: clamp(48px, 7vw, 80px);   /* standard sections */
-  --section-md: clamp(64px, 9vw, 104px);  /* emphasized sections */
-  --section-lg: clamp(80px, 11vw, 128px); /* major separators */
+  /* Spacing - Base scale (4pt grid) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
 
-  /* Raggi */
+  /* Spacing - Section scale (fluid) */
+  --section-xs: clamp(32px, 5vw, 56px);
+  --section-sm: clamp(48px, 7vw, 80px);
+  --section-md: clamp(64px, 9vw, 104px);
+  --section-lg: clamp(80px, 11vw, 128px);
+
+  /* Border radius */
   --radius-s: 8px;
 
-  /* Ombre */
-  --shadow-nav: 0 8px 20px rgba(0,0,0,0.16);
-  --shadow-nav-strong: 0 12px 28px rgba(0,0,0,0.22);
+  /* Shadows */
+  --shadow-nav: 0 8px 20px rgba(0, 0, 0, 0.16);
+  --shadow-nav-strong: 0 12px 28px rgba(0, 0, 0, 0.22);
 
-  /* Motion */
+  /* Motion - Timing */
   --dur-1: 140ms;
   --dur-2: 180ms;
-  --ease-standard: cubic-bezier(.2,.8,.2,1);
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
 
-  /* Z-index */
+  /* Layout - Z-index scale */
   --z-nav: 1000;
   --z-hero-img: 1;
   --z-hero-content: 2;
 
-  /* Container */
+  /* Layout - Container */
   --container-pad-x: 16px;
   --container-max: 1200px;
 
-  /* Hero bg */
+  /* Hero - Background configuration */
   --hero-bg-opacity: 1;
   --hero-bg-url: none;
-
-  /* Tracking (letter-spacing) */
-  --trk-tight: -0.4px;    /* titoli compatti (mobile/tablet) */
-  --trk-tight-lg: -0.6px; /* titoli compatti (desktop) */
-  --trk-slight: -0.2px;   /* titoli medi, testi evidenziati */
-  --trk-wide:  0.04em;    /* overline/label */
 }
 
 /* =======================

@@ -1,21 +1,13 @@
-/* Self-hosted fonts
-   ------------------
-   - Place your font files under: static/fonts/
-   - Paste your pre-generated @font-face rules below.
-   - Make sure the src URLs point to /fonts/... (absolute from site root), e.g.:
-     src: url('/fonts/lexend-deca-regular.woff2') format('woff2');
-   - Keep family names consistent with your CSS (e.g., 'Lexend Deca', 'Lexend Giga', 'Merriweather').
+/* ============================================================
+   Self-hosted Fonts
+   ============================================================
+   Load order optimized for critical rendering path:
+   1. Primary UI fonts (Lexend family)
+   2. Body fonts (Roboto, Merriweather)
+   3. Italic variants
+   ============================================================ */
 
-   Example (remove after pasting real rules):
-   @font-face {
-     font-family: 'Lexend Deca';
-     src: url('/fonts/placeholder.woff2') format('woff2');
-     font-weight: 400;
-     font-style: normal;
-     font-display: swap;
-   }
-*/
-
+/* Display fonts - Critical for hero/titles */
 @font-face {
     font-family: 'Lexend Giga';
     src: url('/fonts/LexendGiga-Regular.woff2') format('woff2'),
@@ -43,6 +35,7 @@
     font-display: swap;
 }
 
+/* Body fonts - Regular */
 @font-face {
     font-family: 'Roboto';
     src: url('/fonts/Roboto-Regular.woff2') format('woff2'),
@@ -61,6 +54,7 @@
     font-display: swap;
 }
 
+/* Body fonts - Italic variants */
 @font-face {
     font-family: 'Roboto';
     src: url('/fonts/Roboto-Italic.woff2') format('woff2'),
