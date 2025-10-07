@@ -9,7 +9,8 @@
       "Bash(ren:*)",
       "Bash(rm:*)",
       "Bash(mv:*)",
-      "Bash(hugo:*)"
+      "Bash(hugo:*)",
+      "Bash(test:*)"
     ],
     "deny": [],
     "ask": []

@@ -73,6 +73,6 @@ q {
 }
 
 ::selection {
-  background: rgba(125, 211, 252, 0.22);
+  background: var(--color-surface-selected);
   color: var(--color-text);
 }
