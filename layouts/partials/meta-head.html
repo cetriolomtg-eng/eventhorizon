@@ -124,10 +124,8 @@
 {{- $parts := $.Scratch.Get "parts" -}}
 
 {{- if gt (len $parts) 0 -}}
-  {{- $bundle := ($parts | resources.Concat "style/main.css") | resources.Minify -}}
-  {{/* Usa sistema di versioning centralizzato */}}
-  {{- $version := partial "version.html" . -}}
-  <link rel="stylesheet" href="{{ printf "%s?v=%s" $bundle.RelPermalink $version }}">
+  {{- $bundle := ($parts | resources.Concat "style/bundle.css") | resources.Minify | resources.Fingerprint -}}
+  <link rel="stylesheet" href="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" crossorigin="anonymous">
 {{- end -}}
 
 <!-- Optional: Preload core WOFF2 fonts (configure in params.fonts.preload) -->
