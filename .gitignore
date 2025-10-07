@@ -2,6 +2,9 @@
 /public/
 /resources/
 
+# Auto-generated version file
+assets/version.txt
+
 # System files
 .DS_Store
 Thumbs.db

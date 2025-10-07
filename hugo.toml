@@ -52,6 +52,8 @@ permalinkable  = true
 
 relativeURLs = true
 
+enableGitInfo = true
+
 [security]
   [security.funcs]
     getenv = ['^HUGO_', '^CI$', '^GITHUB_', '^COMMIT_SHA$']
