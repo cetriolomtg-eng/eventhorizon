@@ -69,20 +69,21 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  
+
   font-family: var(--font-display);
   font-size: var(--text-lg);
   font-weight: 600;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
   color: var(--color-text);
-  
+  text-decoration: none;
+
   /* Focus and interaction states */
   border-radius: var(--radius-sm);
   outline: 2px solid transparent;
   outline-offset: 2px;
   transition: var(--transition-colors);
-  
+
   /* Subtle glow effect */
   text-shadow: var(--shadow-glow);
 }
@@ -107,17 +108,17 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  width: 44px;
-  height: 44px;
-  
-  background: var(--color-surface-variant);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
-  
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+
   cursor: pointer;
   transition: var(--transition-all);
-  
+
   /* Focus styles */
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -125,13 +126,10 @@
 
 .nav__toggle:hover {
   background: var(--color-surface-hover);
-  border-color: var(--color-primary);
-  transform: scale(1.05);
 }
 
 .nav__toggle:focus-visible {
   outline-color: var(--color-primary);
-  border-color: var(--color-primary);
 }
 
 .nav__toggle:active {
@@ -141,16 +139,16 @@
 /* Hamburger bars */
 .nav__toggle-bar {
   display: block;
-  width: 20px;
+  width: 24px;
   height: 2px;
   background: var(--color-text);
-  border-radius: var(--radius-full);
+  border-radius: 1px;
   transition: var(--transition-transform), var(--transition-opacity);
 }
 
 /* Open state animations */
 .nav.is-open .nav__toggle-bar:nth-child(1) {
-  transform: translateY(6px) rotate(45deg);
+  transform: translateY(7px) rotate(45deg);
 }
 
 .nav.is-open .nav__toggle-bar:nth-child(2) {
@@ -159,34 +157,34 @@
 }
 
 .nav.is-open .nav__toggle-bar:nth-child(3) {
-  transform: translateY(-6px) rotate(-45deg);
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 /* Navigation Menu */
 .nav__menu {
   /* Mobile: overlay menu */
   position: fixed;
-  top: calc(var(--nav-height) + var(--space-2));
+  top: calc(var(--nav-height) + var(--space-1));
   left: var(--container-padding);
   right: var(--container-padding);
-  
+
   background: var(--color-surface-elevated);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-2xl);
   backdrop-filter: blur(20px);
-  
-  padding: var(--space-6);
+
+  padding: var(--space-3);
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  
+  gap: var(--space-1);
+
   /* Hidden by default */
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-var(--space-4)) scale(0.95);
+  transform: translateY(-var(--space-2)) scale(0.98);
   pointer-events: none;
-  
+
   transition: var(--transition-all);
 }
 
@@ -202,7 +200,7 @@
 .nav__list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 0;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -214,18 +212,19 @@
   position: relative;
   display: flex;
   align-items: center;
-  
+
   font-family: var(--font-sans);
   font-size: var(--text-base);
   font-weight: 500;
   letter-spacing: var(--tracking-normal);
   color: var(--color-text-secondary);
-  
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-lg);
-  
+  text-decoration: none;
+
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+
   transition: var(--transition-colors);
-  
+
   /* Focus styles */
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -310,25 +309,5 @@
     font-weight: 500;
     letter-spacing: var(--tracking-wide);
     padding: var(--space-2) var(--space-3);
-    
-    /* Subtle underline effect for desktop */
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: -2px;
-      left: 50%;
-      width: 0;
-      height: 2px;
-      background: var(--gradient-primary);
-      border-radius: var(--radius-full);
-      transform: translateX(-50%);
-      transition: var(--transition-all);
-    }
-    
-    &:hover::after,
-    &:focus-visible::after,
-    &[aria-current="page"]::after {
-      width: 100%;
-    }
   }
 }
