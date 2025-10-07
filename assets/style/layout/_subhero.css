@@ -239,13 +239,15 @@
 
 @media (max-width: 1023.98px){
   .hero-slider .sub-hero__inner{
-    padding-inline: var(--container-pad-x);
+    padding-inline: 0;
     width: 100%;
     box-sizing: border-box;
   }
   .hero-slider .pager__viewport{
-    border-radius: clamp(20px, 6vw, 28px);
+    border-radius: 0;
     min-height: clamp(340px, 52vh, 520px);
+    border: none;
+    box-shadow: none;
   }
   .hero-slider .pager__dots{
     position: static;
