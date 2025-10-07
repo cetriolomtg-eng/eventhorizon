@@ -3,27 +3,19 @@
    ============================================================ */
 :root{
   --dur-fade: 420ms;
-
   /* Dots */
   --dot-visible: 8px;
   --dot-hit: 18px;
   --dot-gap: 6px;
-
   /* Overlay generale del blocco */
   --veil: 0.20;
 }
 
 /* SAFETY SCOPE: mostra dots/controls SOLO dentro la .sub-hero */
 .pager__dots,
-.pager__controls{
-  display: none !important;
-}
-.sub-hero .pager__dots{
-  display: flex !important;
-}
-.sub-hero .pager__controls{
-  display: flex !important;
-}
+.pager__controls{ display: none !important; }
+.sub-hero .pager__dots{ display: flex !important; }
+.sub-hero .pager__controls{ display: flex !important; }
 
 .sub-hero{
   position: relative;
@@ -31,11 +23,9 @@
   background-color: #0E0F1A;
   width: 100%;
   padding: var(--section-md, clamp(64px, 9vw, 96px)) 0;
-
-  /* Ritmo sezione (riusato anche dagli script) */
-  /* (split pad) */
-  --subhero-pad-x: clamp(12px, 2vw, 24px); /* L/R */
-  --subhero-pad-y: 0; /* gestito dal padding sezione */
+  /* Ritmo sezione */
+  --subhero-pad-x: clamp(12px, 2vw, 24px);
+  --subhero-pad-y: 0;
   --subhero-gap: clamp(8px, 1.6vw, 12px);
 }
 .sub-hero__inner{
@@ -49,6 +39,7 @@
 .sub-hero__inner > .pager__viewport{ width: 100%; }
 .sub-hero__inner > .pager__dots{ justify-self: center; }
 .sub-hero__inner > .pager__controls{ justify-self: end; }
+
 .sub-hero::before{
   content: "";
   position: absolute;
@@ -56,26 +47,14 @@
   background: rgba(0,0,0,var(--veil));
   z-index: 0;
 }
-.sub-hero:focus-visible{
-  outline: 2px solid #E0A402;
-  outline-offset: 4px;
-}
 
-.pager__viewport{
-  position: relative;
-  width: 100%;
-  padding-inline: 0;
-  overflow: hidden;
-  touch-action: pan-y;
-}
-.pager__track{
-  position: relative;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  list-style: none;
-  min-height: 100%;
-}
+.pager__viewport,
+.pager__track,
+.pager__slide{ position: relative; z-index: 1; }
+.pager__viewport{ width: 100%; padding-inline: 0; overflow: hidden; touch-action: pan-y; }
+.pager__track{ list-style: none; margin: 0; padding: 0; width: 100%; min-height: 100%; position: relative; }
+
+/* Carousel fade */
 .pager__slide{
   position: absolute;
   inset: 0;
@@ -92,43 +71,16 @@
   min-height: 300px;
   transition: opacity 360ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-.pager__slide.is-active{
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 2;
-}
+.pager__slide.is-active{ opacity: 1; pointer-events: auto; z-index: 2; }
 
-/* Tipografia (no margini default) */
-.slide__title{
-  grid-row: 1; grid-column: 1 / -1;
-  margin: 0;
-  font-weight: 700;
-  line-height: 1.2;
-  max-width: 60ch;
-}
-.slide__desc{
-  grid-row: 2; grid-column: 1 / -1;
-  margin: 0;
-  opacity: .92;
-  line-height: 1.4;
-  max-width: 68ch;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-/* CTA: wrapper consigliato per stabilitÃ  su mobile */
-.slide__cta{
-  grid-row: 3; grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
+/* Tipografia */
+.slide__title{ grid-row: 1; grid-column: 1 / -1; margin: 0; font-weight: 700; line-height: 1.2; max-width: 60ch; }
+.slide__desc{  grid-row: 2; grid-column: 1 / -1; margin: 0; opacity: .92; line-height: 1.4; max-width: 68ch; overflow-wrap: anywhere; word-break: break-word; }
+.slide__cta{   grid-row: 3; grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 12px; }
 
 /* Background immagini (mapping variabili) */
-.pager__slide { --slide-bg-url: var(--slide-bg-mobile-url); }
-@media (min-width: 768px){
-  .pager__slide { --slide-bg-url: var(--slide-bg-desktop-url); }
-}
+.pager__slide{ --slide-bg-url: var(--slide-bg-mobile-url); }
+@media (min-width: 768px){ .pager__slide{ --slide-bg-url: var(--slide-bg-desktop-url); } }
 .pager__slide::before{
   content: "";
   position: absolute;
@@ -139,7 +91,6 @@
   background-position: center;
   opacity: .38;
 }
-
 /* Overlay diagonale per contrasto testo */
 .pager__slide::after{
   content: "";
@@ -154,257 +105,48 @@
   );
   pointer-events: none;
 }
-
 .pager__slide > *{ position: relative; z-index: 1; }
 
-/* Dots container - NASCOSTI (no carousel) */
-.pager__dots{
-  display: none !important;
-}
-
-/* >>> Dots: bottone = hit-area; pallino visivo centrato via ::after <<< */
-.pager__dots .dot{
-  width: var(--dot-hit, 24px);
-  height: var(--dot-hit, 24px);
-  padding: 0;
-  border: 0;
-  background: transparent;
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-.pager__dots .dot::after{
-  content: "";
-  position: absolute;
-  inset: 0;
-  width: var(--dot-visible, 10px);
-  height: var(--dot-visible, 10px);
-  margin: auto;
-  border-radius: 50%;
-  background: rgba(255,255,255,.35);
-  transform: scale(1);
-  transition: transform .15s ease, background-color .15s ease, box-shadow .15s ease;
-}
-.pager__dots .dot.is-active::after,
-.pager__dots .dot[aria-current="true"]::after,
-.pager__dots .dot[aria-selected="true"]::after{
-  background: #fff;
-  transform: scale(1.18);
-  box-shadow: 0 0 0 2px rgba(255,255,255,.15);
-}
-@media (hover:hover){
-  .pager__dots .dot:hover::after{
-    background: rgba(255,255,255,.6);
-  }
-}
-.pager__dots .dot:focus{ outline: none; }
-.pager__dots .dot:focus-visible::after{
-  box-shadow:
-    0 0 0 3px rgba(255,255,255,.35),
-    0 0 0 5px rgba(0,0,0,.28);
-  transform: scale(1.18);
-}
-
-/* Frecce - NASCOSTE (no carousel) */
-.pager__controls{
-  display: none !important;
-}
-.pager__controls.glass{
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-.pager__arrow{
-  appearance: none;
-  border: none;
-  background: transparent;
-  color: rgba(255,255,255,0.88);
-  font-size: 20px;
-  width: 36px; height: 36px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  transition: transform 120ms ease, opacity 120ms ease, background-color 120ms ease;
-}
-.pager__arrow:hover{ background: rgba(255,255,255,0.08); }
-.pager__arrow:active{ transform: translateY(1px) scale(.98); }
-.pager__arrow:focus-visible{
-  outline: 2px solid #E0A402;
-  outline-offset: 2px;
-  background: rgba(255,255,255,0.10);
-}
-
-/* sr-only */
-.sr-only{
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  margin: -1px !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  clip: rect(0 0 0 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
-}
-
-/* Mobile: CTA centrata in basso, controls nascosti
-   + spacing compattato (~ -30%) */
+/* Mobile compattato: CTA in basso, controls nascosti */
 @media (max-width: 767.98px){
   .sub-hero .pager__slide{
-    display: flex;
-    flex-direction: column;
-    padding-bottom: calc(var(--subhero-pad-y) + 28px); /* spazio riservato ai dots */
-    gap: calc(var(--subhero-gap, 16px) * .7);         /* compact spacing */
+    display: flex; flex-direction: column;
+    padding-bottom: calc(var(--subhero-pad-y) + 28px);
+    gap: calc(var(--subhero-gap, 16px) * .7);
   }
-
-  .sub-hero .slide__cta{
-    margin-top: auto;        /* fissa la CTA in basso */
-    margin-bottom: 12px;     /* margine minimo sopra i dots */
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    gap: 12px;
-  }
-
-  .sub-hero .pager__dots{
-    display: flex !important;
-    bottom: var(--subhero-pad-y);
-    z-index: 3;
-    pointer-events: auto;
-    gap: calc(var(--dot-gap, 8px) * .85);
-  }
-
-  .sub-hero .pager__controls{
-    display: none !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-  }
+  .sub-hero .slide__cta{ margin-top: auto; margin-bottom: 12px; display: flex; width: 100%; justify-content: center; gap: 12px; }
+  .sub-hero .pager__dots{ display: flex !important; bottom: var(--subhero-pad-y); z-index: 3; pointer-events: auto; gap: calc(var(--dot-gap, 8px) * .85); }
+  .sub-hero .pager__controls{ display: none !important; visibility: hidden !important; pointer-events: none !important; }
 }
 
-/* Breakpoints: affina ritmo + grid responsive */
+/* Breakpoints */
 @media (min-width: 768px){
-  .sub-hero{
-    --subhero-pad-x: clamp(14px, 2.8vw, 28px);
-    --subhero-pad-y: clamp(20px, 3.5vw, 40px);
-    --subhero-gap: clamp(10px, 1.4vw, 16px);
-  }
-  .sub-hero__inner{
-    justify-items: stretch;
-    padding-inline: clamp(24px, 5vw, 40px);
-  }
-
-  .sub-hero .pager__viewport{
-    overflow: visible;
-  }
-  .sub-hero .pager__track{
-    display: grid;
-    position: static;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
-  }
-  .sub-hero .pager__slide{
-    position: relative;
-    opacity: 1;
-    pointer-events: auto;
-    min-height: 280px;
-  }
-}
-@media (min-width: 1280px){
-  .sub-hero{
-    --subhero-pad-x: clamp(16px, 2.4vw, 32px);
-    --subhero-pad-y: clamp(24px, 3vw, 48px);
-    --subhero-gap: clamp(12px, 1.2vw, 20px);
-  }
+  .sub-hero{ --subhero-pad-x: clamp(14px, 2.8vw, 28px); --subhero-pad-y: clamp(20px, 3.5vw, 40px); --subhero-gap: clamp(10px, 1.4vw, 16px); }
+  .sub-hero__inner{ justify-items: stretch; padding-inline: clamp(24px, 5vw, 40px); }
+  .sub-hero .pager__viewport{ overflow: visible; }
+  /* resta un carosello anche su desktop */
 }
 
-/* PRM: riduci transizioni */
-@media (prefers-reduced-motion: reduce){
-  .pager__slide{ transition: opacity 1ms linear !important; }
+/* Overlay in Hero su desktop */
+@media (min-width: 1024px){
+  .sub-hero{ margin-top: calc(-1 * clamp(160px, 18vw, 260px)); background-color: transparent; padding-top: 0; }
+  .sub-hero::before{ display: none; }
+  .sub-hero .pager__viewport{ transform: perspective(1200px) rotateX(4deg); transform-origin: center top; }
 }
 
-/* Viewport: edge-fade (lasciato, ma senza padding laterale) */
-.sub-hero .pager__viewport {
-  position: relative;
-  overflow: hidden; /* sicurezza */
-}
+/* PRM */
+@media (prefers-reduced-motion: reduce){ .pager__slide{ transition: opacity 1ms linear !important; } .sub-hero .pager__slide{ transition: none; } }
 
+/* Edge fade */
+.sub-hero .pager__viewport{ position: relative; overflow: hidden; }
 .sub-hero .pager__viewport::before,
-.sub-hero .pager__viewport::after{
-  content: "";
-  position: absolute;
-  inset-block: 0;
-  inline-size: 28px; /* intensitÃ  dissolvenza */
-  pointer-events: none;
-  z-index: 1;
-}
-.sub-hero .pager__viewport::before{
-  inset-inline-start: 0;
-  background: linear-gradient(to right, rgba(0,0,0,0.22), rgba(0,0,0,0));
-  mix-blend-mode: multiply;
-}
-.sub-hero .pager__viewport::after{
-  inset-inline-end: 0;
-  background: linear-gradient(to left, rgba(0,0,0,0.22), rgba(0,0,0,0));
-  mix-blend-mode: multiply;
-}
+.sub-hero .pager__viewport::after{ content:""; position:absolute; inset-block: 0; inline-size: 28px; pointer-events:none; z-index:1; }
+.sub-hero .pager__viewport::before{ inset-inline-start: 0; background: linear-gradient(to right, rgba(0,0,0,0.22), rgba(0,0,0,0)); mix-blend-mode: multiply; }
+.sub-hero .pager__viewport::after{ inset-inline-end: 0; background: linear-gradient(to left, rgba(0,0,0,0.22), rgba(0,0,0,0)); mix-blend-mode: multiply; }
 
-/* Contenuto slide: gap verticali piÃ¹ compatti e coesi */
-.sub-hero .pager__slide .slide__title { margin-block-end: 6px; }
-.sub-hero .pager__slide .slide__desc  { margin-block: 0 10px; }
-.sub-hero .pager__slide .slide__cta   { margin-block-start: 8px; }
-
-/* Motion silky: solo transform/opacity; will-change solo durante animazione */
-.sub-hero .pager__slide {
-  will-change: auto;
-  transition: opacity 360ms cubic-bezier(0.22, 1, 0.36, 1),
-              transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.sub-hero .pager__slide.is-animating {
-  will-change: transform, opacity;
-}
-
-/* PRM: riduci a passaggi discreti */
-@media (prefers-reduced-motion: reduce){
-  .sub-hero .pager__slide { transition: none; }
-}
-
-@media (min-width: 1280px){
-  /* Allinea gli elementi interni alla stessa colonna sinistra di Cards/Links */
-  .sub-hero .pager__slide{
-    padding-left: max(var(--subhero-pad-x), var(--subhero-align-left, 0px));
-  }
-
-  /* Frecce allineate al bordo destro del container Cards */
-  .sub-hero .pager__controls{
-    right: max(var(--subhero-pad-x), var(--subhero-align-left, 0px));
-  }
-
-  /* Dots centrati ma rispettando il gutter del container */
-  .sub-hero .pager__dots{
-    left:  max(var(--subhero-pad-x), var(--subhero-align-left, 0px));
-    right: max(var(--subhero-pad-x), var(--subhero-align-left, 0px));
-  }
-}
-
-/* Durata di default: viene sincronizzata dal JS con INTERVAL (fallback 7s) */
+/* Dots: no progress ring */
 :root{ --pager-dur: 7s; }
-
-/* Progress interno al dot (riempimento) â€” DISABILITATO esplicitamente */
 .sub-hero .pager__dots button::before,
-.sub-hero .pager__dots .dot::before{
-  content: none !important;
-  animation: none !important;
-  display: none !important;
-}
-
-/* Manteniamo solo l'effetto attivo classico (coerente con ::after) */
+.sub-hero .pager__dots .dot::before{ content: none !important; animation: none !important; display: none !important; }
 .sub-hero .pager__dots button.is-active,
-.sub-hero .pager__dots .dot.is-active{
-  transform: scale(1.0);
-}
+.sub-hero .pager__dots .dot.is-active{ transform: scale(1.0); }

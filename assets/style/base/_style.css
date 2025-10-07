@@ -485,8 +485,8 @@ main{ display: block; }
 /* Mobile (≤480px): hero più compatta, logo più piccolo, CTA più vicina */
 @media (max-width: 480px){
   .hero{
-    padding: clamp(52px, 14vw, 64px) 16px clamp(40px, 10vw, 56px);
-    min-height: clamp(420px, 60vh, 600px);
+    padding: clamp(88px, 18vw, 112px) 16px clamp(56px, 12vw, 72px);
+    min-height: clamp(460px, 64vh, 680px);
   }
   .hero__logo{
     width: 88px;
@@ -508,8 +508,8 @@ main{ display: block; }
 /* Tablet (481–768px): equilibrio dimensioni / respiro */
 @media (min-width: 481px) and (max-width: 768px){
   .hero{
-    padding: clamp(72px, 10vw, 96px) clamp(24px, 5vw, 40px);
-    min-height: clamp(500px, 68vh, 760px);
+    padding: clamp(92px, 12vw, 120px) clamp(24px, 5vw, 40px);
+    min-height: clamp(540px, 70vh, 800px);
   }
   .hero__logo{
     width: 110px;
@@ -1115,4 +1115,7 @@ footer .footer__nav a,
   a, button, .btn {
     -webkit-tap-highlight-color: transparent;
   }
+}
+@media (min-width: 1024px){
+  .hero{ padding-bottom: clamp(160px, 18vw, 260px); }
 }
