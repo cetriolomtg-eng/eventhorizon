@@ -382,6 +382,12 @@ main{ display: block; }
   gap: clamp(32px, 6vw, 64px);
   align-items: center;
 }
+.hero__deck{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .hero__content{
   display: grid;
   gap: clamp(16px, 3vw, 28px);
@@ -489,12 +495,21 @@ main{ display: block; }
   .hero{
     padding-bottom: clamp(160px, 18vw, 260px);
   }
+  .hero__inner{
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: stretch;
+  }
   .hero__content{
     text-align: left;
     justify-items: start;
     align-self: center;
     max-width: 540px;
     gap: var(--space-6);
+  }
+  .hero__deck{
+    margin-top: 0;
+    justify-content: center;
+    align-items: stretch;
   }
   .hero-cta--chevrons{ margin-top: 8px; }
 }

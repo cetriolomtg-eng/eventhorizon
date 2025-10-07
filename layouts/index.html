@@ -31,20 +31,17 @@
           <svg class="v" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </div>
       </div>
-    </div>
-  </section>
-  <!-- <<< END HERO -->
-
-  <!-- >>> START SUB-HERO (Pager) -->
-  <section id="subhero" class="sub-hero" aria-roledescription="carousel" aria-label="Contenuti in evidenza">
-    <div class="sub-hero__inner">
-      <div class="pager__viewport">
-        <div class="pager__track">
+      <div class="hero__deck">
+        <!-- >>> START SUB-HERO (Pager) -->
+        <section id="subhero" class="sub-hero" aria-roledescription="carousel" aria-label="Contenuti in evidenza">
+          <div class="sub-hero__inner">
+            <div class="pager__viewport">
+              <div class="pager__track">
 
         <!-- Slide 1 -->
         <article class="pager__slide slide-1 is-active" id="slide-1"
                  role="group" aria-roledescription="slide"
-                 aria-label="Slide 1 di 3: Decklist"
+                 aria-label="Slide 1 di 4: Decklist"
                  data-bg-mobile="{{ "images/subhero/sh1-mobile.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
                  data-bg-desktop="{{ "images/subhero/sh1-desktop.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}">
           <h2 class="slide__title">LE NOSTRE DECKLIST!</h2>
@@ -62,7 +59,7 @@
         <!-- Slide 2 -->
         <article class="pager__slide slide-2" id="slide-2"
                  role="group" aria-roledescription="slide"
-                 aria-label="Slide 2 di 3: Wiki ITA"
+                 aria-label="Slide 2 di 4: Wiki ITA"
                  data-bg-mobile="{{ "images/subhero/sh2-mobile.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
                  data-bg-desktop="{{ "images/subhero/sh2-desktop.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}">
           <h2 class="slide__title">MTG WIKI ITALIA</h2>
@@ -81,7 +78,7 @@
         <!-- Slide 3 -->
         <article class="pager__slide slide-3" id="slide-3"
                  role="group" aria-roledescription="slide"
-                 aria-label="Slide 3 di 3: Eventi"
+                 aria-label="Slide 3 di 4: Eventi"
                  data-bg-mobile="{{ "images/subhero/sh3-mobile.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
                  data-bg-desktop="{{ "images/subhero/sh3-desktop.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}">
           <h2 class="slide__title">PROSSIMI EVENTI</h2>
@@ -93,24 +90,46 @@
           </div>
         </article>
 
-        </div>
-      </div>
+        <!-- Slide 4 -->
+        <article class="pager__slide slide-4" id="slide-4"
+                 role="group" aria-roledescription="slide"
+                 aria-label="Slide 4 di 4: Discord"
+                 data-bg-mobile="{{ "images/subhero/sh3-mobile.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
+                 data-bg-desktop="{{ "images/subhero/sh3-desktop.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}">
+          <h2 class="slide__title">RESTIAMO IN CONTATTO</h2>
+          <p class="slide__desc">
+            Siamo Vincenzo e Francesco, amici appassionati di Magic: The Gathering, Dungeons &amp; Dragons, giochi da tavolo e videogiochi.
+          </p>
+          <div class="slide__cta">
+            <a class="btn btn--teal" 
+               target="_blank" rel="noopener noreferrer"
+               href="https://discord.com/invite/tQrbzhUa4k">Discord</a>
+          </div>
+        </article>
 
-      <!-- Dots -->
-      <div class="pager__dots" role="tablist" aria-label="Selettore slide">
-        <button class="dot is-active" aria-current="true" aria-controls="slide-1" aria-label="Vai alla slide 1"></button>
-        <button class="dot" aria-controls="slide-2" aria-label="Vai alla slide 2"></button>
-        <button class="dot" aria-controls="slide-3" aria-label="Vai alla slide 3"></button>
-      </div>
+              </div>
+            </div>
 
-      <!-- Frecce (desktop only, nascoste su mobile via CSS/JS) -->
-      <div class="pager__controls glass" aria-hidden="true">
-        <button class="pager__arrow prev" type="button" aria-label="Slide precedente">&lsaquo;</button>
-        <button class="pager__arrow next" type="button" aria-label="Slide successiva">&rsaquo;</button>
+            <!-- Dots -->
+            <div class="pager__dots" role="tablist" aria-label="Selettore slide">
+              <button class="dot is-active" aria-current="true" aria-controls="slide-1" aria-label="Vai alla slide 1"></button>
+              <button class="dot" aria-controls="slide-2" aria-label="Vai alla slide 2"></button>
+              <button class="dot" aria-controls="slide-3" aria-label="Vai alla slide 3"></button>
+              <button class="dot" aria-controls="slide-4" aria-label="Vai alla slide 4"></button>
+            </div>
+
+            <!-- Frecce (desktop only, nascoste su mobile via CSS/JS) -->
+            <div class="pager__controls glass" aria-hidden="true">
+              <button class="pager__arrow prev" type="button" aria-label="Slide precedente">&lsaquo;</button>
+              <button class="pager__arrow next" type="button" aria-label="Slide successiva">&rsaquo;</button>
+            </div>
+          </div>
+        </section>
+        <!-- <<< END SUB-HERO -->
       </div>
     </div>
   </section>
-  <!-- <<< END SUB-HERO -->
+  <!-- <<< END HERO -->
 
   <!-- >>> START CARDS SECTION -->
   <section id="cards" class="cards" aria-labelledby="cards-title">
