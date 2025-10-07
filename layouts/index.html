@@ -2,41 +2,43 @@
 <main id="home" class="home">
 
   <!-- >>> START HERO SECTION -->
-  <section
-    class="hero has-hero-bg"
-    data-bg="{{ ("images/bg_image.webp" | absURL) }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
-    aria-label="Hero EventHorizon.mtg"
-  >
-    <div class="hero__inner">
-      <div class="hero__content">
-        <!-- >>> START HERO LOGO -->
-        <img class="hero__logo"
-             src="{{ ("images/logo.webp" | absURL) }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
-             alt="Logo {{ .Site.Title }}"
-             width="115" height="115"
-             decoding="async"
-             fetchpriority="high" />
-        <!-- <<< END HERO LOGO -->
+  <div class="hero-layout">
+    <section
+      class="hero has-hero-bg"
+      data-bg="{{ ("images/bg_image.webp" | absURL) }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
+      aria-label="Hero EventHorizon.mtg"
+    >
+      <div class="hero__inner">
+        <div class="hero__content">
+          <!-- >>> START HERO LOGO -->
+          <img class="hero__logo"
+               src="{{ ("images/logo.webp" | absURL) }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
+               alt="Logo {{ .Site.Title }}"
+               width="115" height="115"
+               decoding="async"
+               fetchpriority="high" />
+          <!-- <<< END HERO LOGO -->
 
-        <!-- Text hero -->
-        <h1 class="hero__title">BEYOND THE HORIZON</h1>
-        <p class="hero__subtitle">
-          Narrativa e mazzi Commander. 
-          <br>Tutto su un'unica rotta!
-        </p>
-        <!-- CTA: 3 chevron a "V" animate (decorativo) -->
-        <div class="hero-cta hero-cta--chevrons" aria-hidden="true">
-          <svg class="v" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-          <svg class="v" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-          <svg class="v" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          <!-- Text hero -->
+          <h1 class="hero__title">BEYOND THE HORIZON</h1>
+          <p class="hero__subtitle">
+            Narrativa e mazzi Commander. 
+            <br>Tutto su un'unica rotta!
+          </p>
+          <!-- CTA: 3 chevron a "V" animate (decorativo) -->
+          <div class="hero-cta hero-cta--chevrons" aria-hidden="true">
+            <svg class="v" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            <svg class="v" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            <svg class="v" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
         </div>
       </div>
-      <div class="hero__slider">
-        <!-- >>> START SUB-HERO (Pager) -->
-        <section id="subhero" class="sub-hero" aria-roledescription="carousel" aria-label="Contenuti in evidenza">
-          <div class="sub-hero__inner">
-            <div class="pager__viewport">
-              <div class="pager__track">
+    </section>
+    <!-- >>> START SUB-HERO (Pager) -->
+    <section id="subhero" class="sub-hero hero-slider" aria-roledescription="carousel" aria-label="Contenuti in evidenza">
+      <div class="sub-hero__inner">
+        <div class="pager__viewport">
+          <div class="pager__track">
 
         <!-- Slide 1 -->
         <article class="pager__slide slide-1 is-active" id="slide-1"
@@ -124,11 +126,11 @@
               <button class="pager__arrow next" type="button" aria-label="Slide successiva">&rsaquo;</button>
             </div>
           </div>
-        </section>
-        <!-- <<< END SUB-HERO -->
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+    <!-- <<< END SUB-HERO -->
+  </div>
   <!-- <<< END HERO -->
 
   <!-- >>> START CARDS SECTION -->

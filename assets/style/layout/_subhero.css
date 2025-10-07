@@ -41,19 +41,17 @@
 .sub-hero__inner > .pager__dots{ justify-self: center; }
 .sub-hero__inner > .pager__controls{ justify-self: end; }
 
-.hero__slider{
+.hero-slider{
   width: 100%;
   margin-top: clamp(32px, 6vw, 52px);
   display: flex;
   flex-direction: column;
   gap: clamp(24px, 5vw, 32px);
-}
-.hero__slider .sub-hero{
   padding: 0;
   background: transparent;
 }
-.hero__slider .sub-hero::before{ display: none; }
-.hero__slider .sub-hero__inner{
+.hero-slider::before{ display: none; }
+.hero-slider .sub-hero__inner{
   width: 100%;
   margin: 0;
   padding: 0;
@@ -63,7 +61,7 @@
   gap: clamp(16px, 3vw, 24px);
   justify-items: stretch;
 }
-.hero__slider .pager__viewport{
+.hero-slider .pager__viewport{
   width: 100%;
   min-height: clamp(360px, 42vh, 480px);
   border-radius: clamp(24px, 4vw, 32px);
@@ -74,7 +72,7 @@
   backdrop-filter: blur(14px) saturate(1.25);
   box-shadow: 0 14px 28px rgba(6, 8, 20, 0.22);
 }
-.hero__slider .pager__dots{
+.hero-slider .pager__dots{
   position: absolute;
   bottom: clamp(24px, 3vw, 36px);
   left: 50%;
@@ -89,8 +87,8 @@
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
-.hero__slider .pager__dots .dot,
-.hero__slider .pager__dots button{
+.hero-slider .pager__dots .dot,
+.hero-slider .pager__dots button{
   width: 9px;
   height: 9px;
   border-radius: 50%;
@@ -98,17 +96,17 @@
   border: none;
   transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
-.hero__slider .pager__dots .dot.is-active,
-.hero__slider .pager__dots button.is-active{
+.hero-slider .pager__dots .dot.is-active,
+.hero-slider .pager__dots button.is-active{
   background: #ffffff;
   transform: scale(1.15);
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.14);
 }
-.hero__slider .pager__dots button:focus-visible{
+.hero-slider .pager__dots button:focus-visible{
   outline: 2px solid rgba(255, 255, 255, 0.75);
   outline-offset: 2px;
 }
-.hero__slider .pager__controls{
+.hero-slider .pager__controls{
   display: none;
 }
 
@@ -136,13 +134,12 @@
   display: grid;
   grid-template-rows: auto 1fr auto;
   grid-template-columns: 1fr;
-  row-gap: var(--subhero-gap);
+  row-gap: clamp(20px, 2.6vw, 32px);
   justify-items: start;
   align-items: start;
   padding: var(--subhero-card-pad);
   color: #f0f6ff;
   min-height: 100%;
-    height: 100%;
   transition: opacity 360ms cubic-bezier(0.22, 1, 0.36, 1);
   background: linear-gradient(140deg, rgba(8, 9, 22, 0.84) 0%, rgba(12, 13, 26, 0.72) 100%);
   overflow: hidden;
@@ -204,25 +201,33 @@
 }
 
 @media (max-width: 1023.98px){
-  .hero__slider{
-    margin-top: clamp(64px, 18vw, 96px);
-    margin-left: calc(50% - 50vw);`r`n    margin-right: calc(50% - 50vw);
+  .hero-slider{
+    margin-top: clamp(56px, 16vw, 84px);
     padding-inline: var(--container-pad-x);
-    width: 100vw;
+    width: 100%;
     box-sizing: border-box;
   }
-  .hero__slider .pager__viewport{
-    border-radius: clamp(22px, 7vw, 30px);
+  .hero-slider__inner{
+    width: min(100%, var(--container-max));
+    margin-inline: auto;
+  }
+  .hero-slider .pager__viewport{
+    border-radius: clamp(20px, 6vw, 28px);
     min-height: clamp(340px, 52vh, 520px);
+  }
+  .hero-slider .pager__dots{
+    position: static;
+    transform: none;
+    margin: clamp(18px, 5vw, 28px) auto 0;
   }
 }
 
 /* Overlay in Hero su desktop */
 @media (min-width: 1024px){
-.hero__slider{
+.hero-slider{
     margin-top: 0;
   }
-  .hero__slider .sub-hero__inner{
+  .hero-slider__inner{
     width: 100%;
     max-width: none;
     gap: clamp(24px, 3vw, 32px);
@@ -231,13 +236,13 @@
     justify-items: stretch;
     height: 100%;
   }
-  .hero__slider .pager__viewport{
+  .hero-slider .pager__viewport{
     border-radius: clamp(26px, 4vw, 34px);
     min-height: 100%;
     height: 100%;
     background: linear-gradient(125deg, #15122f 0%, #090a1f 50%, #18143a 100%);
   }
-  .hero__slider .pager__controls{
+  .hero-slider .pager__controls{
     display: flex !important;
     flex-direction: column;
     align-items: center;
@@ -249,7 +254,7 @@
     left: auto;
     gap: clamp(20px, 2.5vw, 28px);
   }
-  .hero__slider .pager__controls .pager__arrow{
+  .hero-slider .pager__controls .pager__arrow{
     pointer-events: auto;
     width: 46px;
     height: 46px;
@@ -263,18 +268,18 @@
     transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease, color 200ms ease;
     box-shadow: 0 6px 14px rgba(7, 9, 22, 0.2);
   }
-  .hero__slider .pager__controls .pager__arrow:hover{
+  .hero-slider .pager__controls .pager__arrow:hover{
     background: #ffffff;
     color: #11132b;
     transform: translateY(-2px);
     box-shadow: 0 12px 24px rgba(7, 9, 22, 0.28);
   }
-  .hero__slider .pager__controls .pager__arrow:active{
+  .hero-slider .pager__controls .pager__arrow:active{
     background: rgba(255, 255, 255, 0.92);
     color: #090b1f;
     transform: translateY(1px);
   }
-  .hero__slider .pager__dots{
+  .hero-slider .pager__dots{
     display: inline-flex !important;
     margin-top: 0;
   }
@@ -298,21 +303,21 @@
 .sub-hero .pager__dots .dot.is-active{ transform: scale(1.0); }
 
 /* Hero slider typography & details */
-.hero__slider .slide__title{
+.hero-slider .slide__title{
   font-size: clamp(1.55rem, 0.9vw + 1.6rem, 2.05rem);
   background: linear-gradient(135deg, #E0A402 0%, #5B4E9D 50%, #00ADB1 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: var(--trk-tight);
 }
-.hero__slider .slide__desc{
+.hero-slider .slide__desc{
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   opacity: 0.9;
 }
-.hero__slider .slide__cta{
+.hero-slider .slide__cta{
   gap: clamp(12px, 2vw, 18px);
   margin-top: clamp(18px, 2.4vw, 26px);
 }
@@ -320,15 +325,17 @@
 
 
 @media (min-width: 1024px){
-  .hero__slider .pager__controls .pager__arrow:focus-visible{
+  .hero-slider .pager__controls .pager__arrow:focus-visible{
     outline: 2px solid rgba(255,255,255,0.75);
     outline-offset: 3px;
   }
 }
 
 
-.hero__slider .pager__dots button:hover,
-.hero__slider .pager__dots .dot:hover{
+.hero-slider .pager__dots button:hover,
+.hero-slider .pager__dots .dot:hover{
   background: #ffffff;
 }
+
+
 
