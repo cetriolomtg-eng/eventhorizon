@@ -242,7 +242,6 @@
   border-radius: var(--radius-md);
 
   cursor: pointer;
-  pointer-events: auto;
   user-select: none;
 
   transition: all 0.2s ease;
@@ -250,6 +249,11 @@
   /* Focus styles */
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+
+/* Ensure links are clickable when menu is open */
+.nav.is-open .nav__link {
+  pointer-events: auto;
 }
 
 /* Hover effect with background */
