@@ -27,7 +27,7 @@
   --subhero-pad-x: clamp(12px, 2vw, 24px);
   --subhero-pad-y: 0;
   --subhero-gap: clamp(8px, 1.6vw, 12px);
-  --subhero-card-pad: clamp(24px, 3vw, 32px);
+  --subhero-card-pad: clamp(26px, 3.5vw, 42px);
 }
 .sub-hero__inner{
   width: min(100%, var(--container-max, 1200px));
@@ -43,10 +43,10 @@
 
 .hero__slider{
   width: 100%;
-  margin-top: clamp(28px, 6vw, 44px);
+  margin-top: clamp(32px, 6vw, 52px);
   display: flex;
   flex-direction: column;
-  gap: clamp(24px, 6vw, 36px);
+  gap: clamp(24px, 5vw, 32px);
 }
 .hero__slider .sub-hero{
   padding: 0;
@@ -60,7 +60,7 @@
   position: relative;
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;
-  gap: clamp(18px, 4vw, 26px);
+  gap: clamp(16px, 3vw, 24px);
   justify-items: stretch;
 }
 .hero__slider .pager__viewport{
@@ -72,41 +72,40 @@
   background: linear-gradient(128deg, #120f28 0%, #0a0b1f 50%, #171538 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(14px) saturate(1.25);
-  box-shadow: 0 18px 38px rgba(6, 8, 20, 0.28);
+  box-shadow: 0 14px 28px rgba(6, 8, 20, 0.22);
 }
 .hero__slider .pager__dots{
+  position: absolute;
+  bottom: clamp(24px, 3vw, 36px);
+  left: 50%;
+  transform: translateX(-50%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 9px 16px;
-  margin: 0 auto;
+  gap: 10px;
+  padding: 7px 12px;
   border-radius: 999px;
-  background: rgba(8, 10, 24, 0.42);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 10, 24, 0.45);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 .hero__slider .pager__dots .dot,
 .hero__slider .pager__dots button{
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.26);
+  background: rgba(255, 255, 255, 0.3);
   border: none;
-  transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+  transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 .hero__slider .pager__dots .dot.is-active,
 .hero__slider .pager__dots button.is-active{
   background: #ffffff;
-  transform: scale(1.2);
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.16);
-}
-.hero__slider .pager__dots button:hover,
-.hero__slider .pager__dots .dot:hover{
-  background: #ffffff;
+  transform: scale(1.15);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.14);
 }
 .hero__slider .pager__dots button:focus-visible{
-  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline: 2px solid rgba(255, 255, 255, 0.75);
   outline-offset: 2px;
 }
 .hero__slider .pager__controls{
@@ -125,7 +124,8 @@
 .pager__track,
 .pager__slide{ position: relative; z-index: 1; }
 .pager__viewport{ width: 100%; padding-inline: 0; overflow: hidden; touch-action: pan-y; }
-.pager__track{ list-style: none; margin: 0; padding: 0; width: 100%; min-height: 100%; position: relative; }
+.pager__track{ list-style: none; margin: 0; padding: 0; width: 100%; min-height: 100%;
+    height: 100%; position: relative; }
 
 /* Carousel fade */
 .pager__slide{
@@ -142,6 +142,7 @@
   padding: var(--subhero-card-pad);
   color: #f0f6ff;
   min-height: 100%;
+    height: 100%;
   transition: opacity 360ms cubic-bezier(0.22, 1, 0.36, 1);
   background: linear-gradient(140deg, rgba(8, 9, 22, 0.84) 0%, rgba(12, 13, 26, 0.72) 100%);
   overflow: hidden;
@@ -205,7 +206,7 @@
 @media (max-width: 1023.98px){
   .hero__slider{
     margin-top: clamp(64px, 18vw, 96px);
-    margin-inline: calc(-1 * var(--container-pad-x));
+    margin-left: calc(50% - 50vw);`r`n    margin-right: calc(50% - 50vw);
     padding-inline: var(--container-pad-x);
     width: 100vw;
     box-sizing: border-box;
@@ -213,9 +214,6 @@
   .hero__slider .pager__viewport{
     border-radius: clamp(22px, 7vw, 30px);
     min-height: clamp(340px, 52vh, 520px);
-  }
-  .hero__slider .pager__dots{
-    margin-inline: auto;
   }
 }
 
@@ -236,6 +234,7 @@
   .hero__slider .pager__viewport{
     border-radius: clamp(26px, 4vw, 34px);
     min-height: 100%;
+    height: 100%;
     background: linear-gradient(125deg, #15122f 0%, #090a1f 50%, #18143a 100%);
   }
   .hero__slider .pager__controls{
@@ -255,14 +254,14 @@
     width: 46px;
     height: 46px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.16);
     border: 1px solid rgba(255, 255, 255, 0.12);
     color: rgba(255, 255, 255, 0.9);
     display: grid;
     place-items: center;
     font-size: 20px;
     transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease, color 200ms ease;
-    box-shadow: 0 8px 18px rgba(7, 9, 22, 0.22);
+    box-shadow: 0 6px 14px rgba(7, 9, 22, 0.2);
   }
   .hero__slider .pager__controls .pager__arrow:hover{
     background: #ffffff;
@@ -314,7 +313,8 @@
   opacity: 0.9;
 }
 .hero__slider .slide__cta{
-  gap: clamp(12px, 2vw, 20px);
+  gap: clamp(12px, 2vw, 18px);
+  margin-top: clamp(18px, 2.4vw, 26px);
 }
 
 
@@ -324,5 +324,11 @@
     outline: 2px solid rgba(255,255,255,0.75);
     outline-offset: 3px;
   }
+}
+
+
+.hero__slider .pager__dots button:hover,
+.hero__slider .pager__dots .dot:hover{
+  background: #ffffff;
 }
 
