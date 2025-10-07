@@ -60,7 +60,7 @@
   background-image: url("../../images/portal_bg.webp");
   background-size: cover;
   background-position: center;
-  opacity: 0.15;
+  opacity: 0.30;
   mix-blend-mode: soft-light;
   pointer-events: none;
 }
@@ -158,8 +158,8 @@
   /* Glassmorphism potenziato */
   background: rgba(91,78,157,var(--portal-alpha));
   border: 1px solid #D00093;
-  -webkit-backdrop-filter: blur(var(--portal-blur)) saturate(1.4);
-          backdrop-filter: blur(var(--portal-blur)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--portal-blur)) saturate(0.9);
+          backdrop-filter: blur(var(--portal-blur)) saturate(0.9);
 
   /* Box shadow stratificato */
   box-shadow:
