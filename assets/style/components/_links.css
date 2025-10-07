@@ -1,377 +1,195 @@
 /* ============================================================
-   Links.css - Stack/Deck carousel (effetto mazzo di carte)
+   Links.css - Partner grid
    ============================================================ */
-.links {
-  /* Tema sezione (scuro) */
+.links{
   --links-bg: var(--neutral-900, #0E0F1A);
   --links-text: var(--neutral-50, #F3F2F7);
-  background: var(--links-bg);
+
+  background:
+    radial-gradient(140% 120% at 50% 0%,
+      rgba(91, 78, 157, 0.35) 0%,
+      rgba(24, 22, 48, 0.6) 32%,
+      rgba(14, 15, 26, 0.92) 55%,
+      var(--links-bg) 100%);
   color: var(--links-text);
   padding: clamp(48px, 6vw, 80px) 0;
   position: relative;
   overflow: hidden;
-
-  /* Container identico a Cards (4 colonne virtuali) */
-  --card-w: 320px;
-  --grid-gap: 16px;
-  --container-pad-x: var(--container-pad-x, 16px);
-  --container-max: calc(
-    (4 * var(--card-w)) +
-    (3 * var(--grid-gap)) +
-    (2 * var(--container-pad-x, 16px))
-  );
-
-  /* Parametri stack carousel */
-  --links-stack-interval: 5000;     /* ms tra card (autoplay) */
-  --links-stack-duration: 400;      /* ms animazione transizione */
-  --links-auto-ignore-rmw: 0;       /* 0 = rispetta "Riduci animazioni" */
+  scroll-margin-top: 80px;
 }
-@media (min-width: 480px){
-  .links{
-    --card-w: 340px;
-    --grid-gap: 20px;
-    --container-max: calc(
-      (4 * var(--card-w)) +
-      (3 * var(--grid-gap)) +
-      (2 * var(--container-pad-x, 16px))
-    );
-  }
-}
-@media (min-width: 1024px){
-  .links{
-    --card-w: 360px;
-    --grid-gap: 22px;
-    --container-max: calc(
-      (4 * var(--card-w)) +
-      (3 * var(--grid-gap)) +
-      (2 * var(--container-pad-x, 16px))
-    );
-  }
+
+.links::before{
+  content: "";
+  position: absolute;
+  inset: -30% -10%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(0, 173, 177, 0.18), transparent 55%),
+    radial-gradient(circle at 80% 70%, rgba(224, 164, 2, 0.16), transparent 60%);
+  opacity: 0.7;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .links__inner{
-  width: min(100%, var(--container-max));
+  position: relative;
+  z-index: 1;
+  width: min(100%, var(--container-max, 1200px));
   margin-inline: auto;
-  padding-inline: var(--container-pad-x, 16px);
-  text-align: center;
+  padding-inline: clamp(16px, 4vw, 32px);
+  display: grid;
+  gap: clamp(28px, 4vw, 40px);
 }
 
 .links__title{
-  margin: 0 0 clamp(24px, 4vw, 32px);
+  margin: 0;
   font-family: var(--font-sans, "Lexend Deca", system-ui, sans-serif);
   font-weight: var(--fw-black, 900);
   font-size: var(--fs-h2, clamp(1.5rem, 1.1vw + 1.2rem, 2rem));
   line-height: var(--lh-tight, 1.15);
-  color: var(--links-text);
+  letter-spacing: var(--trk-tight, -0.4px);
+  text-align: left;
 }
 
-/* =========================
-   Stack Carousel Container
-   ========================= */
-.links__carousel{
-  position: relative;
-  width: 100%;
-  max-width: min(420px, 90vw);    /* container centrato con max-width */
-  margin: 0 auto;
-  min-height: clamp(140px, 20vh, 180px);
-  perspective: 1200px;             /* prospettiva 3D per effetto depth */
+.links__grid{
+  display: grid;
+  gap: clamp(20px, 3vw, 28px);
 }
 
-.links__track{
+.links__list{
   list-style: none;
-  padding: 0;
   margin: 0;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  /* Stack: le card sono position absolute sovrapposte */
+  padding: 0;
+  display: grid;
+  gap: clamp(16px, 2.8vw, 24px);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
-.links__track > li{ list-style: none; }
-.links__track > li::marker{ content: ''; }
-
-/* =========================
-   Stack Cards - effetto mazzo impilato
-   ========================= */
 .link-card{
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    0 18px 34px rgba(7, 8, 18, 0.35);
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 220ms ease,
+              background 220ms ease,
+              border-color 220ms ease;
+  isolation: isolate;
+}
+
+.link-card::after{
+  content: "";
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-
-  /* Tutte le card sono inizialmente nascoste sotto lo stack */
+  inset: -20% -10%;
   opacity: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.16), transparent 55%);
+  transition: opacity 220ms ease;
   pointer-events: none;
-  z-index: 0;
-
-  /* Effetto 3D leggero */
-  transform-style: preserve-3d;
-  transition: all var(--links-stack-duration, 400ms) cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Card attiva (in primo piano) */
-.link-card.is-active{
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 3;
-  transform: translateX(-50%) translateY(0) scale(1) rotateY(0deg);
-}
-
-/* Card successiva (visibile dietro, leggermente scalata e spostata) */
-.link-card.is-next{
-  opacity: 0.7;
-  z-index: 2;
-  transform: translateX(-50%) translateY(8px) scale(0.95) rotateY(-2deg);
-  filter: brightness(0.95);
-}
-
-/* Card dopo la successiva (ancora più dietro) */
-.link-card.is-after-next{
-  opacity: 0.4;
-  z-index: 1;
-  transform: translateX(-50%) translateY(16px) scale(0.9) rotateY(-4deg);
-  filter: brightness(0.9);
-}
-
-/* Card precedente (esce con animazione slide-out) */
-.link-card.is-prev{
-  opacity: 0;
-  z-index: 0;
-  transform: translateX(-150%) translateY(-20px) scale(0.8) rotateY(15deg);
+  z-index: -1;
 }
 
 .link-card__link{
-  --link-h: 120px;                 /* stack: più alto per visibilità */
-  height: var(--link-h);
-  min-height: 120px;
-
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 18px 20px;
-
-  background: #ffffff;
-  color: var(--text-900, #0E0F1A);
-  border: 1px solid color-mix(in oklab, var(--indigo-900, #2F2760) 12%, transparent);
-  border-radius: 14px;
-  box-shadow:
-    0 4px 12px rgba(0,0,0,.15),
-    0 2px 4px rgba(0,0,0,.1);      /* ombra più profonda per stack */
-
+  gap: 16px;
+  padding: clamp(18px, 2.6vw, 24px);
   text-decoration: none;
-  transition: box-shadow 200ms ease, background-color 200ms ease;
-  -webkit-tap-highlight-color: transparent;
-  overflow: hidden;
-  position: relative;
-}
-
-/* Hover solo su card attiva */
-.link-card.is-active .link-card__link:hover{
-  box-shadow:
-    0 8px 20px rgba(0,0,0,.2),
-    0 4px 8px rgba(0,0,0,.15);
-  background: color-mix(in oklab, white 98%, var(--indigo-900, #2F2760));
-}
-
-/* Altezza responsive */
-@media (min-width: 480px){
-  .link-card__link{ --link-h: 130px; padding: 20px 22px; gap: 15px; min-height: 130px; }
-}
-@media (min-width: 768px){
-  .link-card__link{ --link-h: 120px; padding: 18px 20px; gap: 14px; min-height: 120px; }
+  color: inherit;
+  width: 100%;
+  height: 100%;
 }
 
 .link-card__logo{
-  display: block;
-  width: 56px;
-  height: 56px;
-  aspect-ratio: 1 / 1;
+  width: clamp(52px, 6vw, 64px);
+  height: clamp(52px, 6vw, 64px);
+  border-radius: 14px;
   object-fit: contain;
-  flex: 0 0 auto;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.25);
 }
-@media (min-width: 480px){ .link-card__logo{ width: 60px; height: 60px; } }
-@media (min-width: 768px){ .link-card__logo{ width: 56px; height: 56px; } }
-@media (min-width: 1024px){ .link-card__logo{ width: 60px; height: 60px; } }
 
-.link-card__meta{ display: grid; min-width: 0; }
-
-.link-card__name,
-.link-card__copy{
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
+.link-card__meta{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
 }
+
 .link-card__name{
-  -webkit-line-clamp: 2;           /* max 2 righe */
-  line-height: 1.25;
-  font-weight: var(--fw-semibold, 600);
-  font-size: clamp(1rem, 2vw, 1.05rem);  /* mobile: testo più grande */
-  margin-bottom: 3px;
-  color: var(--text-900, #0E0F1A);
+  font-weight: 700;
+  letter-spacing: var(--trk-slight, -0.2px);
 }
+
 .link-card__copy{
-  -webkit-line-clamp: 1;           /* singola riga */
-  opacity: 0.85;
-  line-height: 1.35;
-  font-size: clamp(0.85rem, 1.6vw, 0.95rem); /* mobile: più leggibile */
-  color: var(--text-800, #22232C);
+  font-size: 0.9rem;
+  opacity: 0.75;
+  letter-spacing: 0.01em;
 }
 
-/* Tablet/Desktop: riduciamo leggermente */
-@media (min-width: 768px){
-  .link-card__name{ font-size: clamp(0.95rem, 1.8vw, 1rem); }
-  .link-card__copy{ font-size: clamp(0.8rem, 1.5vw, 0.9rem); }
+.link-card--full .link-card__link{
+  justify-content: center;
+  padding: clamp(24px, 4vw, 32px);
 }
 
-.link-card__link:focus-visible{
+.link-card--full .link-card__logo{
+  width: clamp(68px, 7vw, 84px);
+  height: clamp(68px, 7vw, 84px);
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+@media (hover: hover){
+  .link-card:hover{
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow:
+      0 12px 26px rgba(7, 8, 18, 0.35),
+      0 30px 60px rgba(6, 9, 24, 0.4);
+  }
+  .link-card:hover::after{ opacity: 1; }
+}
+
+.link-card:focus-within{
   outline: 2px solid var(--gold-500, #E0A402);
   outline-offset: 3px;
 }
 
-/* Motion safety */
-@media (prefers-reduced-motion: reduce){
-  .link-card{
-    transition: opacity 150ms linear, z-index 0s linear;
-  }
-  .link-card__link{ transition: none; }
-}
-
-/* =========================
-   Controlli navigazione (dots + arrows)
-   ========================= */
-.links__controls{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: clamp(16px, 3vw, 24px);
-  margin-top: clamp(28px, 5vw, 40px);
-  position: relative;
-  z-index: 10;
-}
-
-/* Dots indicator */
-.links__dots{
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.links__dot{
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.links__dot::after{
-  content: "";
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(243, 242, 247, 0.3);
-  transition: all 200ms ease;
-}
-
-.links__dot.is-active::after,
-.links__dot[aria-current="true"]::after{
-  background: rgba(243, 242, 247, 0.95);
-  transform: scale(1.2);
-  box-shadow: 0 0 0 2px rgba(243, 242, 247, 0.15);
-}
-
-@media (hover: hover){
-  .links__dot:hover::after{
-    background: rgba(243, 242, 247, 0.6);
-    transform: scale(1.1);
-  }
-}
-
-.links__dot:focus{
+.link-card__link:focus-visible{
   outline: none;
 }
 
-.links__dot:focus-visible::after{
-  box-shadow: 0 0 0 3px rgba(224, 164, 2, 0.5);
-  transform: scale(1.2);
-}
-
-/* Arrows (mobile: solo dots) */
-.links__arrow{
-  display: none;
-}
-
-@media (min-width: 768px){
-  .links__arrow{
-    display: inline-flex;
-    appearance: none;
-    border: none;
-    background: rgba(243, 242, 247, 0.08);
-    border: 1px solid rgba(243, 242, 247, 0.12);
-    color: rgba(243, 242, 247, 0.9);
-    font-size: 20px;
-    line-height: 1;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+@media (max-width: 520px){
+  .links__title{
+    text-align: center;
+  }
+  .links__inner{
+    gap: clamp(24px, 6vw, 32px);
+  }
+  .links__list{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .link-card__link{
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 180ms ease;
-    -webkit-tap-highlight-color: transparent;
+    text-align: center;
   }
-
-  .links__arrow:hover{
-    background: rgba(243, 242, 247, 0.15);
-    border-color: rgba(243, 242, 247, 0.2);
-    transform: scale(1.05);
-  }
-
-  .links__arrow:active{
-    transform: scale(0.95);
-  }
-
-  .links__arrow:focus-visible{
-    outline: 2px solid var(--gold-500, #E0A402);
-    outline-offset: 2px;
-  }
-
-  .links__arrow.prev{ order: -1; }
-  .links__arrow.next{ order: 1; }
-}
-
-/* =========================
-   Variante: Link Card Full Logo (solo logo, nessun testo)
-   ========================= */
-.link-card.link-card--full .link-card__link {
-  justify-content: center;
-  padding: 0;
-}
-
-.link-card.link-card--full .link-card__logo {
-  width: 80px;
-  height: 80px;
-  margin: auto;
-}
-@media (min-width: 480px){
-  .link-card.link-card--full .link-card__logo {
-    width: 90px;
-    height: 90px;
+  .link-card__meta{
+    align-items: center;
   }
 }
 
-.link-card.link-card--full .link-card__meta {
-  display: none;
+@media (min-width: 1280px){
+  .links__inner{
+    padding-inline: clamp(32px, 6vw, 48px);
+  }
+  .links__list{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
-
-.links .link-card__name{ letter-spacing: var(--trk-slight); }
-.links .link-card__copy{ letter-spacing: 0; }

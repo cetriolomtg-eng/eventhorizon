@@ -7,27 +7,32 @@
     data-bg="{{ ("images/bg_image.webp" | absURL) }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
     aria-label="Hero EventHorizon.mtg"
   >
-    <div class="hero__content">
-      <!-- >>> START HERO LOGO -->
-      <img class="hero__logo"
-           src="{{ ("images/logo.webp" | absURL) }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
-           alt="Logo {{ .Site.Title }}"
-           width="115" height="115"
-           decoding="async"
-           fetchpriority="high" />
-      <!-- <<< END HERO LOGO -->
+    <div class="hero__inner">
+      <div class="hero__content">
+        <!-- >>> START HERO LOGO -->
+        <img class="hero__logo"
+             src="{{ ("images/logo.webp" | absURL) }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
+             alt="Logo {{ .Site.Title }}"
+             width="115" height="115"
+             decoding="async"
+             fetchpriority="high" />
+        <!-- <<< END HERO LOGO -->
 
-      <!-- Text hero -->
-      <h1 class="hero__title">BEYOND THE HORIZON</h1>
-      <p class="hero__subtitle">
-        Narrativa e mazzi Commander. 
-        <br>Tutto su un'unica rotta!
-      </p>
-      <!-- CTA: 3 chevron a "V" animate (decorativo) -->
-      <div class="hero-cta hero-cta--chevrons" aria-hidden="true">
-        <svg class="v" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-        <svg class="v" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-        <svg class="v" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        <!-- Text hero -->
+        <h1 class="hero__title">BEYOND THE HORIZON</h1>
+        <p class="hero__subtitle">
+          Narrativa e mazzi Commander. 
+          <br>Tutto su un'unica rotta!
+        </p>
+        <!-- CTA: 3 chevron a "V" animate (decorativo) -->
+        <div class="hero-cta hero-cta--chevrons" aria-hidden="true">
+          <svg class="v" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          <svg class="v" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          <svg class="v" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="hero__visual" aria-hidden="true">
+        <div class="hero__visual-sheen"></div>
       </div>
     </div>
   </section>
@@ -35,8 +40,9 @@
 
   <!-- >>> START SUB-HERO (Pager) -->
   <section id="subhero" class="sub-hero" aria-roledescription="carousel" aria-label="Contenuti in evidenza">
-    <div class="pager__viewport">
-      <div class="pager__track">
+    <div class="sub-hero__inner">
+      <div class="pager__viewport">
+        <div class="pager__track">
 
         <!-- Slide 1 -->
         <article class="pager__slide slide-1 is-active" id="slide-1"
@@ -90,20 +96,21 @@
           </div>
         </article>
 
+        </div>
       </div>
-    </div>
 
-    <!-- Dots -->
-    <div class="pager__dots" role="tablist" aria-label="Selettore slide">
-      <button class="dot is-active" aria-current="true" aria-controls="slide-1" aria-label="Vai alla slide 1"></button>
-      <button class="dot" aria-controls="slide-2" aria-label="Vai alla slide 2"></button>
-      <button class="dot" aria-controls="slide-3" aria-label="Vai alla slide 3"></button>
-    </div>
+      <!-- Dots -->
+      <div class="pager__dots" role="tablist" aria-label="Selettore slide">
+        <button class="dot is-active" aria-current="true" aria-controls="slide-1" aria-label="Vai alla slide 1"></button>
+        <button class="dot" aria-controls="slide-2" aria-label="Vai alla slide 2"></button>
+        <button class="dot" aria-controls="slide-3" aria-label="Vai alla slide 3"></button>
+      </div>
 
-    <!-- Frecce (desktop only, nascoste su mobile via CSS/JS) -->
-    <div class="pager__controls glass" aria-hidden="true">
-      <button class="pager__arrow prev" type="button" aria-label="Slide precedente">&lsaquo;</button>
-      <button class="pager__arrow next" type="button" aria-label="Slide successiva">&rsaquo;</button>
+      <!-- Frecce (desktop only, nascoste su mobile via CSS/JS) -->
+      <div class="pager__controls glass" aria-hidden="true">
+        <button class="pager__arrow prev" type="button" aria-label="Slide precedente">&lsaquo;</button>
+        <button class="pager__arrow next" type="button" aria-label="Slide successiva">&rsaquo;</button>
+      </div>
     </div>
   </section>
   <!-- <<< END SUB-HERO -->
@@ -162,7 +169,8 @@
               {{ $purl = (index $links 0).href }}
             {{ end }}
 
-            <article class="card {{ if $isVideo }}is-video{{ else }}is-content{{ end }}" data-kind="{{ if $isVideo }}video{{ else }}content{{ end }}">
+            {{ $isFeatured := eq $i 0 }}
+            <article class="card {{ if $isVideo }}is-video{{ else }}is-content{{ end }}{{ if $isFeatured }} card--featured{{ end }}" data-kind="{{ if $isVideo }}video{{ else }}content{{ end }}">
               {{ if and $isVideo (ne $purl "") }}
                 <div class="card__media">
                   <img
@@ -242,8 +250,8 @@
   <div class="links__inner">
     <h2 id="links-title" class="links__title">Amici, Partners &amp; Links</h2>
 
-    <div class="links__carousel">
-      <ul class="links__track" role="list">
+    <div class="links__grid">
+      <ul class="links__list" role="list">
         <li class="link-card link-card--full">
           <a class="link-card__link" href="https://www.ebay.it/" target="_blank" rel="noopener noreferrer">
             <img class="link-card__logo" src="{{ "images/links/ebay_logo.png" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}" alt="eBay" width="40" height="40" loading="lazy" decoding="async">
@@ -300,44 +308,48 @@
   <!-- >>> START CONTACTS -->
   <section id="contacts" class="contacts" aria-labelledby="contacts-title">
   <div class="contacts__inner">
-    <h2 id="contacts-title" class="contacts__title">Chi siamo</h2>
-    <p class="contacts__intro">
-      Siamo Vincenzo e Francesco, amici appassionati di Magic: The Gathering, Dungeons & Dragons, giochi da tavolo e videogiochi.
-    </p>
-    <p class="contacts__sub">Restiamo in contatto</p>
+    <div class="contacts__grid">
+      <div class="contacts__copy">
+        <h2 id="contacts-title" class="contacts__title">Chi siamo</h2>
+        <p class="contacts__intro">
+          Siamo Vincenzo e Francesco, amici appassionati di Magic: The Gathering, Dungeons & Dragons, giochi da tavolo e videogiochi.
+        </p>
+        <p class="contacts__sub">Restiamo in contatto</p>
+      </div>
 
-    <ul class="contacts__list" role="list">
-      <li>
-        <a class="contact" href="https://www.tiktok.com/@eventhorizonmtg" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok">
-          <span class="contact__icon icon-tiktok" aria-hidden="true"></span>
-        </a>
-      </li>
-      <li>
-        <a class="contact" href="https://www.instagram.com/eventhorizon.mtg" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
-          <span class="contact__icon icon-instagram" aria-hidden="true"></span>
-        </a>
-      </li>
-      <li>
-        <a class="contact" href="https://www.youtube.com/@EventHorizonMtG" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube">
-          <span class="contact__icon icon-youtube" aria-hidden="true"></span>
-        </a>
-      </li>
-      <li>
-        <a class="contact" href="https://t.me/eventhorizonmtg" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram">
-          <span class="contact__icon icon-telegram" aria-hidden="true"></span>
-        </a>
-      </li>
-      <li>
-        <a class="contact" href="https://discord.com/invite/tQrbzhUa4k" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord">
-          <span class="contact__icon icon-discord" aria-hidden="true"></span>
-        </a>
-      </li>
-      <li>
-        <a class="contact" href="mailto:eventhorizon@growupnetwork.it" aria-label="Email" title="Email">
+      <div class="contacts__actions">
+        <ul class="contacts__list" role="list">
+          <li>
+            <a class="contact" href="https://www.tiktok.com/@eventhorizonmtg" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok">
+              <span class="contact__icon icon-tiktok" aria-hidden="true"></span>
+            </a>
+          </li>
+          <li>
+            <a class="contact" href="https://www.instagram.com/eventhorizon.mtg" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
+              <span class="contact__icon icon-instagram" aria-hidden="true"></span>
+            </a>
+          </li>
+          <li>
+            <a class="contact" href="https://www.youtube.com/@EventHorizonMtG" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube">
+              <span class="contact__icon icon-youtube" aria-hidden="true"></span>
+            </a>
+          </li>
+          <li>
+            <a class="contact" href="https://t.me/eventhorizonmtg" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram">
+              <span class="contact__icon icon-telegram" aria-hidden="true"></span>
+            </a>
+          </li>
+          <li>
+            <a class="contact" href="https://discord.com/invite/tQrbzhUa4k" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord">
+              <span class="contact__icon icon-discord" aria-hidden="true"></span>
+            </a>
+          </li>
+        </ul>
+        <a class="contact contact--mail" href="mailto:eventhorizon@growupnetwork.it" aria-label="Email" title="Email">
           <span class="contact__icon icon-mail" aria-hidden="true"></span>
         </a>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
   </section>
   <!-- <<< END CONTACTS -->
