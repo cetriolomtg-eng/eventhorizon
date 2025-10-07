@@ -1,22 +1,9 @@
 /* ============================================================
-   Main Stylesheet
-   ============================================================
-   
-   Event Horizon MTG - Refactored CSS Architecture
-   
-   This stylesheet follows the ITCSS (Inverted Triangle CSS) methodology
-   for optimal CSS organization and cascade management.
-   
-   Architecture:
-   - 01-settings: Design tokens and variables
-   - 03-generic: Reset and normalize styles  
-   - 04-elements: Base element styles
-   - 05-objects: Layout patterns and objects
-   - 06-components: UI components (BEM methodology)
-   - 07-pages: Page-specific styles
-   - 08-utilities: Utility classes
-   
-   Updated: October 2025
+   Event Horizon · 2025 Visual Refresh
+   ------------------------------------------------------------
+   - ITCSS layering retained for maintainability
+   - Design tokens rebuilt from the ground up (dark aurora system)
+   - Components rebuilt with fluid spacing & typography
    ============================================================ */
 
 /* ========================================

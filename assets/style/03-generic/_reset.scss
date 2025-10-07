@@ -2,9 +2,8 @@
   box-sizing: border-box;
 }
 
-* {
+:where(*, *::before, *::after) {
   margin: 0;
-  padding: 0;
 }
 
 html,
@@ -16,6 +15,7 @@ body {
 body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  background-color: var(--color-bg);
 }
 
 img,
@@ -33,7 +33,7 @@ textarea,
 select {
   font: inherit;
   color: inherit;
-  background: none;
+  background: transparent;
   border: none;
 }
 
@@ -49,11 +49,13 @@ a {
 ol,
 ul {
   list-style: none;
+  padding: 0;
 }
 
 table {
   border-collapse: collapse;
   border-spacing: 0;
+  width: 100%;
 }
 
 blockquote,
@@ -61,7 +63,16 @@ q {
   quotes: none;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 ::selection {
-  background: rgba(102, 247, 255, 0.28);
+  background: rgba(125, 211, 252, 0.22);
   color: var(--color-text);
 }

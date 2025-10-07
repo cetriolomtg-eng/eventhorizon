@@ -1,79 +1,93 @@
-.c-links {
+.links {
   padding-block: var(--space-8);
 }
 
-.c-links__title {
+.links__inner {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.links__title {
   font-size: var(--text-2xl);
-  margin-bottom: var(--space-3);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }
 
-.c-links__grid {
-  border: 1px solid rgba(255, 255, 255, 0.06);
+.links__grid {
   border-radius: var(--app-radius-lg);
+  border: 1px solid rgba(125, 211, 252, 0.14);
+  background: rgba(9, 17, 31, 0.78);
+  box-shadow: 0 24px 48px -28px rgba(6, 12, 22, 0.82);
   padding: var(--space-4);
-  background: rgba(5, 6, 15, 0.55);
-  box-shadow: 0 18px 35px rgba(5, 6, 15, 0.45);
 }
 
-.c-links__list {
+.links__list {
   display: grid;
   gap: var(--space-3);
 }
 
-.c-link-card {
+.link-card {
+  display: flex;
+  align-items: center;
+  padding: var(--space-3);
+  gap: var(--space-3);
   border-radius: var(--app-radius-md);
-  background: rgba(15, 18, 33, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  border: 1px solid rgba(125, 211, 252, 0.12);
+  background: rgba(10, 20, 36, 0.7);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
 }
 
-.c-link-card:hover,
-.c-link-card:focus-within {
-  transform: translateY(-3px);
-  border-color: rgba(102, 247, 255, 0.4);
-  box-shadow: 0 16px 35px rgba(4, 8, 23, 0.38);
+.link-card--full {
+  justify-content: space-between;
 }
 
-.c-link-card__link {
+.link-card:hover,
+.link-card:focus-within {
+  transform: translateY(-4px);
+  border-color: rgba(125, 211, 252, 0.32);
+  background: rgba(10, 20, 36, 0.86);
+  box-shadow: 0 26px 48px -24px rgba(6, 12, 22, 0.8);
+}
+
+.link-card__link {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-3);
+  width: 100%;
+  color: var(--color-text-soft);
 }
 
-.c-link-card__logo {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.05);
-  padding: 6px;
+.link-card__logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: 1px solid rgba(125, 211, 252, 0.2);
+  background: rgba(12, 23, 40, 0.72);
+  padding: 0.4rem;
+  object-fit: contain;
 }
 
-.c-link-card__meta {
+.link-card__meta {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
 }
 
-.c-link-card__name {
+.link-card__name {
   font-family: var(--font-alt);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
   font-size: var(--text-sm);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text);
 }
 
-.c-link-card__copy {
+.link-card__copy {
   font-size: var(--text-xs);
   color: var(--color-text-muted);
 }
 
-.c-link-card--full .c-link-card__link {
-  justify-content: space-between;
-}
-
 @media (min-width: 48rem) {
-  .c-links__list {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  .links__list {
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   }
 }

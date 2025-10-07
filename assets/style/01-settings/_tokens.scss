@@ -2,96 +2,114 @@
   color-scheme: dark;
 
   /* Layout */
-  --app-max-width: 1200px;
-  --app-gutter: unquote("clamp(1.2rem, 3vw, 2.5rem)");
-  --app-radius-xs: 0.375rem;
-  --app-radius-sm: 0.5rem;
-  --app-radius-md: 0.875rem;
-  --app-radius-lg: 1.5rem;
+  --app-max-width: 74rem;
+  --app-gutter: clamp(1.25rem, 3vw, 3.5rem);
+  --app-radius-xs: 0.35rem;
+  --app-radius-sm: 0.6rem;
+  --app-radius-md: 1rem;
+  --app-radius-lg: 1.75rem;
   --app-radius-pill: 999px;
 
   /* Typography */
-  --font-sans: "Lexend", "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-alt: "LexendDeca", "Roboto", sans-serif;
-  --font-display: "LexendGiga", "Lexend", "Roboto", sans-serif;
+  --font-sans: "Lexend", "Segoe UI", "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-alt: "LexendDeca", "Lexend", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: "LexendGiga", "Lexend", "Roboto", "Segoe UI", sans-serif;
   --font-serif: "Merriweather", "Georgia", serif;
 
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-md: 1.125rem;
-  --text-lg: unquote("clamp(1.3rem, 1vw + 1.2rem, 1.6rem)");
-  --text-xl: unquote("clamp(1.6rem, 1.3vw + 1.4rem, 2rem)");
-  --text-2xl: unquote("clamp(2.1rem, 2vw + 1.6rem, 2.7rem)");
-  --text-3xl: unquote("clamp(2.8rem, 3vw + 2rem, 3.8rem)");
+  --text-xs: clamp(0.78rem, calc(0.72rem + 0.18vw), 0.88rem);
+  --text-sm: clamp(0.9rem, calc(0.84rem + 0.2vw), 1.02rem);
+  --text-base: clamp(1rem, calc(0.96rem + 0.24vw), 1.12rem);
+  --text-md: clamp(1.13rem, calc(1.05rem + 0.32vw), 1.28rem);
+  --text-lg: clamp(1.3rem, calc(1.18rem + 0.54vw), 1.55rem);
+  --text-xl: clamp(1.62rem, calc(1.42rem + 0.8vw), 1.95rem);
+  --text-2xl: clamp(2.1rem, calc(1.75rem + 1.2vw), 2.6rem);
+  --text-3xl: clamp(2.6rem, calc(2.15rem + 1.8vw), 3.4rem);
 
   /* Line heights */
-  --leading-tight: 1.15;
-  --leading-snug: 1.3;
-  --leading-normal: 1.55;
+  --leading-tight: 1.12;
+  --leading-snug: 1.32;
+  --leading-normal: 1.58;
+  --leading-loose: 1.75;
 
   /* Spacing scale */
   --space-0: 0;
-  --space-1: 0.375rem;
-  --space-2: 0.625rem;
-  --space-3: 0.875rem;
-  --space-4: 1.25rem;
-  --space-5: 1.75rem;
-  --space-6: 2.25rem;
-  --space-7: unquote("clamp(2.75rem, 4vw, 3.75rem)");
-  --space-8: unquote("clamp(3.5rem, 5vw, 5rem)");
+  --space-1: clamp(0.4rem, calc(0.32rem + 0.3vw), 0.7rem);
+  --space-2: clamp(0.62rem, calc(0.48rem + 0.45vw), 1rem);
+  --space-3: clamp(0.9rem, calc(0.68rem + 0.65vw), 1.5rem);
+  --space-4: clamp(1.25rem, calc(0.95rem + 0.9vw), 2rem);
+  --space-5: clamp(1.7rem, calc(1.3rem + 1.05vw), 2.6rem);
+  --space-6: clamp(2.2rem, calc(1.7rem + 1.25vw), 3.4rem);
+  --space-7: clamp(2.9rem, calc(2.2rem + 1.6vw), 4.4rem);
+  --space-8: clamp(3.6rem, calc(2.8rem + 2vw), 5.8rem);
+  --space-9: clamp(4.6rem, calc(3.6rem + 2.4vw), 7rem);
 
-  /* Colors */
-  --color-bg: #05060f;
-  --color-surface: #0d101f;
-  --color-surface-elevated: rgba(22, 26, 44, 0.9);
-  --color-surface-soft: rgba(33, 41, 71, 0.65);
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-strong: rgba(255, 255, 255, 0.15);
-  --color-overlay: rgba(6, 8, 17, 0.82);
+  /* Chromatic system */
+  --color-bg: #050910;
+  --color-surface: #0a1322;
+  --color-surface-elevated: rgba(19, 32, 53, 0.92);
+  --color-surface-muted: rgba(21, 32, 51, 0.66);
+  --color-surface-glass: rgba(12, 21, 36, 0.52);
+  --color-overlay: rgba(4, 9, 18, 0.8);
 
-  --color-text: #f5f7ff;
-  --color-text-soft: rgba(241, 243, 255, 0.7);
-  --color-text-muted: rgba(241, 243, 255, 0.52);
-  --color-text-invert: #05060f;
+  --color-border: rgba(122, 152, 209, 0.18);
+  --color-border-strong: rgba(170, 205, 255, 0.42);
+  --color-border-soft: rgba(122, 152, 209, 0.12);
 
-  --color-primary: #66f7ff;
-  --color-primary-strong: #4cd7ff;
-  --color-primary-soft: rgba(102, 247, 255, 0.18);
-  --color-accent: #ff5cc2;
-  --color-gold: #f6c55f;
-  --color-danger: #ff6b6b;
-  --color-disabled: rgba(255, 255, 255, 0.22);
+  --color-text: #edf3ff;
+  --color-text-soft: rgba(223, 233, 255, 0.86);
+  --color-text-muted: rgba(177, 197, 237, 0.62);
+  --color-text-dim: rgba(140, 160, 201, 0.48);
+  --color-text-invert: #070c16;
 
-  /* Shadows */
-  --shadow-soft: 0 18px 38px rgba(4, 7, 20, 0.35);
-  --shadow-elevated: 0 24px 60px rgba(4, 7, 22, 0.45);
+  --color-primary: #7dd3fc;
+  --color-primary-strong: #38bdf8;
+  --color-primary-soft: rgba(125, 211, 252, 0.18);
+  --color-secondary: #a855f7;
+  --color-secondary-soft: rgba(168, 85, 247, 0.18);
+  --color-accent: #f472b6;
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  --color-danger: #f87171;
+  --color-disabled: rgba(177, 197, 237, 0.32);
 
-  /* Blur */
-  --blur-nav: 32px;
+  /* Shadows & blur */
+  --shadow-soft: 0 26px 48px -28px rgba(7, 14, 31, 0.8);
+  --shadow-elevated: 0 42px 80px -32px rgba(10, 21, 44, 0.82);
+  --shadow-focus: 0 0 0 3px rgba(125, 211, 252, 0.28);
+  --blur-nav: 24px;
 
   /* Motion */
-  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-smooth: cubic-bezier(0.22, 0.61, 0.36, 1);
-  --transition-base: 220ms var(--ease-standard);
-  --transition-fast: 160ms var(--ease-standard);
-  --transition-slow: 360ms var(--ease-smooth);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-smooth: cubic-bezier(0.64, 0, 0.36, 1);
+  --transition-fastest: 110ms var(--ease-out);
+  --transition-fast: 160ms var(--ease-out);
+  --transition-base: 230ms var(--ease-out);
+  --transition-slow: 420ms var(--ease-smooth);
 
-  /* Component specific */
-  --nav-height: 68px;
-  --hero-min-height: unquote("clamp(620px, 70vh, 780px)");
+  /* Component tokens */
+  --nav-height: 64px;
+  --hero-min-height: clamp(560px, 70vh, 780px);
+  --hero-backdrop: radial-gradient(circle at 20% 15%, rgba(125, 211, 252, 0.24), transparent 55%), radial-gradient(circle at 80% 0%, rgba(244, 114, 182, 0.25), transparent 60%), linear-gradient(180deg, rgba(5, 9, 18, 0.95) 0%, rgba(5, 9, 18, 0.75) 100%);
   --archive-sheet-max: 480px;
+
+  /* Legacy aliases kept for scripts/templates */
+  --hero-bg-url: none;
+  --slide-bg-mobile-url: none;
+  --slide-bg-desktop-url: none;
+  --subhero-align-left: auto;
 }
 
 @media (min-width: 48rem) {
   :root {
-    --nav-height: 76px;
-    --space-1: 0.5rem;
-    --space-2: 0.75rem;
-    --space-3: 1rem;
-    --space-4: 1.5rem;
-    --space-5: 2rem;
-    --space-6: 2.75rem;
+    --nav-height: 72px;
+    --blur-nav: 26px;
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --nav-height: 78px;
+    --app-gutter: clamp(1.5rem, calc(1rem + 2vw), 4rem);
   }
 }
 

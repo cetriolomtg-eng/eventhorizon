@@ -4,10 +4,21 @@
   height: 1.25rem;
 }
 
+.glass {
+  background: rgba(9, 17, 31, 0.78);
+  border: 1px solid rgba(125, 211, 252, 0.18);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 24px 48px -28px rgba(6, 12, 22, 0.8);
+}
+
 .img-fallback {
-  filter: grayscale(0.3);
+  filter: grayscale(0.35) saturate(0.8);
 }
 
 .text-centered {
   text-align: center;
+}
+
+.shadow-soft {
+  box-shadow: var(--shadow-soft);
 }

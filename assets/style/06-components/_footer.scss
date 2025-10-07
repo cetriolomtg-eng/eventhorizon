@@ -1,36 +1,34 @@
 .site-footer {
-  background: rgba(5, 6, 15, 0.92);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  padding-block: var(--space-5);
+  background: linear-gradient(180deg, rgba(7, 14, 26, 0.95) 0%, rgba(7, 14, 26, 1) 100%);
+  border-top: 1px solid rgba(125, 211, 252, 0.18);
+  padding-block: var(--space-6);
 }
 
 .site-footer__inner {
-  width: unquote("min(100%, var(--app-max-width))");
-  margin: 0 auto;
+  width: 100%;
+  max-width: var(--app-max-width);
+  margin-inline: auto;
   padding-inline: var(--app-gutter);
 }
 
 .site-footer__disclaimer {
   display: block;
-  line-height: 1.7;
+  line-height: 1.8;
   color: var(--color-text-muted);
+  font-size: var(--text-sm);
 }
 
-.site-footer__disclaimer a {
-  color: var(--color-primary);
-}
-
-.site-footer__disclaimer a:hover,
-.site-footer__disclaimer a:focus-visible {
-  color: var(--color-accent);
-}
-
+.site-footer__disclaimer a,
 .privacy-link {
   color: var(--color-primary);
   text-decoration: underline;
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.18em;
 }
 
+.site-footer__disclaimer a:hover,
+.site-footer__disclaimer a:focus-visible,
 .privacy-link:hover,
 .privacy-link:focus-visible {
-  color: var(--color-accent);
+  color: var(--color-secondary);
 }

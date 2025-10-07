@@ -1,20 +1,29 @@
-.o-container,
 .container {
-  width: unquote("min(100%, var(--app-max-width))");
-  margin: 0 auto;
+  width: 100%;
+  max-width: var(--app-max-width);
+  margin-inline: auto;
   padding-inline: var(--app-gutter);
+  padding-inline-start: calc(var(--app-gutter) + env(safe-area-inset-left));
+  padding-inline-end: calc(var(--app-gutter) + env(safe-area-inset-right));
 }
 
-.o-container--narrow {
-  width: unquote("min(100%, 900px)");
+.container--compact {
+  max-width: 56rem;
 }
 
-.o-container--wide {
-  width: unquote("min(100%, 1360px)");
+.container--wide {
+  max-width: 86rem;
 }
 
-.o-container--full,
 .container--full {
   width: 100%;
-  padding-inline: 0;
+  max-width: none;
+  padding-inline: var(--space-2);
+}
+
+.section-shell {
+  width: 100%;
+  max-width: calc(var(--app-max-width) + 2 * var(--app-gutter));
+  margin-inline: auto;
+  padding-inline: var(--app-gutter);
 }

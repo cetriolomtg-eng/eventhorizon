@@ -1,23 +1,20 @@
 .home {
   display: flex;
   flex-direction: column;
-  gap: var(--space-8);
+  gap: var(--space-9);
 }
 
 .home section {
   position: relative;
+  scroll-margin-top: calc(var(--nav-height) + var(--space-4));
 }
 
-.home section::after {
-  pointer-events: none;
-}
-
-.hero-layout + .c-cards {
-  margin-top: calc(-1 * var(--space-6));
+.hero-layout + .cards {
+  margin-top: calc(-1 * var(--space-7));
 }
 
 @media (max-width: 47.999rem) {
-  .hero-layout + .c-cards {
+  .hero-layout + .cards {
     margin-top: var(--space-4);
   }
 }

@@ -14,18 +14,19 @@
 .privacy-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(5, 6, 15, 0.78);
-  backdrop-filter: blur(18px);
+  background: rgba(4, 9, 20, 0.78);
+  backdrop-filter: blur(22px);
 }
 
 .privacy-modal__content {
   position: relative;
-  width: unquote("min(100%, 640px)");
-  max-height: unquote("min(90vh, 780px)");
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
   overflow-y: auto;
-  background: var(--color-surface);
+  background: rgba(9, 17, 31, 0.94);
   border-radius: var(--app-radius-lg);
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid rgba(125, 211, 252, 0.28);
   box-shadow: var(--shadow-elevated);
   display: flex;
   flex-direction: column;
@@ -37,10 +38,13 @@
   justify-content: space-between;
   padding: var(--space-4) var(--space-4) var(--space-2);
   gap: var(--space-2);
+  border-bottom: 1px solid rgba(125, 211, 252, 0.12);
 }
 
 .privacy-modal__title {
   font-size: var(--text-xl);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .privacy-modal__close {
@@ -50,14 +54,16 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--app-radius-pill);
-  background: rgba(255, 255, 255, 0.06);
-  transition: background var(--transition-fast), transform var(--transition-fast);
+  background: rgba(12, 23, 40, 0.72);
+  border: 1px solid rgba(125, 211, 252, 0.16);
+  transition: background var(--transition-fast), transform var(--transition-fast), border-color var(--transition-fast);
 }
 
 .privacy-modal__close:hover,
 .privacy-modal__close:focus-visible {
-  background: rgba(255, 255, 255, 0.12);
-  transform: rotate(8deg);
+  background: rgba(12, 23, 40, 0.9);
+  border-color: rgba(125, 211, 252, 0.35);
+  transform: rotate(6deg);
 }
 
 .privacy-modal__body {
@@ -78,8 +84,13 @@
 }
 
 .privacy-modal__body code {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(125, 211, 252, 0.12);
   padding: 0.2rem 0.45rem;
   border-radius: 0.4rem;
   font-size: 0.92em;
+}
+@media (min-height: 860px) {
+  .privacy-modal__content {
+    max-height: 780px;
+  }
 }
