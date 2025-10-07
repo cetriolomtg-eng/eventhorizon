@@ -382,38 +382,6 @@ main{ display: block; }
   gap: clamp(32px, 6vw, 64px);
   align-items: center;
 }
-.hero__visual{
-  position: relative;
-  width: min(420px, 88vw);
-  aspect-ratio: 4 / 5;
-  margin-inline: auto;
-  border-radius: min(320px, 38vw);
-  background:
-    radial-gradient(circle at 30% 35%, rgba(255,255,255,0.18), rgba(255,255,255,0) 46%),
-    linear-gradient(145deg, rgba(91, 78, 157, 0.55), rgba(47, 39, 96, 0.88));
-  box-shadow:
-    0 40px 80px rgba(15, 10, 35, 0.45),
-    inset 0 0 1px rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-}
-.hero__visual::before{
-  content: "";
-  position: absolute;
-  inset: -30%;
-  background: radial-gradient(circle, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 68%);
-  opacity: 0.35;
-  transform: rotate(18deg);
-  filter: blur(12px);
-}
-.hero__visual-sheen{
-  position: absolute;
-  inset: 18%;
-  border-radius: inherit;
-  background:
-    linear-gradient(160deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.02) 42%, rgba(0,0,0,0.35) 100%);
-  mix-blend-mode: screen;
-  pointer-events: none;
-}
 .hero__content{
   display: grid;
   gap: clamp(16px, 3vw, 28px);
@@ -499,10 +467,6 @@ main{ display: block; }
   }
   .hero-cta--chevrons{ gap: 0; margin-top: 4px; }
   .hero-cta--chevrons .v{ width: 22px; height: 22px; }
-  .hero__visual{
-    width: min(360px, 78vw);
-    aspect-ratio: 3 / 4;
-  }
 }
 
 /* Tablet (481–768px): equilibrio dimensioni / respiro */
@@ -518,16 +482,12 @@ main{ display: block; }
   .hero__content{ gap: 22px; }
   .hero__subtitle{ max-width: 60ch; }
   .hero-cta--chevrons{ margin-top: 6px; }
-  .hero__visual{
-    width: min(420px, 72vw);
-  }
 }
 
 /* Desktop (≥1024px): conferma layout, micro-tuning spazi */
 @media (min-width: 1024px){
-  .hero__inner{
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-    align-items: stretch;
+  .hero{
+    padding-bottom: clamp(160px, 18vw, 260px);
   }
   .hero__content{
     text-align: left;
@@ -535,12 +495,6 @@ main{ display: block; }
     align-self: center;
     max-width: 540px;
     gap: var(--space-6);
-  }
-  .hero__visual{
-    align-self: stretch;
-    width: 100%;
-    max-width: 520px;
-    margin-inline: 0;
   }
   .hero-cta--chevrons{ margin-top: 8px; }
 }
@@ -1115,7 +1069,4 @@ footer .footer__nav a,
   a, button, .btn {
     -webkit-tap-highlight-color: transparent;
   }
-}
-@media (min-width: 1024px){
-  .hero{ padding-bottom: clamp(160px, 18vw, 260px); }
 }

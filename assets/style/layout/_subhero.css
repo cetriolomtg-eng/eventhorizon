@@ -134,6 +134,19 @@
   .sub-hero .pager__viewport{ transform: perspective(1200px) rotateX(4deg); transform-origin: center top; }
 }
 
+@media (min-width: 1280px){
+  .sub-hero .pager__slide{
+    padding-left: max(var(--subhero-pad-x), var(--subhero-align-left, 0px));
+  }
+  .sub-hero .pager__controls{
+    right: max(var(--subhero-pad-x), var(--subhero-align-left, 0px));
+  }
+  .sub-hero .pager__dots{
+    left:  max(var(--subhero-pad-x), var(--subhero-align-left, 0px));
+    right: max(var(--subhero-pad-x), var(--subhero-align-left, 0px));
+  }
+}
+
 /* PRM */
 @media (prefers-reduced-motion: reduce){ .pager__slide{ transition: opacity 1ms linear !important; } .sub-hero .pager__slide{ transition: none; } }
 
