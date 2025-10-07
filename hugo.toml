@@ -18,12 +18,12 @@ enableRobotsTXT = true
 
 [params]
   siteName = "EventHorizon.mtg"
-  appVer = "ae16060"
+  appVer = "37b9b38"
 
   # Open Graph (fallback globali; sovrascrivibili per pagina con front matter)
   [params.og]
     title = "EventHorizon.mtg"
-    description = "Magic: The Gathering • Guide, video e risorse selezionate."
+    description = "Magic: The Gathering • Video e risorse selezionate."
     image = "images/bg_image.webp"
     locale = "it_IT"
 
