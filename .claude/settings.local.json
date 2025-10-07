@@ -8,7 +8,8 @@
       "Bash(git push:*)",
       "Bash(ren:*)",
       "Bash(rm:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(hugo:*)"
     ],
     "deny": [],
     "ask": []

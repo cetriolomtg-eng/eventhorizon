@@ -9,15 +9,15 @@
 
 .links__title {
   font-size: var(--text-2xl);
-  letter-spacing: 0.2em;
+  letter-spacing: var(--tracking-widest);
   text-transform: uppercase;
 }
 
 .links__grid {
-  border-radius: var(--app-radius-lg);
-  border: 1px solid rgba(125, 211, 252, 0.14);
-  background: rgba(9, 17, 31, 0.78);
-  box-shadow: 0 24px 48px -28px rgba(6, 12, 22, 0.82);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface-glass);
+  box-shadow: var(--shadow-soft);
   padding: var(--space-4);
 }
 
@@ -31,10 +31,10 @@
   align-items: center;
   padding: var(--space-3);
   gap: var(--space-3);
-  border-radius: var(--app-radius-md);
-  border: 1px solid rgba(125, 211, 252, 0.12);
-  background: rgba(10, 20, 36, 0.7);
-  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+  transition: var(--transition-transform), var(--transition-colors);
 }
 
 .link-card--full {
@@ -44,9 +44,9 @@
 .link-card:hover,
 .link-card:focus-within {
   transform: translateY(-4px);
-  border-color: rgba(125, 211, 252, 0.32);
-  background: rgba(10, 20, 36, 0.86);
-  box-shadow: 0 26px 48px -24px rgba(6, 12, 22, 0.8);
+  border-color: var(--color-border);
+  background: var(--color-surface-variant);
+  box-shadow: var(--shadow-soft);
 }
 
 .link-card__link {
@@ -60,23 +60,23 @@
 .link-card__logo {
   width: 48px;
   height: 48px;
-  border-radius: 14px;
-  border: 1px solid rgba(125, 211, 252, 0.2);
-  background: rgba(12, 23, 40, 0.72);
-  padding: 0.4rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-elevated);
+  padding: var(--space-1-5);
   object-fit: contain;
 }
 
 .link-card__meta {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: var(--space-0-5);
 }
 
 .link-card__name {
-  font-family: var(--font-alt);
+  font-family: var(--font-display);
   font-size: var(--text-sm);
-  letter-spacing: 0.16em;
+  letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
   color: var(--color-text);
 }
