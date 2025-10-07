@@ -107,6 +107,13 @@
   outline-offset: 3px;
 }
 
+@media (max-width: 30rem) {
+  .brand {
+    font-size: var(--text-xs); /* Tighter title on very small screens */
+    letter-spacing: var(--tracking-normal);
+  }
+}
+
 /* Mobile Toggle Button */
 .nav__toggle {
   display: inline-flex;
