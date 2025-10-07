@@ -23,12 +23,12 @@
         Narrativa e mazzi Commander. 
         <br>Tutto su un'unica rotta!
       </p>
-      <!-- CTA: 3 chevron a "V" animate -->
-      <a class="hero-cta hero-cta--chevrons" href="#portal" aria-label="Scorri alla sezione successiva">
+      <!-- CTA: 3 chevron a "V" animate (decorativo) -->
+      <div class="hero-cta hero-cta--chevrons" aria-hidden="true">
         <svg class="v" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         <svg class="v" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         <svg class="v" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-      </a>
+      </div>
     </div>
   </section>
   <!-- <<< END HERO -->
@@ -111,8 +111,13 @@
   <!-- >>> START CARDS SECTION -->
   <section id="cards" class="cards" aria-labelledby="cards-title">
     <div class="cards__inner">
-      <h2 id="cards-title" class="cards__title">Esplora</h2>
-      
+      <div class="cards__header">
+        <h2 id="cards-title" class="cards__title">Ultimi Contenuti</h2>
+        <a href="{{ "/archive/" | absURL }}" class="cards__view-all" aria-label="Vedi tutti i contenuti">
+          Vedi Tutto →
+        </a>
+      </div>
+
       <div class="cards__grid">
         {{/* Ultime 4 dal data archive: solo directory data/archive/items/*.yml */}}
         {{ $items := slice }}
@@ -231,20 +236,6 @@
   </section>
   <!-- <<< END CARDS -->
 
-  <!-- >>> START PORTAL -->
-  <section id="portal" class="portal" aria-labelledby="portal-title">
-  <div class="portal__inner">
-    <h2 id="portal-title" class="portal__title">L'Archivio completo</h2>
-    <p class="portal__subtitle">Naviga le storie che plasmano Magic!</p>
-    <a href="{{ "/archive/" | absURL }}" class="btn btn--portal" aria-label="Esplora l'archivio completo">
-      SCOPRILE ORA
-      <svg class="icon icon--arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      </svg>
-    </a>
-  </div>
-  </section>
-  <!-- <<< END PORTAL --->
 
   <!-- >>> START LINKS -->
   <section class="links" aria-labelledby="links-title">

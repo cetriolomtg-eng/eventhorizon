@@ -30,11 +30,12 @@
   overflow: hidden;
   background-color: #0E0F1A;
   width: 100%;
+  padding: var(--section-md, clamp(64px, 9vw, 96px)) 0;
 
   /* Ritmo sezione (riusato anche dagli script) */
   /* (split pad) */
   --subhero-pad-x: clamp(12px, 2vw, 24px); /* L/R */
-  --subhero-pad-y: clamp(16px, 4vw, 32px); /* T/B */
+  --subhero-pad-y: 0; /* gestito dal padding sezione */
   --subhero-gap: clamp(8px, 1.6vw, 12px);
 }
 .sub-hero::before{
@@ -57,21 +58,22 @@
 }
 .pager__viewport{
   width: 100%;
-  min-height: clamp(200px, 30vh, 350px);
-  touch-action: pan-y;
-  -webkit-tap-highlight-color: transparent;
-  overflow: hidden;
   padding-inline: 0;
 }
-.pager__track{ margin: 0; padding: 0; width: 100%; height: 100%; }
+.pager__track{
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr;
+}
 
-/* Slide: GRID a 3 righe (titolo | desc 1fr | CTA) â€” 1 colonna */
+/* Slide: GRID statiche (no carousel) */
 .pager__slide{
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--dur-fade) ease;
+  position: relative;
+  opacity: 1;
+  pointer-events: auto;
 
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -82,6 +84,7 @@
 
   padding: var(--subhero-pad-y) var(--subhero-pad-x);
   color: #fff;
+  min-height: 300px;
 }
 .pager__slide.is-active{ opacity: 1; pointer-events: auto; }
 
@@ -144,16 +147,9 @@
 
 .pager__slide > *{ position: relative; z-index: 1; }
 
-/* Dots container */
+/* Dots container - NASCOSTI (no carousel) */
 .pager__dots{
-  position: absolute;
-  left: 0; right: 0;
-  bottom: clamp(8px, 2vh, 16px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--dot-gap);
-  z-index: 2;
+  display: none !important;
 }
 
 /* >>> Dots: bottone = hit-area; pallino visivo centrato via ::after <<< */
@@ -202,20 +198,9 @@
   transform: scale(1.18);
 }
 
-/* Frecce (desktop): riabilitate in .sub-hero via scope sopra
-   e ancorate SOLO in CSS */
+/* Frecce - NASCOSTE (no carousel) */
 .pager__controls{
-  position: absolute;
-  right: var(--subhero-pad-x);
-  bottom: var(--subhero-pad-y);
-  top: auto;
-  transform: none;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 10px;
-  border-radius: 12px;
-  z-index: 2;
+  display: none !important;
 }
 .pager__controls.glass{
   background: rgba(255,255,255,0.06);
@@ -292,12 +277,21 @@
   }
 }
 
-/* Breakpoints: affina ritmo */
+/* Breakpoints: affina ritmo + grid responsive */
 @media (min-width: 768px){
   .sub-hero{
     --subhero-pad-x: clamp(14px, 2.8vw, 28px);
     --subhero-pad-y: clamp(20px, 3.5vw, 40px);
     --subhero-gap: clamp(10px, 1.4vw, 16px);
+  }
+
+  .pager__track{
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .pager__slide{
+    min-height: 280px;
   }
 }
 @media (min-width: 1280px){
