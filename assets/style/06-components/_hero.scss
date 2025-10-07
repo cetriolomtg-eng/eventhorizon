@@ -26,16 +26,21 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  
-  background-image: 
-    var(--hero-overlay),
-    var(--hero-bg-url, url('/images/bg_image.webp'));
-    
+  background: var(--hero-overlay);
+  pointer-events: none;
+}
+
+.hero.has-hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image: var(--hero-bg-url, url('/images/bg_image.webp'));
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  
-  filter: brightness(0.7) contrast(1.1);
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 .hero__inner {
