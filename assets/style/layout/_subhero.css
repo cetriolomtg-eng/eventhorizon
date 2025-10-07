@@ -43,12 +43,21 @@
 
 .hero-slider{
   width: 100%;
-  margin-top: clamp(32px, 6vw, 52px);
   display: flex;
   flex-direction: column;
   gap: clamp(24px, 5vw, 32px);
   padding: 0;
   background: transparent;
+}
+
+/* Mobile/Tablet: estrai il pager dalla hero e rendilo full-width */
+@media (max-width: 1023.98px){
+  .hero-slider{
+    position: relative;
+    margin-top: clamp(32px, 6vw, 52px);
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+  }
 }
 .hero-slider::before{ display: none; }
 .hero-slider .sub-hero__inner{
@@ -242,12 +251,10 @@
   }
 }
 
-/* Desktop (≥1024px): pager integrato dentro la hero */
+/* Desktop (≥1024px): pager affiancato ai contenuti hero */
 @media (min-width: 1024px){
   .hero-slider{
-    margin-top: clamp(40px, 5vw, 64px);
-    max-width: var(--container-max);
-    margin-inline: auto;
+    margin-top: 0;
     padding-inline: var(--container-pad-x);
   }
   .hero-slider .sub-hero__inner{

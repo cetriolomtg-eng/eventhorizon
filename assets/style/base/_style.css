@@ -505,24 +505,35 @@ main{ display: block; }
   .hero-cta--chevrons{ margin-top: 6px; }
 }
 
-/* Desktop (≥1024px): hero full-width, pager integrato dentro */
+/* Desktop (≥1024px): hero full-width con layout 2 colonne interno */
 @media (min-width: 1024px){
   .hero-layout{
     width: 100%;
   }
   .hero{
     padding-bottom: clamp(80px, 10vw, 120px);
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(32px, 4vw, 56px);
+    align-items: center;
   }
   .hero__inner{
+    grid-column: 1 / span 6;
     max-width: var(--container-max);
     margin-inline: auto;
     padding-inline: var(--container-pad-x);
+    width: 100%;
   }
   .hero__content{
     text-align: left;
     justify-items: start;
     max-width: 560px;
     gap: clamp(24px, 3vw, 36px);
+  }
+  .hero > .hero-slider{
+    grid-column: 8 / -1;
+    align-self: center;
+    justify-self: stretch;
   }
   .hero-cta--chevrons{ margin-top: 8px; }
 }
