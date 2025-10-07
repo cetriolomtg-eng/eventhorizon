@@ -92,9 +92,9 @@
      CSS bundle via Hugo Pipes (single entrypoint)
 ---------------------------------------- */}}
 {{- $sassOpts := dict
-    "targetPath"  "style/main.css"
-    "outputStyle" (cond hugo.IsProduction "compressed" "expanded")
-    "sourceMap"   (not hugo.IsProduction)
+    "targetPath"      "style/bundle.css"
+    "outputStyle"     (cond hugo.IsProduction "compressed" "expanded")
+    "enableSourceMap" (not hugo.IsProduction)
 -}}
 {{- with resources.Get "style/main.scss" -}}
   {{- $mainCss := . | css.Sass $sassOpts | resources.Fingerprint -}}
