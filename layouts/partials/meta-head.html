@@ -89,12 +89,42 @@
 {{ end }}
 
 {{/* ---------------------------------------
-     CSS bundle via Hugo Pipes - Nuovo sistema ITCSS
-     Usa il file main.css che importa tutta la nuova architettura
+     CSS bundle via Hugo Pipes - Sistema ITCSS con concatenamento
+     Concatena tutti i file CSS nell'ordine ITCSS corretto
 ---------------------------------------- */}}
-{{- with resources.Get "style/main.css" -}}
-  {{- $mainCss := . | css.Sass | resources.Minify | resources.Fingerprint -}}
-  <link rel="stylesheet" href="{{ $mainCss.RelPermalink }}" integrity="{{ $mainCss.Data.Integrity }}" crossorigin="anonymous">
+{{- $cssPaths := slice
+    "style/01-settings/_tokens.css"
+    "style/01-settings/_fonts.css"
+    "style/03-generic/_reset.css"
+    "style/04-elements/_base.css"
+    "style/05-objects/_container.css"
+    "style/05-objects/_grid.css"
+    "style/06-components/_navbar.css"
+    "style/06-components/_hero.css"
+    "style/06-components/_cards.css"
+    "style/06-components/_modal.css"
+    "style/06-components/_pager.css"
+    "style/06-components/_subhero.css"
+    "style/06-components/_contacts.css"
+    "style/06-components/_links.css"
+    "style/06-components/_footer.css"
+    "style/07-pages/_homepage.css"
+    "style/07-pages/_archive.css"
+    "style/07-pages/_article.css"
+    "style/08-utilities/_utilities.css"
+-}}
+
+{{- $.Scratch.Set "parts" (slice) -}}
+{{- range $p := $cssPaths -}}
+  {{- with resources.Get $p -}}
+    {{- $.Scratch.Add "parts" (slice .) -}}
+  {{- end -}}
+{{- end -}}
+{{- $parts := $.Scratch.Get "parts" -}}
+
+{{- if gt (len $parts) 0 -}}
+  {{- $bundle := ($parts | resources.Concat "style/main.css") | resources.Minify | resources.Fingerprint -}}
+  <link rel="stylesheet" href="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" crossorigin="anonymous">
 {{- end -}}
 
 <!-- Optional: Preload core WOFF2 fonts (configure in params.fonts.preload) -->

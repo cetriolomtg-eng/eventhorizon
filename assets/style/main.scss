@@ -24,58 +24,58 @@
    Global variables and design tokens
    ======================================== */
 
-@import "01-settings/_tokens.css";
-@import "01-settings/_fonts.css";
+@import "01-settings/tokens";
+@import "01-settings/fonts";
 
 /* ========================================
    03 - GENERIC
    Reset and normalize styles
    ======================================== */
 
-@import "03-generic/_reset.css";
+@import "03-generic/reset";
 
 /* ========================================
    04 - ELEMENTS
    Base HTML element styles
    ======================================== */
 
-@import "04-elements/_base.css";
+@import "04-elements/base";
 
 /* ========================================
    05 - OBJECTS
    Layout patterns and structural objects
    ======================================== */
 
-@import "05-objects/_container.css";
-@import "05-objects/_grid.css";
+@import "05-objects/container";
+@import "05-objects/grid";
 
 /* ========================================
    06 - COMPONENTS
    UI components using BEM methodology
    ======================================== */
 
-@import "06-components/_navbar.css";
-@import "06-components/_hero.css";
-@import "06-components/_cards.css";
-@import "06-components/_modal.css";
-@import "06-components/_pager.css";
-@import "06-components/_subhero.css";
-@import "06-components/_contacts.css";
-@import "06-components/_links.css";
-@import "06-components/_footer.css";
+@import "06-components/navbar";
+@import "06-components/hero";
+@import "06-components/cards";
+@import "06-components/modal";
+@import "06-components/pager";
+@import "06-components/subhero";
+@import "06-components/contacts";
+@import "06-components/links";
+@import "06-components/footer";
 
 /* ========================================
    07 - PAGES
    Page-specific styles
    ======================================== */
 
-@import "07-pages/_homepage.css";
-@import "07-pages/_archive.css";
-@import "07-pages/_article.css";
+@import "07-pages/homepage";
+@import "07-pages/archive";
+@import "07-pages/article";
 
 /* ========================================
    08 - UTILITIES
    Atomic utility classes
    ======================================== */
 
-@import "08-utilities/_utilities.css";
+@import "08-utilities/utilities";
