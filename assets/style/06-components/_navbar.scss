@@ -6,7 +6,7 @@
 .nav {
   position: sticky;
   top: 0;
-  z-index: var(--z-sticky);
+  z-index: calc(var(--z-overlay) + 1); /* Ensure nav stays above backdrop for clickable links */
   width: 100%;
 
   /* Glass morphism effect */
