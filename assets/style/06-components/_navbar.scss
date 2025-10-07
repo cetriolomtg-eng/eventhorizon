@@ -233,7 +233,9 @@
 
 .nav__link {
   position: relative;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
 
   font-family: var(--font-sans);
@@ -341,6 +343,7 @@
   .nav__link {
     display: inline-flex;
     width: auto;
+    justify-content: center;
     font-size: var(--text-sm);
     font-weight: 500;
     letter-spacing: var(--tracking-wide);
