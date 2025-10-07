@@ -63,11 +63,9 @@
   // Chiudi quando si clicca un link del menu (solo mobile/tablet)
   menu.addEventListener('click', (e) => {
     const link = e.target.closest('a');
-    if (!link) {
-      e.stopPropagation();
-      return;
+    if (link && !mqDesktop.matches) {
+      closeMenu();
     }
-    if (!mqDesktop.matches) closeMenu();
   });
 
   // Reset stato quando si entra in desktop
