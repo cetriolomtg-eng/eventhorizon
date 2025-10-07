@@ -18,7 +18,7 @@ enableRobotsTXT = true
 
 [params]
   siteName = "EventHorizon.mtg"
-  appVer = "2025.09.27"
+  appVer = "ae16060"
 
   # Open Graph (fallback globali; sovrascrivibili per pagina con front matter)
   [params.og]
