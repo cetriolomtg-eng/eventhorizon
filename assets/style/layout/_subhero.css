@@ -52,13 +52,17 @@
 .hero__deck .sub-hero::before{ display: none; }
 .hero__deck .sub-hero__inner{
   width: 100%;
+  max-width: 420px;
   margin-inline: 0;
   padding-inline: 0;
   gap: clamp(18px, 4vw, 26px);
+  justify-items: center;
+  position: relative;
 }
 .hero__deck .pager__viewport{
   border-radius: 20px;
   overflow: hidden;
+  width: 100%;
 }
 .hero__deck .pager__dots{
   margin-top: clamp(14px, 3vw, 20px);
@@ -105,6 +109,7 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
   overflow: hidden;
+  display: grid;
 }
 .pager__slide.is-active{ opacity: 1; pointer-events: auto; z-index: 2; }
 
@@ -179,11 +184,10 @@
   .hero__deck .sub-hero::before{ display: none; }
   .hero__deck .sub-hero__inner{
     width: 100%;
-    max-width: 440px;
+    max-width: 420px;
     margin-inline: 0;
     padding-inline: 0;
     gap: clamp(16px, 3vw, 24px);
-    height: 100%;
   }
   .hero__deck .pager__viewport{
     transform: none;
@@ -195,7 +199,31 @@
     margin-top: clamp(12px, 2vh, 18px);
   }
   .hero__deck .pager__controls{
-    justify-self: center;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: clamp(8px, 1.6vw, 16px);
+    pointer-events: none;
+  }
+  .hero__deck .pager__controls .pager__arrow{
+    pointer-events: auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(12, 13, 24, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 12px 24px rgba(8, 10, 24, 0.35);
+    color: rgba(255, 255, 255, 0.88);
+    transition: background 180ms ease, transform 180ms ease;
+  }
+  .hero__deck .pager__controls .pager__arrow:hover{
+    background: rgba(0, 173, 177, 0.55);
+    transform: translateY(-1px);
+  }
+  .hero__deck .pager__controls .pager__arrow:active{
+    transform: translateY(1px);
   }
 }
 
