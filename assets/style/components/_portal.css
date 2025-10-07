@@ -206,22 +206,20 @@
   overflow: hidden;
 }
 
-/* Animated gradient border */
+/* Animated gradient border - rotazione oraria */
 .btn--portal::before{
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -1px;
   border-radius: 14px;
-  padding: 1px;
-  background: linear-gradient(
-    90deg,
-    #FFFFFF 0%,
-    #D00093 25%,
-    #9F7BB8 50%,
-    #5B4E9D 75%,
-    #FFFFFF 100%
+  background: conic-gradient(
+    from 0deg,
+    #FFFFFF 0deg,
+    #D00093 90deg,
+    #9F7BB8 180deg,
+    #5B4E9D 270deg,
+    #FFFFFF 360deg
   );
-  background-size: 200% 100%;
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
@@ -230,17 +228,18 @@
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   mask-composite: exclude;
-  animation: borderFlow 3s linear infinite;
+  padding: 1px;
+  animation: borderRotate 6s linear infinite;
   pointer-events: none;
   z-index: -1;
 }
 
-@keyframes borderFlow {
+@keyframes borderRotate {
   0% {
-    background-position: 0% 0%;
+    transform: rotate(0deg);
   }
   100% {
-    background-position: 200% 0%;
+    transform: rotate(360deg);
   }
 }
 
