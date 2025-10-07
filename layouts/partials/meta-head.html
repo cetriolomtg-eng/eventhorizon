@@ -79,7 +79,8 @@
 <!-- Preload hero image (opzionale: file sotto /static/assets/...) -->
 {{ with .Site.Params.preloadHero }}
   {{- $pre := . | absURL -}}
-  {{- $ver := or site.Params.appVer "" -}}
+  {{/* Usa sistema di versioning centralizzato */}}
+  {{- $ver := partial "version.html" . -}}
   {{- if $ver -}}
     {{- $sep := cond (in $pre "?") "&" "?" -}}
     <link rel="preload" as="image" href="{{ printf "%s%sv=%s" $pre $sep $ver }}">
@@ -124,7 +125,8 @@
 
 {{- if gt (len $parts) 0 -}}
   {{- $bundle := ($parts | resources.Concat "style/main.css") | resources.Minify -}}
-  {{- $version := or site.Params.appVer "2025.09.27" -}}
+  {{/* Usa sistema di versioning centralizzato */}}
+  {{- $version := partial "version.html" . -}}
   <link rel="stylesheet" href="{{ printf "%s?v=%s" $bundle.RelPermalink $version }}">
 {{- end -}}
 

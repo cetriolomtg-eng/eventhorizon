@@ -1,11 +1,12 @@
 {{ define "main" }}
+{{- $version := partial "version.html" . -}}
 <main id="main-content" class="home" tabindex="-1">
 
   <!-- >>> START HERO SECTION -->
   <div class="hero-layout">
     <section
       class="c-hero c-hero--full"
-      data-bg="{{ ("images/bg_image.webp" | absURL) }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
+      data-bg="{{ ("images/bg_image.webp" | absURL) }}?v={{ $version }}"
       aria-label="Hero EventHorizon.mtg"
     >
       <div class="c-hero__background"></div>
@@ -14,7 +15,7 @@
         <div class="c-hero__content">
           <!-- >>> START HERO LOGO -->
           <img class="c-hero__logo"
-               src="{{ ("images/logo.webp" | absURL) }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
+               src="{{ ("images/logo.webp" | absURL) }}?v={{ $version }}"
                alt="Logo {{ .Site.Title }}"
                width="115" height="115"
                decoding="async"
@@ -47,8 +48,8 @@
         <article class="c-pager__slide slide-1 is-active" id="slide-1"
                  role="group" aria-roledescription="slide"
                  aria-label="Slide 1 di 4: Decklist"
-                 data-bg-mobile="{{ "images/subhero/sh1-mobile.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
-                 data-bg-desktop="{{ "images/subhero/sh1-desktop.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}">
+                 data-bg-mobile="{{ "images/subhero/sh1-mobile.webp" | absURL }}?v={{ $version }}"
+                 data-bg-desktop="{{ "images/subhero/sh1-desktop.webp" | absURL }}?v={{ $version }}">
           <h2 class="c-pager__slide-title">LE NOSTRE DECKLIST!</h2>
           <p class="c-pager__slide-description">
             Create con tanta passione.<br>
@@ -65,8 +66,8 @@
         <article class="c-pager__slide slide-2" id="slide-2"
                  role="group" aria-roledescription="slide"
                  aria-label="Slide 2 di 4: Wiki ITA"
-                 data-bg-mobile="{{ "images/subhero/sh2-mobile.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
-                 data-bg-desktop="{{ "images/subhero/sh2-desktop.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}">
+                 data-bg-mobile="{{ "images/subhero/sh2-mobile.webp" | absURL }}?v={{ $version }}"
+                 data-bg-desktop="{{ "images/subhero/sh2-desktop.webp" | absURL }}?v={{ $version }}">
           <h2 class="c-pager__slide-title">MTG WIKI ITALIA</h2>
           <p class="c-pager__slide-description">
             Vuoi scoprire tutto di tutto? <br> La wiki italiana di Magic &egrave; il posto giusto!
@@ -84,8 +85,8 @@
         <article class="c-pager__slide slide-3" id="slide-3"
                  role="group" aria-roledescription="slide"
                  aria-label="Slide 3 di 4: Eventi"
-                 data-bg-mobile="{{ "images/subhero/sh3-mobile.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
-                 data-bg-desktop="{{ "images/subhero/sh3-desktop.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}">
+                 data-bg-mobile="{{ "images/subhero/sh3-mobile.webp" | absURL }}?v={{ $version }}"
+                 data-bg-desktop="{{ "images/subhero/sh3-desktop.webp" | absURL }}?v={{ $version }}">
           <h2 class="c-pager__slide-title">PROSSIMI EVENTI</h2>
           <p class="c-pager__slide-description">
             Stiamo lavorando per il prossimo evento. <br> Rimanete sintonizzati!
@@ -99,8 +100,8 @@
         <article class="c-pager__slide slide-4" id="slide-4"
                  role="group" aria-roledescription="slide"
                  aria-label="Slide 4 di 4: Discord"
-                 data-bg-mobile="{{ "images/subhero/sh4-mobile.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
-                 data-bg-desktop="{{ "images/subhero/sh4-desktop.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}">
+                 data-bg-mobile="{{ "images/subhero/sh4-mobile.webp" | absURL }}?v={{ $version }}"
+                 data-bg-desktop="{{ "images/subhero/sh4-desktop.webp" | absURL }}?v={{ $version }}">
           <h2 class="c-pager__slide-title">RESTIAMO IN CONTATTO</h2>
           <p class="c-pager__slide-description">
             Unisciti alla nostra community su Discord!<br>
@@ -280,14 +281,14 @@
       <ul class="c-links__list" role="list">
         <li class="c-link-card c-link-card--full">
           <a class="c-link-card__link" href="https://www.ebay.it/" target="_blank" rel="noopener noreferrer">
-            <img class="c-link-card__logo" src="{{ "images/links/ebay_logo.png" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}" alt="eBay" width="40" height="40" loading="lazy" decoding="async">
+            <img class="c-link-card__logo" src="{{ "images/links/ebay_logo.png" | absURL }}?v={{ $version }}" alt="eBay" width="40" height="40" loading="lazy" decoding="async">
             <div class="c-link-card__meta"></div>
           </a>
         </li>
 
         <li class="c-link-card">
           <a class="c-link-card__link" href="https://linktr.ee/boosemtg" target="_blank" rel="noopener noreferrer">
-            <img class="c-link-card__logo" src="{{ "images/links/boose_logo.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}" alt="B&#216;&#216;SE MTG" width="40" height="40" loading="lazy" decoding="async">
+            <img class="c-link-card__logo" src="{{ "images/links/boose_logo.webp" | absURL }}?v={{ $version }}" alt="B&#216;&#216;SE MTG" width="40" height="40" loading="lazy" decoding="async">
             <div class="c-link-card__meta">
               <span class="c-link-card__name">B&#216;&#216;SE MTG</span>
               <span class="c-link-card__copy">Friends &amp; Games</span>
@@ -297,7 +298,7 @@
 
         <li class="c-link-card">
           <a class="c-link-card__link" href="https://www.facebook.com/Multiverseofgames/" target="_blank" rel="noopener noreferrer">
-            <img class="c-link-card__logo" src="{{ "images/links/multiverse_logo.png" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}" alt="Multiverse of Games" width="40" height="40" loading="lazy" decoding="async">
+            <img class="c-link-card__logo" src="{{ "images/links/multiverse_logo.png" | absURL }}?v={{ $version }}" alt="Multiverse of Games" width="40" height="40" loading="lazy" decoding="async">
             <div class="c-link-card__meta">
               <span class="c-link-card__name">Multiverse of Games</span>
               <span class="c-link-card__copy">Friendly LGS</span>
@@ -307,7 +308,7 @@
 
         <li class="c-link-card">
           <a class="c-link-card__link" href="https://www.domenicocava.com/" target="_blank" rel="noopener noreferrer">
-            <img class="c-link-card__logo" src="{{ "images/links/cava_logo.png" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}" alt="Domenico Cava" width="40" height="40" loading="lazy" decoding="async">
+            <img class="c-link-card__logo" src="{{ "images/links/cava_logo.png" | absURL }}?v={{ $version }}" alt="Domenico Cava" width="40" height="40" loading="lazy" decoding="async">
             <div class="c-link-card__meta">
               <span class="c-link-card__name">Domenico Cava</span>
               <span class="c-link-card__copy">Illustrator for MtG</span>
@@ -317,7 +318,7 @@
 
         <li class="c-link-card">
           <a class="c-link-card__link" href="https://archidekt.com/search/decks?ownerUsername=Mtg.derrick" target="_blank" rel="noopener noreferrer">
-            <img class="c-link-card__logo" src="{{ "images/links/derrick_logo.png" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}" alt="mtg.Derrick" width="40" height="40" loading="lazy" decoding="async">
+            <img class="c-link-card__logo" src="{{ "images/links/derrick_logo.png" | absURL }}?v={{ $version }}" alt="mtg.Derrick" width="40" height="40" loading="lazy" decoding="async">
             <div class="c-link-card__meta">
               <span class="c-link-card__name">MtG Derrick</span>
               <span class="c-link-card__copy">Liste Commander</span>

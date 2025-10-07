@@ -1,0 +1,18 @@
+{{/* ---------------------------------------
+     Partial per gestione versioning automatico
+     Ottiene hash del commit da variabili d'ambiente CI/CD
+     o fallback a data corrente per sviluppo locale
+---------------------------------------- */}}
+{{- $githubSha := getenv "GITHUB_SHA" -}}
+{{- $commitSha := getenv "COMMIT_SHA" -}}
+{{- $version := "" -}}
+
+{{- if and $githubSha (ge (len $githubSha) 7) -}}
+  {{- $version = substr $githubSha 0 7 -}}
+{{- else if and $commitSha (ge (len $commitSha) 7) -}}
+  {{- $version = substr $commitSha 0 7 -}}
+{{- else -}}
+  {{- $version = now.Format "2006.01.02" -}}
+{{- end -}}
+
+{{- return $version -}}
