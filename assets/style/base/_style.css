@@ -360,7 +360,7 @@ main{ display: block; }
   isolation: isolate;
   padding: clamp(72px, 9vw, 108px) var(--container-pad-x) clamp(64px, 8vw, 96px);
   min-height: clamp(640px, 88vh, 960px);
-  overflow: hidden;
+  overflow: visible;
 }
 .hero::before{
   content: "";

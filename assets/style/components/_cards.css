@@ -10,6 +10,13 @@
   --grid-gap: clamp(18px, 3vw, 28px);
 }
 
+/* Mobile: spazio extra per compensare pager assoluto sopra */
+@media (max-width: 1023.98px){
+  .cards{
+    margin-top: clamp(480px, 62vh, 640px);
+  }
+}
+
 .cards__inner{
   width: min(100%, var(--container-max));
   margin-inline: auto;
