@@ -1,483 +1,377 @@
 /* ============================================================
-   Links.js
+   Links.js - Stack/Deck Carousel
    ============================================================ */
 (() => {
   // ===== Config =====
-  const MOBILE_BP = 0;             // carosello sempre attivo (mobile-first)
-  const IDLE_RESUME_MS = 3000;     // pausa autoplay dopo interazione manuale
-  const DEFAULT_SPEED  = 16;       // px/sec mobile (override via CSS: --links-auto-speed)
-  const DRAG_THRESHOLD = 8;        // px per distinguere click vs drag (hardening)
+  const DEFAULT_INTERVAL = 5000;    // ms tra le card (autoplay)
+  const DEFAULT_DURATION = 400;     // ms animazione transizione
 
-  function initLinksLoop() {
-    const section  = document.querySelector('.links');
+  function initStackCarousel() {
+    const section = document.querySelector('.links');
     if (!section) return;
 
-    const carousel = section.querySelector('.links__carousel') || section;
-    const track    = section.querySelector('.links__track');
+    const carousel = section.querySelector('.links__carousel');
+    const track = section.querySelector('.links__track');
     if (!track) return;
 
-    // A11y base
-    track.setAttribute('tabindex', '0');
-    track.setAttribute('aria-label', 'Elenco collegamenti scorrevole orizzontale');
+    // Raccogli tutte le card
+    const cards = Array.from(track.querySelectorAll('.link-card'));
+    if (cards.length === 0) return;
 
-    // Media queries & prefers
-    const mqCarousel     = window.matchMedia(`(min-width: ${MOBILE_BP}px)`); // sempre true
+    // Media query per prefers-reduced-motion
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    // ===== Stato misure/loop =====
-    let gapPx = 16;
-    let cardStep = 240;
-    let originalWidth = 0;
-    let leftAnchor = 0;
-    let loopEnabled = false;
+    // ===== Stato =====
+    let currentIndex = 0;
+    let autoplayTimer = null;
+    let isAnimating = false;
+    let isPaused = false;
 
-    // ===== Stato virtual scroll =====
-    let virtualX = 0;
-    let wrapMargin = 480;
-
-    // ===== Stato drag =====
-    let dragging = false;
-    let draggingActive = false;
-    let startX = 0;
-    let startLeft = 0;
-    let capturedId = null;
-    let dragPrevSnap = '';
-
-    // ===== Stato autoplay =====
-    let rafId = 0;
-    let lastTs = 0;
-    let autoPaused = false;
-    let idleTimer = 0;
-
-    // Cache per scroll-snap
-    let snapCache = '';
-
-    // IntersectionObserver
-    let io = null;
-
-    // ===== Utils =====
-    const cssNumber = (name, el = section) => {
-      const s = getComputedStyle(el).getPropertyValue(name).trim();
-      const v = parseFloat(s);
-      return Number.isFinite(v) ? v : 0;
-    };
-    const readSpeed = () => {
-      const v = cssNumber('--links-auto-speed', section);
-      return (Number.isFinite(v) && v > 0) ? Math.max(8, Math.min(120, v)) : DEFAULT_SPEED;
-    };
-    const ignoreRMW = () => cssNumber('--links-auto-ignore-rmw', section) > 0;
-
-    // Riconoscimento cloni retro-compatibile
-    const isClone = (li) =>
-      !!li && ((li.dataset && li.dataset.clone === '1') || li.classList.contains('is-clone'));
-
-    const originals = () =>
-      Array.from(track.querySelectorAll('.link-card')).filter(li => !isClone(li));
-
-    const cleanupClones = () => {
-      track.querySelectorAll('.link-card[data-clone="1"], .link-card.is-clone').forEach(n => n.remove());
+    // ===== Leggi parametri da CSS =====
+    const getInterval = () => {
+      const val = parseInt(getComputedStyle(section).getPropertyValue('--links-stack-interval'), 10);
+      return (val && val > 0) ? val : DEFAULT_INTERVAL;
     };
 
-    const duplicateSet = (nodes) => {
-      const frag = document.createDocumentFragment();
-      nodes.forEach(n => {
-        const c = n.cloneNode(true);
-        c.dataset.clone = '1';
-        c.classList.add('is-clone');
-        c.setAttribute('aria-hidden', 'true');
-        c.removeAttribute('id');
-        c.querySelectorAll('a,button').forEach(el => el.setAttribute('tabindex', '-1'));
-        frag.appendChild(c);
+    const ignoreRMW = () => {
+      const val = parseFloat(getComputedStyle(section).getPropertyValue('--links-auto-ignore-rmw'));
+      return val > 0;
+    };
+
+    // ===== Update stack visuale =====
+    const updateStack = () => {
+      cards.forEach((card, i) => {
+        // Rimuovi tutte le classi di stato
+        card.classList.remove('is-active', 'is-next', 'is-after-next', 'is-prev');
+
+        if (i === currentIndex) {
+          // Card attiva (in primo piano)
+          card.classList.add('is-active');
+        } else if (i === (currentIndex + 1) % cards.length) {
+          // Card successiva (visibile dietro)
+          card.classList.add('is-next');
+        } else if (i === (currentIndex + 2) % cards.length) {
+          // Card dopo la successiva (ancora più dietro)
+          card.classList.add('is-after-next');
+        } else if (i === (currentIndex - 1 + cards.length) % cards.length) {
+          // Card precedente (esce)
+          card.classList.add('is-prev');
+        }
+        // Tutte le altre restano nascoste (opacity: 0)
       });
-      return frag;
+
+      // Aggiorna dots
+      updateDots();
     };
 
-    const measureGapsAndStep = () => {
-      const styles = getComputedStyle(track);
-      gapPx = parseFloat(styles.columnGap) || parseFloat(styles.gap) || 0;
-      const first = track.querySelector('.link-card');
-      if (first) {
-        const r = first.getBoundingClientRect();
-        cardStep = Math.round(r.width + gapPx);
-      }
+    // ===== Navigazione =====
+    const goToSlide = (index, skipAnimation = false) => {
+      if (isAnimating && !skipAnimation) return;
+      if (index < 0 || index >= cards.length) return;
+
+      isAnimating = true;
+      currentIndex = index;
+      updateStack();
+
+      // Reset animating flag dopo la transizione
+      const duration = skipAnimation ? 0 : DEFAULT_DURATION;
+      setTimeout(() => {
+        isAnimating = false;
+      }, duration);
+
+      // Resetta autoplay
+      resetAutoplay();
     };
 
-    const measureAnchors = () => {
-      const orig = originals();
-      if (!orig.length) { originalWidth = 0; leftAnchor = 0; return; }
-      const first = orig[0];
-      const last  = orig[orig.length - 1];
-      leftAnchor = first.offsetLeft;
-      const lastRight = last.offsetLeft + last.getBoundingClientRect().width;
-      originalWidth = Math.max(0, Math.round(lastRight - leftAnchor));
+    const nextSlide = () => {
+      goToSlide((currentIndex + 1) % cards.length);
     };
 
-    const updateWrapMargin = () => {
-      const vw = (carousel.clientWidth || track.clientWidth || 0);
-      wrapMargin = Math.max(cardStep * 3, Math.round(vw * 0.5));
-    };
-
-    // ===== Stili forzati in modalità carosello (JS garantisce funzionamento) =====
-    const forceCarouselStyles = () => {
-      // CSS già imposta nowrap/overflow, qui aggiungiamo JS safety
-      track.style.touchAction = 'pan-y pinch-zoom'; // permette scroll verticale pagina
-      track.classList.add('is-initializing');
-    };
-    const clearCarouselStyles = () => {
-      track.style.touchAction = '';
-      track.classList.remove('is-initializing', 'is-ready', 'is-dragging');
-    };
-
-    // ===== Costruzione banda + cloni (robusta) =====
-    const buildLoopAdaptive = () => {
-      cleanupClones();
-      const orig = originals();
-      if (orig.length < 1) { loopEnabled = false; return; }
-
-      // Misure base con soli originali
-      measureGapsAndStep();
-      measureAnchors();
-      updateWrapMargin();
-
-      const viewportW = (carousel.clientWidth || track.clientWidth || 0);
-
-      let minWidthNeeded = viewportW + (2 * wrapMargin) + (2 * originalWidth) + Math.max(cardStep, 1);
-
-      // Duplica set a sinistra e destra fino a superare la soglia (limite sicurezza)
-      let copies = 0;
-      const MAX_COPIES = 10;
-      while (((track.scrollWidth || 0) < minWidthNeeded) && copies < MAX_COPIES) {
-        track.insertBefore(duplicateSet(orig), orig[0]);
-        track.appendChild(duplicateSet(orig));
-        copies++;
-
-        // Rimisuro dopo il reflow
-        measureGapsAndStep();
-        measureAnchors();
-        updateWrapMargin();
-
-        // Ricalcola la soglia con i nuovi numeri
-        minWidthNeeded = viewportW + (2 * wrapMargin) + (2 * originalWidth) + Math.max(cardStep, 1);
-      }
-
-      // Posiziona la vista sulla banda originale
-      track.scrollTo({ left: leftAnchor, behavior: 'auto' });
-      virtualX = track.scrollLeft;
-      loopEnabled = true;
-    };
-
-    // ===== Loop infinito: wrap "off-screen" con isteresi (robusto) =====
-    const wrapOffscreenIfNeeded = () => {
-      if (!loopEnabled || originalWidth <= 0) return;
-
-      // Range esteso: centro sulla banda originale e concedo isteresi ai lati
-      const minX = leftAnchor - wrapMargin;
-      const maxX = leftAnchor + originalWidth + wrapMargin;
-
-      if (virtualX >= minX && virtualX < maxX) return;
-
-      // Normalizza sempre nella [leftAnchor, leftAnchor + originalWidth)
-      const rel = virtualX - leftAnchor;
-      const norm = ((rel % originalWidth) + originalWidth) % originalWidth;
-      virtualX = leftAnchor + norm;
-
-      // Applicazione diretta: niente scatti (autoplay ha snap disattivato)
-      track.scrollLeft = virtualX;
+    const prevSlide = () => {
+      goToSlide((currentIndex - 1 + cards.length) % cards.length);
     };
 
     // ===== Autoplay =====
-    const setPaused = (val) => {
-      autoPaused = !!val;
-      // Ripristina snap quando in pausa completa; disattivalo quando attivo
-      if (autoPaused) {
-        if (snapCache) track.style.scrollSnapType = snapCache;
-      } else {
-        snapCache = track.style.scrollSnapType || '';
-        track.style.scrollSnapType = 'none';
-      }
-    };
-
-    const pauseAutoTemporarily = () => {
-      setPaused(true);
-      if (idleTimer) clearTimeout(idleTimer);
-      idleTimer = window.setTimeout(() => setPaused(false), IDLE_RESUME_MS);
-    };
-
-    const tick = (ts) => {
-      rafId = requestAnimationFrame(tick);
-
-      // Rispetta RMW a meno che non sia forzato da CSS
-      const rmwActive = prefersReduced.matches && !ignoreRMW();
-      if (autoPaused || rmwActive || document.visibilityState === 'hidden') {
-        lastTs = ts;
-        return;
-      }
-
-      if (!lastTs) { lastTs = ts; return; }
-
-      const dt = (ts - lastTs) / 1000;
-      if (dt <= 0) { lastTs = ts; return; }
-      lastTs = ts;
-
-      const spd = readSpeed();
-      if (spd <= 0) return;
-
-      // Avanza posizione virtuale (float), poi applica al DOM
-      virtualX += spd * dt;
-      track.scrollLeft = virtualX;
-
-      // Eventuale wrap solo quando "fuori" dal cono visibile + margine
-      wrapOffscreenIfNeeded();
-    };
-
     const startAutoplay = () => {
-      if (!rafId) {
-        lastTs = 0;
-        setPaused(false);
-        rafId = requestAnimationFrame(tick);
-      }
-    };
-    const stopAutoplay  = () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = 0;
-      setPaused(true);
+      if (autoplayTimer) clearTimeout(autoplayTimer);
+
+      const rmwActive = prefersReduced.matches && !ignoreRMW();
+      if (rmwActive || isPaused || document.visibilityState === 'hidden') return;
+
+      autoplayTimer = setTimeout(() => {
+        nextSlide();
+      }, getInterval());
     };
 
-    // ===== Controls / Input =====
-    const behavior = prefersReduced.matches && !ignoreRMW() ? 'auto' : 'smooth';
-
-    const scrollByStep = (dir) => {
-      track.scrollBy({ left: dir * cardStep, behavior });
-      pauseAutoTemporarily();
-    };
-
-    const onKey = (e) => {
-      switch (e.key) {
-        case 'ArrowLeft':  e.preventDefault(); scrollByStep(-1); break;
-        case 'ArrowRight': e.preventDefault(); scrollByStep(1);  break;
-        case 'Home':       e.preventDefault(); track.scrollTo({ left: leftAnchor, behavior }); pauseAutoTemporarily(); break;
-        case 'End':        e.preventDefault(); track.scrollTo({ left: track.scrollWidth, behavior }); pauseAutoTemporarily(); break;
+    const stopAutoplay = () => {
+      if (autoplayTimer) {
+        clearTimeout(autoplayTimer);
+        autoplayTimer = null;
       }
     };
 
-    const onWheel = (e) => {
-      if (track.scrollWidth > track.clientWidth) {
-        e.preventDefault();
-        track.scrollLeft += e.deltaY;
-        virtualX = track.scrollLeft;
-        pauseAutoTemporarily();
-      }
+    const resetAutoplay = () => {
+      stopAutoplay();
+      startAutoplay();
     };
 
-    // ===== Drag con soglia + pointer capture tardiva =====
-    const onPointerDown = (e) => {
-      if (e.button !== 0) return;
-      dragging = true;
-      draggingActive = false;
-      startX = e.clientX;
-      startLeft = track.scrollLeft;
+    // ===== Dots =====
+    let dotsContainer = section.querySelector('.links__dots');
 
-      // Pausa soft (non tocco snap globale qui)
-      autoPaused = true;
-
-      // Disattivo snap solo per la durata del drag (se era attivo inline)
-      dragPrevSnap = track.style.scrollSnapType || '';
-      track.style.scrollSnapType = 'none';
-      // NIENTE preventDefault qui: lascia passare i click finché non stai davvero trascinando
-    };
-
-    const onPointerMove = (e) => {
-      if (!dragging) return;
-      const dx = e.clientX - startX;
-
-      // Attiva il drag solo oltre la soglia → i link restano cliccabili sui micro-movimenti
-      if (!draggingActive && Math.abs(dx) > DRAG_THRESHOLD) {
-        draggingActive = true;
-        track.classList.add('is-dragging');
-        try { track.setPointerCapture(e.pointerId); capturedId = e.pointerId; } catch(_) {}
-      }
-
-      if (draggingActive) {
-        track.scrollLeft = startLeft - dx;
-        virtualX = track.scrollLeft;
-        e.preventDefault();
-      }
-    };
-
-    const onPointerUp = (e) => {
-      if (!dragging) return;
-
-      if (draggingActive) {
-        track.classList.remove('is-dragging');
-        if (capturedId != null) { try { track.releasePointerCapture(capturedId); } catch(_) {} capturedId = null; }
-      }
-
-      // Ripristina lo snap com'era prima del drag (inline)
-      track.style.scrollSnapType = dragPrevSnap || '';
-      dragPrevSnap = '';
-
-      // Riprendi autoplay al prossimo frame (pausa soft → false)
-      requestAnimationFrame(() => { autoPaused = false; });
-
-      dragging = false;
-      draggingActive = false;
-    };
-
-    // ===== Hover soft (pausa senza toccare snap) =====
-    const pauseSoft = () => { autoPaused = true; };
-    const resumeSoft = () => { autoPaused = false; };
-    const onMouseEnter = () => pauseSoft();
-    const onMouseLeave = () => resumeSoft();
-
-    // ===== Resize / Reflow =====
-    let resizeT;
-    const onResize = () => {
-      clearTimeout(resizeT);
-      resizeT = setTimeout(() => {
-        if (!loopEnabled) return;
-        const prev = (virtualX || track.scrollLeft) - leftAnchor;
-        buildLoopAdaptive();
-        virtualX = leftAnchor + prev;
-        track.scrollLeft = virtualX;
-      }, 50);
-    };
-
-    // ===== Visibility change (hardening) =====
-    const onVisibility = () => {
-      if (document.hidden) {
-        if (rafId) stopAutoplay();
-      } else {
-        const rmwActive = prefersReduced.matches && !ignoreRMW();
-        if (mqCarousel.matches && !rmwActive && section.dataset.linksReady === '1') {
-          startAutoplay();
+    const createDots = () => {
+      if (!dotsContainer) {
+        // Crea container controlli se non esiste
+        let controlsContainer = section.querySelector('.links__controls');
+        if (!controlsContainer) {
+          controlsContainer = document.createElement('div');
+          controlsContainer.className = 'links__controls';
+          carousel.parentElement.appendChild(controlsContainer);
         }
+
+        // Crea freccia prev
+        const prevArrow = document.createElement('button');
+        prevArrow.className = 'links__arrow prev';
+        prevArrow.setAttribute('type', 'button');
+        prevArrow.setAttribute('aria-label', 'Card precedente');
+        prevArrow.innerHTML = '‹';
+        controlsContainer.appendChild(prevArrow);
+
+        // Crea dots container
+        dotsContainer = document.createElement('div');
+        dotsContainer.className = 'links__dots';
+        dotsContainer.setAttribute('role', 'tablist');
+        dotsContainer.setAttribute('aria-label', 'Selettore card');
+        controlsContainer.appendChild(dotsContainer);
+
+        // Crea freccia next
+        const nextArrow = document.createElement('button');
+        nextArrow.className = 'links__arrow next';
+        nextArrow.setAttribute('type', 'button');
+        nextArrow.setAttribute('aria-label', 'Card successiva');
+        nextArrow.innerHTML = '›';
+        controlsContainer.appendChild(nextArrow);
+
+        // Bind arrows
+        prevArrow.addEventListener('click', () => {
+          prevSlide();
+          pauseTemporarily();
+        });
+
+        nextArrow.addEventListener('click', () => {
+          nextSlide();
+          pauseTemporarily();
+        });
+      }
+
+      // Crea dots
+      dotsContainer.innerHTML = '';
+      cards.forEach((card, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'links__dot';
+        dot.setAttribute('type', 'button');
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', `Vai alla card ${i + 1} di ${cards.length}`);
+        dot.setAttribute('aria-controls', card.id || `link-card-${i}`);
+
+        if (i === currentIndex) {
+          dot.classList.add('is-active');
+          dot.setAttribute('aria-current', 'true');
+        }
+
+        dot.addEventListener('click', () => {
+          goToSlide(i);
+          pauseTemporarily();
+        });
+
+        dotsContainer.appendChild(dot);
+      });
+    };
+
+    const updateDots = () => {
+      if (!dotsContainer) return;
+      const dots = dotsContainer.querySelectorAll('.links__dot');
+      dots.forEach((dot, i) => {
+        if (i === currentIndex) {
+          dot.classList.add('is-active');
+          dot.setAttribute('aria-current', 'true');
+        } else {
+          dot.classList.remove('is-active');
+          dot.removeAttribute('aria-current');
+        }
+      });
+    };
+
+    // ===== Keyboard navigation =====
+    const onKeyDown = (e) => {
+      switch (e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          prevSlide();
+          pauseTemporarily();
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          nextSlide();
+          pauseTemporarily();
+          break;
+        case 'Home':
+          e.preventDefault();
+          goToSlide(0);
+          pauseTemporarily();
+          break;
+        case 'End':
+          e.preventDefault();
+          goToSlide(cards.length - 1);
+          pauseTemporarily();
+          break;
       }
     };
 
-    // ===== Mount / Unmount =====
-    const enableCarousel = () => {
-      if (section.dataset.linksReady === '1') return;
-      section.dataset.linksReady = '1';
-      carousel.dataset.linksReady = '1';
+    // ===== Touch/Swipe support =====
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const SWIPE_THRESHOLD = 50; // px
 
-      forceCarouselStyles();
-      buildLoopAdaptive();
+    const onTouchStart = (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    };
 
-      // Bind eventi
-      track.addEventListener('keydown', onKey);
-      track.addEventListener('wheel', onWheel, { passive: false });
-      track.addEventListener('pointerdown', onPointerDown, { passive: false });
-      window.addEventListener('pointermove', onPointerMove, { passive: false });
-      window.addEventListener('pointerup', onPointerUp, { passive: false });
-      window.addEventListener('resize', onResize, { passive: true });
+    const onTouchEnd = (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    };
 
-      // Hover = pausa soft / leave = riprendi (senza cambiare snap)
-      track.addEventListener('mouseenter', onMouseEnter);
-      track.addEventListener('mouseleave', onMouseLeave);
+    const handleSwipe = () => {
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) < SWIPE_THRESHOLD) return;
 
-      // Al load delle immagini ricostruiamo e manteniamo lo stato
-      track.querySelectorAll('img').forEach(img => {
-        img.addEventListener('load', onResize, { passive: true });
+      if (diff > 0) {
+        // Swipe left → next
+        nextSlide();
+      } else {
+        // Swipe right → prev
+        prevSlide();
+      }
+
+      pauseTemporarily();
+    };
+
+    // ===== Hover pause =====
+    const pauseTemporarily = () => {
+      isPaused = true;
+      stopAutoplay();
+      setTimeout(() => {
+        isPaused = false;
+        startAutoplay();
+      }, 3000);
+    };
+
+    const onMouseEnter = () => {
+      isPaused = true;
+      stopAutoplay();
+    };
+
+    const onMouseLeave = () => {
+      isPaused = false;
+      startAutoplay();
+    };
+
+    // ===== Visibility change =====
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        stopAutoplay();
+      } else {
+        startAutoplay();
+      }
+    };
+
+    // ===== IntersectionObserver (pausa fuori viewport) =====
+    let io = null;
+    if ('IntersectionObserver' in window) {
+      io = new IntersectionObserver((entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+
+        if (entry.intersectionRatio < 0.3) {
+          isPaused = true;
+          stopAutoplay();
+        } else {
+          if (!document.hidden) {
+            isPaused = false;
+            startAutoplay();
+          }
+        }
+      }, { root: null, threshold: [0, 0.3, 1] });
+
+      io.observe(section);
+    }
+
+    // ===== Init =====
+    const init = () => {
+      // Assegna ID alle card se mancano
+      cards.forEach((card, i) => {
+        if (!card.id) card.id = `link-card-${i}`;
       });
 
-      // Pausa quando fuori viewport
-      if ('IntersectionObserver' in window) {
-        io = new IntersectionObserver((entries) => {
-          const e = entries[0];
-          if (!e) return;
-          if (e.intersectionRatio < 0.3) {
-            autoPaused = true;
-          } else {
-            autoPaused = false;
-          }
-        }, { root: null, threshold: [0, 0.3, 1] });
-        io.observe(section);
-      }
+      // Crea dots
+      createDots();
 
-      // Visibility
-      document.addEventListener('visibilitychange', onVisibility);
+      // Setup iniziale
+      updateStack();
+
+      // A11y
+      track.setAttribute('role', 'region');
+      track.setAttribute('aria-label', 'Carousel collegamenti');
+
+      // Bind eventi
+      carousel.addEventListener('keydown', onKeyDown);
+      carousel.addEventListener('touchstart', onTouchStart, { passive: true });
+      carousel.addEventListener('touchend', onTouchEnd, { passive: true });
+      carousel.addEventListener('mouseenter', onMouseEnter);
+      carousel.addEventListener('mouseleave', onMouseLeave);
+      document.addEventListener('visibilitychange', onVisibilityChange);
 
       // Avvia autoplay
       startAutoplay();
 
-      // Fade-in + kickstart autoplay (nudge + riallineo virtuale) + watchdog
-      requestAnimationFrame(() => {
-        track.classList.remove('is-initializing');
-        track.classList.add('is-ready');
-
-        const before = track.scrollLeft;
-        const nudge = Math.max(8, Math.round(cardStep * 0.1));
-        virtualX = before + nudge;
-        track.scrollLeft = virtualX;
-        wrapOffscreenIfNeeded();
-
-        // Watchdog: se dopo 700ms non si è mosso, riavvia il RAF
-        setTimeout(() => {
-          const after = track.scrollLeft;
-          if (Math.abs(after - before) < 1) {
-            stopAutoplay();
-            lastTs = 0;
-            startAutoplay();
-          }
-        }, 700);
-      });
+      // Marca come inizializzato
+      section.dataset.linksReady = '1';
     };
 
-    const disableCarousel = () => {
-      if (!section.dataset.linksReady) return;
-      delete section.dataset.linksReady;
-      delete carousel.dataset.linksReady;
-
+    // ===== Cleanup =====
+    const destroy = () => {
       stopAutoplay();
-
-      // Unbind
-      track.removeEventListener('keydown', onKey);
-      track.removeEventListener('wheel', onWheel);
-      track.removeEventListener('pointerdown', onPointerDown);
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
-      window.removeEventListener('resize', onResize);
-      track.querySelectorAll('img').forEach(img => {
-        img.removeEventListener('load', onResize);
-      });
-      track.removeEventListener('mouseenter', onMouseEnter);
-      track.removeEventListener('mouseleave', onMouseLeave);
-      document.removeEventListener('visibilitychange', onVisibility);
-
-      // Disconnetti IO
-      if (io) { try { io.disconnect(); } catch(_) {} io = null; }
-
-      clearCarouselStyles();
-      cleanupClones();
-      track.scrollTo({ left: 0, behavior: 'auto' });
-      virtualX = 0;
-      loopEnabled = false;
-    };
-
-    // ===== Attivazione modalità carosello (sempre, mobile-first) =====
-    const handleMQ = () => {
-      const hasCards = originals().length > 0;
-      // Carosello sempre attivo se ci sono card
-      if (hasCards) {
-        enableCarousel();
-      } else {
-        disableCarousel();
+      carousel.removeEventListener('keydown', onKeyDown);
+      carousel.removeEventListener('touchstart', onTouchStart);
+      carousel.removeEventListener('touchend', onTouchEnd);
+      carousel.removeEventListener('mouseenter', onMouseEnter);
+      carousel.removeEventListener('mouseleave', onMouseLeave);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      if (io) {
+        io.disconnect();
+        io = null;
       }
+      delete section.dataset.linksReady;
     };
-    let _mqResizeT;
-    const onGlobalResize = () => {
-      clearTimeout(_mqResizeT);
-      _mqResizeT = setTimeout(handleMQ, 120);
-    };
-    window.addEventListener('resize', onGlobalResize, { passive: true });
 
-    // Avvio immediato
-    handleMQ();
+    // Start
+    init();
+
+    // Esponi API per debug (opzionale)
+    if (typeof window !== 'undefined') {
+      window.__linksCarousel = {
+        next: nextSlide,
+        prev: prevSlide,
+        goto: goToSlide,
+        destroy: destroy
+      };
+    }
   }
 
+  // ===== Mount =====
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initLinksLoop, { once: true });
+    document.addEventListener('DOMContentLoaded', initStackCarousel, { once: true });
   } else {
-    initLinksLoop();
+    initStackCarousel();
   }
 })();
