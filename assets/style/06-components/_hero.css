@@ -1,0 +1,268 @@
+/* ============================================================
+   Hero Component
+   ============================================================
+   Main hero section with background image and content overlay
+   Supports both full-screen and compact variants
+   ============================================================ */
+
+/* ========================================
+   Base hero styles
+   ======================================== */
+
+.c-hero {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-on-dark);
+  isolation: isolate;
+}
+
+/* Default hero dimensions */
+.c-hero--full {
+  min-height: clamp(720px, 100vh, 1080px);
+  padding: clamp(120px, 20vh, 160px) 0 clamp(80px, 12vh, 120px);
+}
+
+.c-hero--compact {
+  min-height: clamp(480px, 60vh, 640px);
+  padding: clamp(80px, 15vh, 120px) 0 clamp(60px, 10vh, 80px);
+}
+
+/* ========================================
+   Hero background
+   ======================================== */
+
+.c-hero__background {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-index-hero-bg);
+  background-image: var(--hero-bg-url, none);
+  background-size: cover;
+  background-position: center var(--hero-bg-position-y, 50%);
+  background-repeat: no-repeat;
+  opacity: var(--hero-bg-opacity, 1);
+  filter: saturate(1.05);
+}
+
+.c-hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: calc(var(--z-index-hero-bg) + 1);
+  background: linear-gradient(
+    180deg,
+    rgba(14, 15, 26, 0.25) 0%,
+    rgba(14, 15, 26, 0.65) 100%
+  );
+}
+
+/* ========================================
+   Hero content container
+   ======================================== */
+
+.c-hero__inner {
+  position: relative;
+  z-index: var(--z-index-hero-content);
+  width: min(100%, var(--container-max-width));
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+  display: grid;
+  gap: var(--space-section-md);
+  height: 100%;
+  align-content: center;
+}
+
+.c-hero__content {
+  display: grid;
+  gap: var(--space-section-sm);
+  text-align: center;
+  justify-items: center;
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+/* ========================================
+   Hero elements
+   ======================================== */
+
+.c-hero__logo {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border: 3px solid var(--color-indigo-900);
+  border-radius: 50%;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.35));
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+  transition: transform var(--duration-normal) var(--easing-standard);
+}
+
+.c-hero__logo:hover {
+  transform: scale(1.05);
+}
+
+.c-hero__title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-black);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight-lg);
+  color: var(--color-text-on-dark);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.c-hero__subtitle {
+  max-width: 62ch;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  color: var(--color-neutral-50);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ========================================
+   Hero CTA with animated chevrons
+   ======================================== */
+
+.c-hero__cta {
+  display: grid;
+  place-items: center;
+  margin-top: var(--space-6);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.c-hero__chevrons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  margin-top: var(--space-2);
+  pointer-events: none;
+}
+
+.c-hero__chevron {
+  width: 24px;
+  height: 24px;
+  stroke: var(--color-text-on-dark);
+  fill: none;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.85;
+  animation: chevronBounce 1.2s ease-in-out infinite;
+}
+
+.c-hero__chevron:nth-child(1) { 
+  animation-delay: 0s; 
+}
+
+.c-hero__chevron:nth-child(2) { 
+  animation-delay: 0.1s; 
+}
+
+.c-hero__chevron:nth-child(3) { 
+  animation-delay: 0.2s; 
+}
+
+@keyframes chevronBounce {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(5px);
+    opacity: 1;
+  }
+}
+
+/* ========================================
+   Hero layout variants
+   ======================================== */
+
+.c-hero--layout-split {
+  text-align: left;
+}
+
+.c-hero--layout-split .c-hero__inner {
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--space-section-lg);
+}
+
+.c-hero--layout-split .c-hero__content {
+  justify-items: start;
+  text-align: left;
+}
+
+/* ========================================
+   Responsive adjustments
+   ======================================== */
+
+/* Mobile optimizations */
+@media (max-width: 480px) {
+  .c-hero--full {
+    min-height: clamp(620px, 90vh, 820px);
+    padding: clamp(96px, 20vw, 128px) 0 clamp(72px, 14vw, 96px);
+  }
+
+  .c-hero__logo {
+    width: 88px;
+    height: 88px;
+  }
+
+  .c-hero__content {
+    gap: var(--space-4);
+  }
+
+  .c-hero__subtitle {
+    max-width: 58ch;
+  }
+
+  .c-hero--layout-split .c-hero__inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .c-hero--layout-split .c-hero__content {
+    justify-items: center;
+    text-align: center;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 481px) and (max-width: 1023px) {
+  .c-hero--layout-split .c-hero__inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .c-hero--layout-split .c-hero__content {
+    justify-items: center;
+    text-align: center;
+  }
+}
+
+/* ========================================
+   Accessibility & Performance
+   ======================================== */
+
+/* Respect motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .c-hero__chevron {
+    animation: none;
+  }
+
+  .c-hero__logo {
+    transition: none;
+  }
+}
+
+/* High contrast mode adjustments */
+@media (prefers-contrast: high) {
+  .c-hero__title {
+    text-shadow: none;
+  }
+
+  .c-hero__subtitle {
+    text-shadow: none;
+    color: var(--color-text-on-dark);
+  }
+}

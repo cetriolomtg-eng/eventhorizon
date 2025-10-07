@@ -2,13 +2,13 @@
    Subhero.js
    ============================================================ */
 (function(){
-  const container = document.querySelector('.sub-hero');
+  const container = document.querySelector('.l-subhero');
   if (!container) return;
   if (container.dataset.pagerReady === '1') return;
   container.dataset.pagerReady = '1';
 
-  // NASCONDI qualunque dots/controls fuori dalla sub-hero (hardening)
-  document.querySelectorAll('.pager__dots, .pager__controls').forEach(el => {
+  // NASCONDI qualunque dots/controls fuori dalla l-subhero (hardening)
+  document.querySelectorAll('.c-pager__dots, .c-pager__controls').forEach(el => {
     if (!container.contains(el)) {
       el.style.display = 'none';
       el.setAttribute('aria-hidden', 'true');
@@ -16,19 +16,19 @@
   });
 
   // DOM base
-  const viewport = container.querySelector('.pager__viewport') || container;
-  const trackEl  = container.querySelector('.pager__track');
-  const slides   = Array.from(trackEl ? trackEl.querySelectorAll('.pager__slide') : []);
+  const viewport = container.querySelector('.c-pager__viewport') || container;
+  const trackEl  = container.querySelector('.c-pager__track');
+  const slides   = Array.from(trackEl ? trackEl.querySelectorAll('.c-pager__slide') : []);
 
-  // Deduplica eventuali doppi DENTRO la sub-hero, tieni il primo
-  const dotsGroups = Array.from(container.querySelectorAll('.pager__dots'));
+  // Deduplica eventuali doppi DENTRO la l-subhero, tieni il primo
+  const dotsGroups = Array.from(container.querySelectorAll('.c-pager__dots'));
   if (dotsGroups.length > 1) dotsGroups.slice(1).forEach(n => n.remove());
-  const controlsGroups = Array.from(container.querySelectorAll('.pager__controls'));
+  const controlsGroups = Array.from(container.querySelectorAll('.c-pager__controls'));
   if (controlsGroups.length > 1) controlsGroups.slice(1).forEach(n => n.remove());
 
   // Riferimenti AFTER clean
-  const dotsWrap = container.querySelector('.pager__dots');
-  const controls = container.querySelector('.pager__controls');
+  const dotsWrap = container.querySelector('.c-pager__dots');
+  const controls = container.querySelector('.c-pager__controls');
   const statusEl = container.querySelector('#carousel-status');
 
   /* >>>START subhero.js — align measure helpers >>> */
@@ -37,8 +37,8 @@
   function syncSubheroAlign() {
     try {
       const ref =
-        document.querySelector('.cards__inner') ||
-        document.querySelector('.links__inner');
+        document.querySelector('.c-cards__inner') ||
+        document.querySelector('.c-links__inner');
 
       if (!ref) {
         container.style.removeProperty('--subhero-align-left');
@@ -95,7 +95,7 @@
     slides.forEach((s, i) => {
       s.setAttribute('role', 'group');
       s.setAttribute('aria-roledescription', 'slide');
-      const title = s.querySelector('.slide__title')?.textContent?.trim() || `Slide ${i+1}`;
+      const title = s.querySelector('.c-pager__slide-title')?.textContent?.trim() || `Slide ${i+1}`;
       s.setAttribute('aria-label', `Slide ${i+1} di ${slides.length}: ${title}`);
       s.id = s.id || `subhero-slide-${i+1}`;
     });
@@ -103,12 +103,12 @@
   function announce(i){
     if (!statusEl) return;
     const slide = slides[i];
-    const title = slide?.querySelector('.slide__title')?.textContent?.trim() || `Slide ${i+1}`;
+    const title = slide?.querySelector('.c-pager__slide-title')?.textContent?.trim() || `Slide ${i+1}`;
     statusEl.textContent = `Slide ${i+1} di ${slides.length}: ${title}`;
   }
 
-  // Dots: refs (supporta markup con .dot o <button>)
-  const dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll('button, .dot')) : [];
+  // Dots: refs (supporta markup con .c-pager__dot o <button>)
+  const dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll('button, .c-pager__dot')) : [];
 
   function initDotsA11y(){
     if (!dotsWrap || !slides?.length) return;
@@ -200,7 +200,7 @@
         controls.style.visibility = 'hidden';
         controls.style.pointerEvents = 'none';
         controls.setAttribute('aria-hidden', 'true');
-        controls.querySelectorAll('.pager__arrow').forEach(b => b.setAttribute('tabindex', '-1'));
+        controls.querySelectorAll('.c-pager__arrow').forEach(b => b.setAttribute('tabindex', '-1'));
       }
       // Dots: su mobile restano visibili → nessun cambiamento A11y qui
     } else {
@@ -210,7 +210,7 @@
         controls.style.visibility = '';
         controls.style.pointerEvents = '';
         controls.removeAttribute('aria-hidden');
-        controls.querySelectorAll('.pager__arrow').forEach(b => b.removeAttribute('tabindex'));
+        controls.querySelectorAll('.c-pager__arrow').forEach(b => b.removeAttribute('tabindex'));
       }
     }
   }
@@ -294,7 +294,7 @@
 
   // Frecce — event delegation + Enter/Space
   container.addEventListener('click', (e) => {
-    const btn = e.target.closest('.pager__arrow');
+    const btn = e.target.closest('.c-pager__arrow');
     if (!btn || !container.contains(btn)) return;
     e.preventDefault();
     stopAutoplay();
@@ -310,7 +310,7 @@
     const tag = el?.tagName?.toLowerCase();
     const isFormField = tag === 'input' || tag === 'textarea' || el?.isContentEditable;
 
-    const btn = e.target.closest?.('.pager__arrow');
+    const btn = e.target.closest?.('.c-pager__arrow');
     if (btn && (e.key === 'Enter' || e.key === ' ' || e.code === 'Space')) {
       e.preventDefault();
       stopAutoplay();
@@ -372,7 +372,7 @@
 
     if (controls){
       controls.setAttribute('aria-hidden', 'true');
-      controls.querySelectorAll('.pager__arrow').forEach(b => b.setAttribute('tabindex', '-1'));
+      controls.querySelectorAll('.c-pager__arrow').forEach(b => b.setAttribute('tabindex', '-1'));
     }
   }
 

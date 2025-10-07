@@ -1,0 +1,118 @@
+/* ============================================================
+   Base Element Styles
+   ============================================================
+   Styling for base HTML elements
+   ============================================================ */
+
+/* ========================================
+   Typography Elements
+   ======================================== */
+
+h1 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight-lg);
+}
+
+h2 {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-black);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+h3 {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  letter-spacing: var(--letter-spacing-slight);
+}
+
+h4 {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+}
+
+p {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-normal);
+}
+
+/* ========================================
+   Links
+   ======================================== */
+
+a {
+  transition: color var(--duration-fast) var(--easing-standard);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ========================================
+   Main Layout Elements
+   ======================================== */
+
+main {
+  display: block;
+  min-height: 100vh;
+}
+
+section {
+  display: block;
+}
+
+/* ========================================
+   Form Elements
+   ======================================== */
+
+input,
+textarea,
+select {
+  border: 1px solid var(--color-neutral-50);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  transition: border-color var(--duration-fast) var(--easing-standard);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--color-accent-primary);
+}
+
+/* ========================================
+   Code Elements
+   ======================================== */
+
+code,
+pre {
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+  font-size: 0.9em;
+}
+
+code {
+  background: var(--color-surface-1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+pre {
+  background: var(--color-surface-1);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+}
+
+pre code {
+  background: transparent;
+  padding: 0;
+}

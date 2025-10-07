@@ -4,14 +4,16 @@
   <!-- >>> START HERO SECTION -->
   <div class="hero-layout">
     <section
-      class="hero has-hero-bg"
+      class="c-hero c-hero--full"
       data-bg="{{ ("images/bg_image.webp" | absURL) }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
       aria-label="Hero EventHorizon.mtg"
     >
-      <div class="hero__inner">
-        <div class="hero__content">
+      <div class="c-hero__background"></div>
+      <div class="c-hero__overlay"></div>
+      <div class="c-hero__inner o-container">
+        <div class="c-hero__content">
           <!-- >>> START HERO LOGO -->
-          <img class="hero__logo"
+          <img class="c-hero__logo"
                src="{{ ("images/logo.webp" | absURL) }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
                alt="Logo {{ .Site.Title }}"
                width="115" height="115"
@@ -20,8 +22,8 @@
           <!-- <<< END HERO LOGO -->
 
           <!-- Text hero -->
-          <h1 class="hero__title">BEYOND THE HORIZON</h1>
-          <p class="hero__subtitle">
+          <h1 class="c-hero__title">BEYOND THE HORIZON</h1>
+          <p class="c-hero__subtitle">
             Narrativa e mazzi Commander.
             <br>Tutto su un'unica rotta!
           </p>
@@ -35,23 +37,24 @@
       </div>
 
       <!-- >>> START SUB-HERO (Pager) -->
-    <section id="subhero" class="sub-hero hero-slider" aria-roledescription="carousel" aria-label="Contenuti in evidenza">
-      <div class="sub-hero__inner">
-        <div class="pager__viewport">
-          <div class="pager__track">
+    <section id="subhero" class="l-subhero" aria-roledescription="carousel" aria-label="Contenuti in evidenza">
+      <div class="l-subhero__inner o-container">
+        <div class="c-pager">
+          <div class="c-pager__viewport">
+            <div class="c-pager__track">
 
         <!-- Slide 1 -->
-        <article class="pager__slide slide-1 is-active" id="slide-1"
+        <article class="c-pager__slide slide-1 is-active" id="slide-1"
                  role="group" aria-roledescription="slide"
                  aria-label="Slide 1 di 4: Decklist"
                  data-bg-mobile="{{ "images/subhero/sh1-mobile.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
                  data-bg-desktop="{{ "images/subhero/sh1-desktop.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}">
-          <h2 class="slide__title">LE NOSTRE DECKLIST!</h2>
-          <p class="slide__desc">
+          <h2 class="c-pager__slide-title">LE NOSTRE DECKLIST!</h2>
+          <p class="c-pager__slide-description">
             Create con tanta passione.<br>
             Scoprile su Moxfield e trova l'ispirazione!
           </p>
-          <div class="slide__cta">
+          <div class="c-pager__slide-actions">
             <a class="btn btn--alphab" 
                target="_blank" rel="noopener noreferrer"
                href="https://moxfield.com/users/EventHorizonMtG">Moxfield</a>
@@ -59,16 +62,16 @@
         </article>
 
         <!-- Slide 2 -->
-        <article class="pager__slide slide-2" id="slide-2"
+        <article class="c-pager__slide slide-2" id="slide-2"
                  role="group" aria-roledescription="slide"
                  aria-label="Slide 2 di 4: Wiki ITA"
                  data-bg-mobile="{{ "images/subhero/sh2-mobile.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
                  data-bg-desktop="{{ "images/subhero/sh2-desktop.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}">
-          <h2 class="slide__title">MTG WIKI ITALIA</h2>
-          <p class="slide__desc">
+          <h2 class="c-pager__slide-title">MTG WIKI ITALIA</h2>
+          <p class="c-pager__slide-description">
             Vuoi scoprire tutto di tutto? <br> La wiki italiana di Magic &egrave; il posto giusto!
           </p>
-          <div class="slide__cta">
+          <div class="c-pager__slide-actions">
             <a class="btn btn--teal" 
                target="_blank"
                rel="noopener noreferrer"
@@ -78,32 +81,32 @@
         </article>
 
         <!-- Slide 3 -->
-        <article class="pager__slide slide-3" id="slide-3"
+        <article class="c-pager__slide slide-3" id="slide-3"
                  role="group" aria-roledescription="slide"
                  aria-label="Slide 3 di 4: Eventi"
                  data-bg-mobile="{{ "images/subhero/sh3-mobile.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
                  data-bg-desktop="{{ "images/subhero/sh3-desktop.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}">
-          <h2 class="slide__title">PROSSIMI EVENTI</h2>
-          <p class="slide__desc">
+          <h2 class="c-pager__slide-title">PROSSIMI EVENTI</h2>
+          <p class="c-pager__slide-description">
             Stiamo lavorando per il prossimo evento. <br> Rimanete sintonizzati!
           </p>
-          <div class="slide__cta">
+          <div class="c-pager__slide-actions">
             <a class="btn btn--disabled1" target="_blank" rel="noopener noreferrer" href="#">Coming soon</a>
           </div>
         </article>
 
         <!-- Slide 4 -->
-        <article class="pager__slide slide-4" id="slide-4"
+        <article class="c-pager__slide slide-4" id="slide-4"
                  role="group" aria-roledescription="slide"
                  aria-label="Slide 4 di 4: Discord"
                  data-bg-mobile="{{ "images/subhero/sh4-mobile.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}"
                  data-bg-desktop="{{ "images/subhero/sh4-desktop.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}">
-          <h2 class="slide__title">RESTIAMO IN CONTATTO</h2>
-          <p class="slide__desc">
+          <h2 class="c-pager__slide-title">RESTIAMO IN CONTATTO</h2>
+          <p class="c-pager__slide-description">
             Unisciti alla nostra community su Discord!<br>
             Parliamo di Magic, condividiamo strategie e organizziamo partite insieme.
           </p>
-          <div class="slide__cta">
+          <div class="c-pager__slide-actions">
             <a class="btn btn--teal"
                target="_blank" rel="noopener noreferrer"
                href="https://discord.com/invite/tQrbzhUa4k">Discord</a>
@@ -111,24 +114,25 @@
         </article>
 
           </div>
-        </div>
+          </div>
 
-        <!-- Dots -->
-        <div class="pager__dots" role="tablist" aria-label="Selettore slide">
-          <button class="dot is-active" aria-current="true" aria-controls="slide-1" aria-label="Vai alla slide 1"></button>
-          <button class="dot" aria-controls="slide-2" aria-label="Vai alla slide 2"></button>
-          <button class="dot" aria-controls="slide-3" aria-label="Vai alla slide 3"></button>
-          <button class="dot" aria-controls="slide-4" aria-label="Vai alla slide 4"></button>
-        </div>
+          <!-- Dots -->
+          <div class="c-pager__dots" role="tablist" aria-label="Selettore slide">
+            <button class="c-pager__dot is-active" aria-current="true" aria-controls="slide-1" aria-label="Vai alla slide 1"></button>
+            <button class="c-pager__dot" aria-controls="slide-2" aria-label="Vai alla slide 2"></button>
+            <button class="c-pager__dot" aria-controls="slide-3" aria-label="Vai alla slide 3"></button>
+            <button class="c-pager__dot" aria-controls="slide-4" aria-label="Vai alla slide 4"></button>
+          </div>
 
-        <!-- Frecce (desktop only, nascoste su mobile via CSS/JS) -->
-        <div class="pager__controls glass">
-          <button class="pager__arrow prev" type="button" aria-label="Slide precedente">&lsaquo;</button>
-          <button class="pager__arrow next" type="button" aria-label="Slide successiva">&rsaquo;</button>
-        </div>
+          <!-- Frecce (desktop only, nascoste su mobile via CSS/JS) -->
+          <div class="c-pager__controls">
+            <button class="c-pager__arrow c-pager__arrow--prev" type="button" aria-label="Slide precedente">&lsaquo;</button>
+            <button class="c-pager__arrow c-pager__arrow--next" type="button" aria-label="Slide successiva">&rsaquo;</button>
+          </div>
 
-        <!-- ARIA live region per screen reader -->
-        <div id="carousel-status" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+          <!-- ARIA live region per screen reader -->
+          <div id="carousel-status" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+        </div>
       </div>
     </section>
     <!-- <<< END SUB-HERO -->
@@ -138,16 +142,16 @@
   <!-- <<< END HERO -->
 
   <!-- >>> START CARDS SECTION -->
-  <section id="cards" class="cards" aria-labelledby="cards-title">
-    <div class="cards__inner">
-      <div class="cards__header">
-        <h2 id="cards-title" class="cards__title">Ultimi Contenuti</h2>
-        <a href="{{ "/archive/" | absURL }}" class="cards__view-all" aria-label="Vedi tutti i contenuti">
+  <section id="cards" class="c-cards" aria-labelledby="cards-title">
+    <div class="c-cards__inner o-container">
+      <div class="c-cards__header">
+        <h2 id="cards-title" class="c-cards__title">Ultimi Contenuti</h2>
+        <a href="{{ "/archive/" | absURL }}" class="c-cards__view-all" aria-label="Vedi tutti i contenuti">
           Vedi Tutto →
         </a>
       </div>
 
-      <div class="cards__grid">
+      <div class="c-cards__grid">
         {{/* Ultime 4 dal data archive: solo directory data/archive/items/*.yml */}}
         {{ $items := slice }}
         {{ with .Site.Data.archive.items }}
@@ -192,11 +196,11 @@
             {{ end }}
 
             {{ $isFeatured := eq $i 0 }}
-            <article class="card {{ if $isVideo }}is-video{{ else }}is-content{{ end }}{{ if $isFeatured }} card--featured{{ end }}" data-kind="{{ if $isVideo }}video{{ else }}content{{ end }}">
+            <article class="c-card {{ if $isVideo }}is-video{{ else }}is-content{{ end }}{{ if $isFeatured }} c-card--featured{{ end }}" data-kind="{{ if $isVideo }}video{{ else }}content{{ end }}">
               {{ if and $isVideo (ne $purl "") }}
-                <div class="card__media">
+                <div class="c-card__media">
                   <img
-                    class="card__img"
+                    class="c-card__img"
                     src="{{ $thumbURL }}"
                     sizes="(max-width: 479px) 320px, (max-width: 1023px) 340px, 360px"
                     width="1280" height="720"
@@ -205,23 +209,23 @@
                     fetchpriority="{{ if eq $i 0 }}high{{ else }}low{{ end }}"
                     alt="{{ if $tit }}{{ $tit }}{{ else }}Immagine contenuto{{ end }}"
                   />
-                  <span class="card__media-overlay"></span>
-                  <a href="{{ $purl }}" target="_blank" rel="noopener noreferrer" class="card__play" aria-label="Guarda video: {{ $tit }}">
-                    <svg class="card__play-icon" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-                      <circle class="card__play-circle" cx="50" cy="50" r="34" />
-                      <polygon class="card__play-tri" points="35,32 65,50 35,68" />
+                  <span class="c-card__media-overlay"></span>
+                  <a href="{{ $purl }}" target="_blank" rel="noopener noreferrer" class="c-card__play" aria-label="Guarda video: {{ $tit }}">
+                    <svg class="c-card__play-icon" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                      <circle class="c-card__play-circle" cx="50" cy="50" r="34" />
+                      <polygon class="c-card__play-tri" points="35,32 65,50 35,68" />
                     </svg>
                   </a>
                 </div>
-                <div class="card__body">
-                  {{ with $over }}<p class="card__overline">{{ . }}</p>{{ end }}
-                  <h3 class="card__title">{{ $tit }}</h3>
-                  {{ with $desc }}<p class="card__desc">{{ . }}</p>{{ end }}
+                <div class="c-card__body">
+                  {{ with $over }}<p class="c-card__overline">{{ . }}</p>{{ end }}
+                  <h3 class="c-card__title">{{ $tit }}</h3>
+                  {{ with $desc }}<p class="c-card__excerpt">{{ . }}</p>{{ end }}
                 </div>
               {{ else }}
-                <div class="card__media">
+                <div class="c-card__media">
                   <img
-                    class="card__img"
+                    class="c-card__img"
                     src="{{ $thumbURL }}"
                     sizes="(max-width: 479px) 320px, (max-width: 1023px) 340px, 360px"
                     width="1280" height="720"
@@ -230,14 +234,14 @@
                     fetchpriority="{{ if eq $i 0 }}high{{ else }}low{{ end }}"
                     alt="{{ if $tit }}{{ $tit }}{{ else }}Immagine contenuto{{ end }}"
                   />
-                  <span class="card__media-overlay"></span>
+                  <span class="c-card__media-overlay"></span>
                 </div>
-                <div class="card__body">
-                  {{ with $over }}<p class="card__overline">{{ . }}</p>{{ end }}
-                  <h3 class="card__title">{{ $tit }}</h3>
-                  {{ with $desc }}<p class="card__desc">{{ . }}</p>{{ end }}
+                <div class="c-card__body">
+                  {{ with $over }}<p class="c-card__overline">{{ . }}</p>{{ end }}
+                  <h3 class="c-card__title">{{ $tit }}</h3>
+                  {{ with $desc }}<p class="c-card__excerpt">{{ . }}</p>{{ end }}
                 </div>
-                <div class="card__actions">
+                <div class="c-card__actions">
                   {{ if ne $purl "" }}
                     <a class="btn btn--tealstroke"
                        href="{{ $purl }}"
@@ -251,12 +255,12 @@
           {{ end }}
         {{ else }}
           <!-- Nessun item: CTA coerente con legacy -->
-          <div class="card card--empty">
-            <div class="card__body">
-              <h3 class="card__title">Nessun contenuto</h3>
-              <p class="card__desc">Contenuti in arrivo.</p>
+          <div class="c-card c-card--empty">
+            <div class="c-card__body">
+              <h3 class="c-card__title">Nessun contenuto</h3>
+              <p class="c-card__excerpt">Contenuti in arrivo.</p>
             </div>
-            <div class="card__actions">
+            <div class="c-card__actions">
               <a class="btn btn--tealstroke" href="{{ "/archive/" | absURL }}">Altro</a>
             </div>
           </div>
@@ -268,55 +272,55 @@
 
 
   <!-- >>> START LINKS -->
-  <section class="links" aria-labelledby="links-title">
-  <div class="links__inner">
-    <h2 id="links-title" class="links__title">Amici, Partners &amp; Links</h2>
+  <section class="c-links" aria-labelledby="links-title">
+  <div class="c-links__inner o-container">
+    <h2 id="links-title" class="c-links__title">Amici, Partners &amp; Links</h2>
 
-    <div class="links__grid">
-      <ul class="links__list" role="list">
-        <li class="link-card link-card--full">
-          <a class="link-card__link" href="https://www.ebay.it/" target="_blank" rel="noopener noreferrer">
-            <img class="link-card__logo" src="{{ "images/links/ebay_logo.png" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}" alt="eBay" width="40" height="40" loading="lazy" decoding="async">
-            <div class="link-card__meta"></div>
+    <div class="c-links__grid">
+      <ul class="c-links__list" role="list">
+        <li class="c-link-card c-link-card--full">
+          <a class="c-link-card__link" href="https://www.ebay.it/" target="_blank" rel="noopener noreferrer">
+            <img class="c-link-card__logo" src="{{ "images/links/ebay_logo.png" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}" alt="eBay" width="40" height="40" loading="lazy" decoding="async">
+            <div class="c-link-card__meta"></div>
           </a>
         </li>
 
-        <li class="link-card">
-          <a class="link-card__link" href="https://linktr.ee/boosemtg" target="_blank" rel="noopener noreferrer">
-            <img class="link-card__logo" src="{{ "images/links/boose_logo.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}" alt="B&#216;&#216;SE MTG" width="40" height="40" loading="lazy" decoding="async">
-            <div class="link-card__meta">
-              <span class="link-card__name">B&#216;&#216;SE MTG</span>
-              <span class="link-card__copy">Friends &amp; Games</span>
+        <li class="c-link-card">
+          <a class="c-link-card__link" href="https://linktr.ee/boosemtg" target="_blank" rel="noopener noreferrer">
+            <img class="c-link-card__logo" src="{{ "images/links/boose_logo.webp" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}" alt="B&#216;&#216;SE MTG" width="40" height="40" loading="lazy" decoding="async">
+            <div class="c-link-card__meta">
+              <span class="c-link-card__name">B&#216;&#216;SE MTG</span>
+              <span class="c-link-card__copy">Friends &amp; Games</span>
             </div>
           </a>
         </li>
 
-        <li class="link-card">
-          <a class="link-card__link" href="https://www.facebook.com/Multiverseofgames/" target="_blank" rel="noopener noreferrer">
-            <img class="link-card__logo" src="{{ "images/links/multiverse_logo.png" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}" alt="Multiverse of Games" width="40" height="40" loading="lazy" decoding="async">
-            <div class="link-card__meta">
-              <span class="link-card__name">Multiverse of Games</span>
-              <span class="link-card__copy">Friendly LGS</span>
+        <li class="c-link-card">
+          <a class="c-link-card__link" href="https://www.facebook.com/Multiverseofgames/" target="_blank" rel="noopener noreferrer">
+            <img class="c-link-card__logo" src="{{ "images/links/multiverse_logo.png" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}" alt="Multiverse of Games" width="40" height="40" loading="lazy" decoding="async">
+            <div class="c-link-card__meta">
+              <span class="c-link-card__name">Multiverse of Games</span>
+              <span class="c-link-card__copy">Friendly LGS</span>
             </div>
           </a>
         </li>
 
-        <li class="link-card">
-          <a class="link-card__link" href="https://www.domenicocava.com/" target="_blank" rel="noopener noreferrer">
-            <img class="link-card__logo" src="{{ "images/links/cava_logo.png" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}" alt="Domenico Cava" width="40" height="40" loading="lazy" decoding="async">
-            <div class="link-card__meta">
-              <span class="link-card__name">Domenico Cava</span>
-              <span class="link-card__copy">Illustrator for MtG</span>
+        <li class="c-link-card">
+          <a class="c-link-card__link" href="https://www.domenicocava.com/" target="_blank" rel="noopener noreferrer">
+            <img class="c-link-card__logo" src="{{ "images/links/cava_logo.png" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}" alt="Domenico Cava" width="40" height="40" loading="lazy" decoding="async">
+            <div class="c-link-card__meta">
+              <span class="c-link-card__name">Domenico Cava</span>
+              <span class="c-link-card__copy">Illustrator for MtG</span>
             </div>
           </a>
         </li>
 
-        <li class="link-card">
-          <a class="link-card__link" href="https://archidekt.com/search/decks?ownerUsername=Mtg.derrick" target="_blank" rel="noopener noreferrer">
-            <img class="link-card__logo" src="{{ "images/links/derrick_logo.png" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}" alt="mtg.Derrick" width="40" height="40" loading="lazy" decoding="async">
-            <div class="link-card__meta">
-              <span class="link-card__name">MtG Derrick</span>
-              <span class="link-card__copy">Liste Commander</span>
+        <li class="c-link-card">
+          <a class="c-link-card__link" href="https://archidekt.com/search/decks?ownerUsername=Mtg.derrick" target="_blank" rel="noopener noreferrer">
+            <img class="c-link-card__logo" src="{{ "images/links/derrick_logo.png" | absURL }}?v={{ with site.Params.appVer }}{{ . }}{{ end }}" alt="mtg.Derrick" width="40" height="40" loading="lazy" decoding="async">
+            <div class="c-link-card__meta">
+              <span class="c-link-card__name">MtG Derrick</span>
+              <span class="c-link-card__copy">Liste Commander</span>
             </div>
           </a>
         </li>
@@ -328,47 +332,47 @@
   <!-- <<< END LINKS -->
 
   <!-- >>> START CONTACTS -->
-  <section id="contacts" class="contacts" aria-labelledby="contacts-title">
-  <div class="contacts__inner">
-    <div class="contacts__grid">
-      <div class="contacts__copy">
-        <h2 id="contacts-title" class="contacts__title">Chi siamo</h2>
-        <p class="contacts__intro">
+  <section id="contacts" class="c-contacts" aria-labelledby="contacts-title">
+  <div class="c-contacts__inner o-container">
+    <div class="c-contacts__grid">
+      <div class="c-contacts__copy">
+        <h2 id="contacts-title" class="c-contacts__title">Chi siamo</h2>
+        <p class="c-contacts__intro">
           Siamo Vincenzo e Francesco, amici appassionati di Magic: The Gathering, Dungeons & Dragons, giochi da tavolo e videogiochi.
         </p>
-        <p class="contacts__sub">Restiamo in contatto</p>
+        <p class="c-contacts__sub">Restiamo in contatto</p>
       </div>
 
-      <div class="contacts__actions">
-        <ul class="contacts__list" role="list">
+      <div class="c-contacts__actions">
+        <ul class="c-contacts__list" role="list">
           <li>
-            <a class="contact" href="https://www.tiktok.com/@eventhorizonmtg" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok">
-              <span class="contact__icon icon-tiktok" aria-hidden="true"></span>
+            <a class="c-contact" href="https://www.tiktok.com/@eventhorizonmtg" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok">
+              <span class="c-contact__icon icon-tiktok" aria-hidden="true"></span>
             </a>
           </li>
           <li>
-            <a class="contact" href="https://www.instagram.com/eventhorizon.mtg" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
-              <span class="contact__icon icon-instagram" aria-hidden="true"></span>
+            <a class="c-contact" href="https://www.instagram.com/eventhorizon.mtg" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
+              <span class="c-contact__icon icon-instagram" aria-hidden="true"></span>
             </a>
           </li>
           <li>
-            <a class="contact" href="https://www.youtube.com/@EventHorizonMtG" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube">
-              <span class="contact__icon icon-youtube" aria-hidden="true"></span>
+            <a class="c-contact" href="https://www.youtube.com/@EventHorizonMtG" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube">
+              <span class="c-contact__icon icon-youtube" aria-hidden="true"></span>
             </a>
           </li>
           <li>
-            <a class="contact" href="https://t.me/eventhorizonmtg" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram">
-              <span class="contact__icon icon-telegram" aria-hidden="true"></span>
+            <a class="c-contact" href="https://t.me/eventhorizonmtg" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram">
+              <span class="c-contact__icon icon-telegram" aria-hidden="true"></span>
             </a>
           </li>
           <li>
-            <a class="contact" href="https://discord.com/invite/tQrbzhUa4k" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord">
-              <span class="contact__icon icon-discord" aria-hidden="true"></span>
+            <a class="c-contact" href="https://discord.com/invite/tQrbzhUa4k" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord">
+              <span class="c-contact__icon icon-discord" aria-hidden="true"></span>
             </a>
           </li>
         </ul>
-        <a class="contact contact--mail" href="mailto:eventhorizon@growupnetwork.it" aria-label="Email" title="Email">
-          <span class="contact__icon icon-mail" aria-hidden="true"></span>
+        <a class="c-contact c-contact--mail" href="mailto:eventhorizon@growupnetwork.it" aria-label="Email" title="Email">
+          <span class="c-contact__icon icon-mail" aria-hidden="true"></span>
         </a>
       </div>
     </div>

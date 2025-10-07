@@ -16,7 +16,7 @@
 
 // Hero background da data-attribute -> imposta la CSS var usata in ::after
 (function(){
-  const hero = document.querySelector('.hero.has-hero-bg');
+  const hero = document.querySelector('.c-hero');
   if(!hero) return;
 
   const url = hero.getAttribute('data-bg');
@@ -30,8 +30,8 @@
   const nav = document.getElementById('site-nav');
   if (!nav) return;
 
-  const toggleBtn = nav.querySelector('.nav__toggle');
-  const menu = nav.querySelector('.nav__menu');
+  const toggleBtn = nav.querySelector('.c-navbar__toggle');
+  const menu = nav.querySelector('.c-navbar__menu');
   if (!toggleBtn || !menu) return;
 
   const mqDesktop = window.matchMedia('(min-width: 1024px)');
@@ -76,7 +76,7 @@
 //chiudi al tap fuori dal menù
 (() => {
   const mqlDesktop = window.matchMedia('(min-width: 1024px)');
-  const toggle = document.querySelector('.nav__toggle');
+  const toggle = document.querySelector('.c-navbar__toggle');
   if (!toggle) return;
 
   const BACKDROP_CLASS = 'nav__backdrop';
@@ -125,8 +125,8 @@
     if (!mqMobile.matches) return;
 
     // Trova la prossima sezione (sub-hero o cards)
-    const target = document.querySelector('.sub-hero, #subhero') ||
-                   document.querySelector('.cards, #cards');
+    const target = document.querySelector('.l-subhero, #subhero') ||
+                   document.querySelector('.c-cards, #cards');
 
     if (!target) return; // nessuna sezione successiva
 

@@ -1,0 +1,304 @@
+/* ============================================================
+   Modal Component
+   ============================================================
+   Reusable modal dialog component with backdrop and animations
+   Includes privacy modal as a specific variant
+   ============================================================ */
+
+/* ========================================
+   Base modal styles
+   ======================================== */
+
+.c-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-index-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-slow) var(--easing-standard);
+}
+
+.c-modal:not([hidden]) {
+  opacity: 1;
+  pointer-events: auto;
+  animation: modalFadeIn var(--duration-slow) var(--easing-standard);
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ========================================
+   Modal backdrop
+   ======================================== */
+
+.c-modal__backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(14, 15, 26, 0.85);
+  cursor: pointer;
+  z-index: var(--z-index-modal-backdrop);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* ========================================
+   Modal content container
+   ======================================== */
+
+.c-modal__content {
+  position: relative;
+  z-index: calc(var(--z-index-modal-backdrop) + 1);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  max-width: min(90vw, 600px);
+  max-height: min(90vh, 800px);
+  overflow: hidden;
+  transform: scale(0.95);
+  transition: transform var(--duration-slow) var(--easing-standard);
+}
+
+.c-modal:not([hidden]) .c-modal__content {
+  transform: scale(1);
+}
+
+/* ========================================
+   Modal header
+   ======================================== */
+
+.c-modal__header {
+  padding: var(--space-6) var(--space-6) var(--space-4);
+  border-bottom: 1px solid var(--color-neutral-50);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.c-modal__title {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  margin: 0;
+}
+
+.c-modal__close {
+  background: transparent;
+  border: none;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: 
+    background-color var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard);
+}
+
+.c-modal__close:hover {
+  background: var(--color-neutral-50);
+  color: var(--color-text-primary);
+}
+
+.c-modal__close-icon {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ========================================
+   Modal body
+   ======================================== */
+
+.c-modal__body {
+  padding: var(--space-4) var(--space-6);
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.c-modal__body p {
+  margin-bottom: var(--space-4);
+  line-height: var(--line-height-relaxed);
+}
+
+.c-modal__body p:last-child {
+  margin-bottom: 0;
+}
+
+/* ========================================
+   Modal actions
+   ======================================== */
+
+.c-modal__actions {
+  padding: var(--space-4) var(--space-6) var(--space-6);
+  border-top: 1px solid var(--color-neutral-50);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+.c-modal__action {
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: 
+    background-color var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard);
+}
+
+.c-modal__action--primary {
+  background: var(--color-accent-primary);
+  color: var(--color-text-on-dark);
+  border: none;
+}
+
+.c-modal__action--primary:hover {
+  background: var(--color-teal-700);
+}
+
+.c-modal__action--secondary {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-neutral-50);
+}
+
+.c-modal__action--secondary:hover {
+  background: var(--color-neutral-50);
+  color: var(--color-text-primary);
+}
+
+/* ========================================
+   Modal size variants
+   ======================================== */
+
+.c-modal--small .c-modal__content {
+  max-width: min(90vw, 400px);
+}
+
+.c-modal--large .c-modal__content {
+  max-width: min(90vw, 800px);
+}
+
+.c-modal--fullscreen .c-modal__content {
+  max-width: 95vw;
+  max-height: 95vh;
+  width: 95vw;
+  height: 95vh;
+}
+
+/* ========================================
+   Privacy modal specific styles
+   ======================================== */
+
+.c-modal--privacy .c-modal__body {
+  font-size: var(--font-size-small);
+}
+
+.c-modal--privacy .c-modal__body h3 {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  margin: var(--space-5) 0 var(--space-2);
+  color: var(--color-text-primary);
+}
+
+.c-modal--privacy .c-modal__body h3:first-child {
+  margin-top: 0;
+}
+
+.c-modal--privacy .c-modal__body ul {
+  margin: var(--space-3) 0;
+  padding-left: var(--space-5);
+  list-style: disc;
+}
+
+.c-modal--privacy .c-modal__body li {
+  margin-bottom: var(--space-2);
+}
+
+.c-modal--privacy .c-modal__body a {
+  color: var(--color-accent-primary);
+  text-decoration: underline;
+}
+
+.c-modal--privacy .c-modal__body a:hover {
+  color: var(--color-teal-700);
+}
+
+/* ========================================
+   Responsive adjustments
+   ======================================== */
+
+@media (max-width: 640px) {
+  .c-modal__content {
+    max-width: 95vw;
+    max-height: 95vh;
+    margin: var(--space-4);
+  }
+
+  .c-modal__header,
+  .c-modal__body,
+  .c-modal__actions {
+    padding-inline: var(--space-4);
+  }
+
+  .c-modal__actions {
+    flex-direction: column;
+  }
+
+  .c-modal__action {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* ========================================
+   Accessibility improvements
+   ======================================== */
+
+.c-modal__close:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 2px;
+}
+
+.c-modal__action:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 2px;
+}
+
+/* Trap focus within modal - handled by JavaScript */
+
+/* ========================================
+   Animation preferences
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .c-modal,
+  .c-modal__content {
+    transition: none;
+    animation: none;
+  }
+
+  .c-modal:not([hidden]) .c-modal__content {
+    transform: none;
+  }
+}

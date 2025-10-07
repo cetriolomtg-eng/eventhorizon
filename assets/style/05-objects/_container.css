@@ -1,0 +1,25 @@
+/* ============================================================
+   Container Object
+   ============================================================
+   Reusable container pattern for consistent content width
+   ============================================================ */
+
+.o-container {
+  width: min(100%, var(--container-max-width));
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+}
+
+.o-container--narrow {
+  --container-max-width: 768px;
+}
+
+.o-container--wide {
+  --container-max-width: 1400px;
+}
+
+.o-container--full {
+  width: 100%;
+  max-width: none;
+  padding-inline: 0;
+}

@@ -1,0 +1,81 @@
+/* ============================================================
+   Main Stylesheet
+   ============================================================
+   
+   Event Horizon MTG - Refactored CSS Architecture
+   
+   This stylesheet follows the ITCSS (Inverted Triangle CSS) methodology
+   for optimal CSS organization and cascade management.
+   
+   Architecture:
+   - 01-settings: Design tokens and variables
+   - 03-generic: Reset and normalize styles  
+   - 04-elements: Base element styles
+   - 05-objects: Layout patterns and objects
+   - 06-components: UI components (BEM methodology)
+   - 07-pages: Page-specific styles
+   - 08-utilities: Utility classes
+   
+   Updated: October 2025
+   ============================================================ */
+
+/* ========================================
+   01 - SETTINGS
+   Global variables and design tokens
+   ======================================== */
+
+@import "01-settings/_tokens.css";
+@import "01-settings/_fonts.css";
+
+/* ========================================
+   03 - GENERIC
+   Reset and normalize styles
+   ======================================== */
+
+@import "03-generic/_reset.css";
+
+/* ========================================
+   04 - ELEMENTS
+   Base HTML element styles
+   ======================================== */
+
+@import "04-elements/_base.css";
+
+/* ========================================
+   05 - OBJECTS
+   Layout patterns and structural objects
+   ======================================== */
+
+@import "05-objects/_container.css";
+@import "05-objects/_grid.css";
+
+/* ========================================
+   06 - COMPONENTS
+   UI components using BEM methodology
+   ======================================== */
+
+@import "06-components/_navbar.css";
+@import "06-components/_hero.css";
+@import "06-components/_cards.css";
+@import "06-components/_modal.css";
+@import "06-components/_pager.css";
+@import "06-components/_subhero.css";
+@import "06-components/_contacts.css";
+@import "06-components/_links.css";
+@import "06-components/_footer.css";
+
+/* ========================================
+   07 - PAGES
+   Page-specific styles
+   ======================================== */
+
+@import "07-pages/_homepage.css";
+@import "07-pages/_archive.css";
+@import "07-pages/_article.css";
+
+/* ========================================
+   08 - UTILITIES
+   Atomic utility classes
+   ======================================== */
+
+@import "08-utilities/_utilities.css";

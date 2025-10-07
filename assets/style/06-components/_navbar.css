@@ -1,0 +1,247 @@
+/* ============================================================
+   Navbar Component
+   ============================================================
+   Fixed navigation bar with mobile menu support
+   Uses BEM methodology and design tokens
+   ============================================================ */
+
+/* ========================================
+   Base navbar styles
+   ======================================== */
+
+.c-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-index-navbar);
+  background: rgba(25, 26, 35, 0.38);
+  backdrop-filter: blur(10px) saturate(1.4);
+  -webkit-backdrop-filter: blur(10px) saturate(1.4);
+  box-shadow: var(--shadow-nav);
+  transition: 
+    box-shadow var(--duration-normal) var(--easing-standard),
+    background-color var(--duration-normal) var(--easing-standard);
+}
+
+.c-navbar.is-scrolled {
+  box-shadow: var(--shadow-nav-strong);
+  background: rgba(25, 26, 35, 0.42);
+}
+
+/* ========================================
+   Navbar inner container
+   ======================================== */
+
+.c-navbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--container-padding-x);
+  min-height: 64px;
+}
+
+/* ========================================
+   Brand/Logo section
+   ======================================== */
+
+.c-navbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  color: var(--color-text-on-dark);
+  transition: transform var(--duration-fast) var(--easing-standard);
+}
+
+.c-navbar__brand:hover {
+  transform: scale(1.02);
+}
+
+.c-navbar__brand-logo {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.c-navbar__brand-name {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-body);
+  letter-spacing: var(--letter-spacing-slight);
+  transition: text-shadow var(--duration-fast) var(--easing-standard);
+}
+
+.c-navbar__brand-name:hover {
+  text-shadow: 0 0 4px var(--color-teal-300);
+}
+
+/* ========================================
+   Mobile menu toggle
+   ======================================== */
+
+.c-navbar__toggle {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  padding: var(--space-3);
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  transition: background-color var(--duration-fast) var(--easing-standard);
+}
+
+.c-navbar__toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.c-navbar__toggle-bar {
+  width: 22px;
+  height: 2px;
+  background: var(--color-text-on-dark);
+  opacity: 0.9;
+  border-radius: 1px;
+  transition: 
+    transform var(--duration-normal) var(--easing-standard),
+    opacity var(--duration-normal) var(--easing-standard);
+}
+
+/* Hamburger to X animation */
+.c-navbar.is-open .c-navbar__toggle-bar:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.c-navbar.is-open .c-navbar__toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.c-navbar.is-open .c-navbar__toggle-bar:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ========================================
+   Navigation menu
+   ======================================== */
+
+.c-navbar__menu {
+  display: block;
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    max-height var(--duration-normal) var(--easing-standard),
+    opacity var(--duration-normal) var(--easing-standard),
+    visibility var(--duration-normal) step-end;
+  will-change: max-height, opacity;
+}
+
+.c-navbar.is-open .c-navbar__menu {
+  max-height: 520px;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    max-height var(--duration-normal) var(--easing-standard),
+    opacity var(--duration-normal) var(--easing-standard),
+    visibility 0s step-start;
+}
+
+.c-navbar__list {
+  display: grid;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+  padding: 0;
+  list-style: none;
+}
+
+/* ========================================
+   Navigation items
+   ======================================== */
+
+.c-navbar__item {
+  width: 100%;
+}
+
+.c-navbar__link {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-text-on-dark);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-md);
+  transition: 
+    background-color var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard);
+}
+
+.c-navbar__link:hover,
+.c-navbar__link.is-active {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-teal-300);
+}
+
+/* ========================================
+   Desktop layout
+   ======================================== */
+
+@media (min-width: 1024px) {
+  .c-navbar__toggle {
+    display: none;
+  }
+
+  .c-navbar__menu {
+    display: block;
+    width: auto;
+    max-height: none;
+    overflow: visible;
+    opacity: 1;
+    visibility: visible;
+    transition: none;
+  }
+
+  .c-navbar__list {
+    display: flex;
+    gap: var(--space-2);
+    margin-top: 0;
+  }
+
+  .c-navbar__item {
+    width: auto;
+  }
+
+  .c-navbar__link {
+    padding: var(--space-2) var(--space-4);
+    white-space: nowrap;
+  }
+}
+
+/* ========================================
+   Accessibility improvements
+   ======================================== */
+
+.c-navbar__toggle:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 2px;
+}
+
+.c-navbar__link:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: -2px;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .c-navbar,
+  .c-navbar__toggle-bar,
+  .c-navbar__menu,
+  .c-navbar__link {
+    transition: none;
+  }
+}

@@ -1,0 +1,353 @@
+/* ============================================================
+   Utility Classes
+   ============================================================
+   Atomic utility classes for common styling needs
+   Use sparingly and prefer semantic classes when possible
+   ============================================================ */
+
+/* ========================================
+   Display utilities
+   ======================================== */
+
+.u-hidden {
+  display: none !important;
+}
+
+.u-visible {
+  display: block !important;
+}
+
+.u-flex {
+  display: flex !important;
+}
+
+.u-inline-flex {
+  display: inline-flex !important;
+}
+
+.u-grid {
+  display: grid !important;
+}
+
+.u-inline-block {
+  display: inline-block !important;
+}
+
+/* ========================================
+   Visibility utilities
+   ======================================== */
+
+.u-visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.u-invisible {
+  visibility: hidden !important;
+}
+
+.u-opacity-0 {
+  opacity: 0 !important;
+}
+
+.u-opacity-50 {
+  opacity: 0.5 !important;
+}
+
+.u-opacity-100 {
+  opacity: 1 !important;
+}
+
+/* ========================================
+   Spacing utilities
+   ======================================== */
+
+/* Margin utilities */
+.u-m-0 { margin: 0 !important; }
+.u-m-1 { margin: var(--space-1) !important; }
+.u-m-2 { margin: var(--space-2) !important; }
+.u-m-3 { margin: var(--space-3) !important; }
+.u-m-4 { margin: var(--space-4) !important; }
+.u-m-5 { margin: var(--space-5) !important; }
+.u-m-6 { margin: var(--space-6) !important; }
+.u-m-8 { margin: var(--space-8) !important; }
+
+.u-mt-0 { margin-top: 0 !important; }
+.u-mt-1 { margin-top: var(--space-1) !important; }
+.u-mt-2 { margin-top: var(--space-2) !important; }
+.u-mt-3 { margin-top: var(--space-3) !important; }
+.u-mt-4 { margin-top: var(--space-4) !important; }
+.u-mt-5 { margin-top: var(--space-5) !important; }
+.u-mt-6 { margin-top: var(--space-6) !important; }
+.u-mt-8 { margin-top: var(--space-8) !important; }
+
+.u-mb-0 { margin-bottom: 0 !important; }
+.u-mb-1 { margin-bottom: var(--space-1) !important; }
+.u-mb-2 { margin-bottom: var(--space-2) !important; }
+.u-mb-3 { margin-bottom: var(--space-3) !important; }
+.u-mb-4 { margin-bottom: var(--space-4) !important; }
+.u-mb-5 { margin-bottom: var(--space-5) !important; }
+.u-mb-6 { margin-bottom: var(--space-6) !important; }
+.u-mb-8 { margin-bottom: var(--space-8) !important; }
+
+.u-ml-0 { margin-left: 0 !important; }
+.u-ml-1 { margin-left: var(--space-1) !important; }
+.u-ml-2 { margin-left: var(--space-2) !important; }
+.u-ml-3 { margin-left: var(--space-3) !important; }
+.u-ml-4 { margin-left: var(--space-4) !important; }
+.u-ml-auto { margin-left: auto !important; }
+
+.u-mr-0 { margin-right: 0 !important; }
+.u-mr-1 { margin-right: var(--space-1) !important; }
+.u-mr-2 { margin-right: var(--space-2) !important; }
+.u-mr-3 { margin-right: var(--space-3) !important; }
+.u-mr-4 { margin-right: var(--space-4) !important; }
+.u-mr-auto { margin-right: auto !important; }
+
+.u-mx-auto { margin-inline: auto !important; }
+.u-my-0 { margin-block: 0 !important; }
+
+/* Padding utilities */
+.u-p-0 { padding: 0 !important; }
+.u-p-1 { padding: var(--space-1) !important; }
+.u-p-2 { padding: var(--space-2) !important; }
+.u-p-3 { padding: var(--space-3) !important; }
+.u-p-4 { padding: var(--space-4) !important; }
+.u-p-5 { padding: var(--space-5) !important; }
+.u-p-6 { padding: var(--space-6) !important; }
+
+.u-pt-0 { padding-top: 0 !important; }
+.u-pt-1 { padding-top: var(--space-1) !important; }
+.u-pt-2 { padding-top: var(--space-2) !important; }
+.u-pt-3 { padding-top: var(--space-3) !important; }
+.u-pt-4 { padding-top: var(--space-4) !important; }
+
+.u-pb-0 { padding-bottom: 0 !important; }
+.u-pb-1 { padding-bottom: var(--space-1) !important; }
+.u-pb-2 { padding-bottom: var(--space-2) !important; }
+.u-pb-3 { padding-bottom: var(--space-3) !important; }
+.u-pb-4 { padding-bottom: var(--space-4) !important; }
+
+.u-px-0 { padding-inline: 0 !important; }
+.u-px-1 { padding-inline: var(--space-1) !important; }
+.u-px-2 { padding-inline: var(--space-2) !important; }
+.u-px-3 { padding-inline: var(--space-3) !important; }
+.u-px-4 { padding-inline: var(--space-4) !important; }
+
+.u-py-0 { padding-block: 0 !important; }
+.u-py-1 { padding-block: var(--space-1) !important; }
+.u-py-2 { padding-block: var(--space-2) !important; }
+.u-py-3 { padding-block: var(--space-3) !important; }
+.u-py-4 { padding-block: var(--space-4) !important; }
+
+/* ========================================
+   Typography utilities
+   ======================================== */
+
+.u-text-left { text-align: left !important; }
+.u-text-center { text-align: center !important; }
+.u-text-right { text-align: right !important; }
+
+.u-font-light { font-weight: var(--font-weight-light) !important; }
+.u-font-regular { font-weight: var(--font-weight-regular) !important; }
+.u-font-medium { font-weight: var(--font-weight-medium) !important; }
+.u-font-semibold { font-weight: var(--font-weight-semibold) !important; }
+.u-font-bold { font-weight: var(--font-weight-bold) !important; }
+.u-font-black { font-weight: var(--font-weight-black) !important; }
+
+.u-text-xs { font-size: var(--font-size-xs) !important; }
+.u-text-sm { font-size: var(--font-size-small) !important; }
+.u-text-base { font-size: var(--font-size-body) !important; }
+.u-text-lg { font-size: var(--font-size-h4) !important; }
+.u-text-xl { font-size: var(--font-size-h3) !important; }
+.u-text-2xl { font-size: var(--font-size-h2) !important; }
+.u-text-3xl { font-size: var(--font-size-h1) !important; }
+
+.u-uppercase { text-transform: uppercase !important; }
+.u-lowercase { text-transform: lowercase !important; }
+.u-capitalize { text-transform: capitalize !important; }
+
+.u-italic { font-style: italic !important; }
+.u-not-italic { font-style: normal !important; }
+
+.u-no-underline { text-decoration: none !important; }
+.u-underline { text-decoration: underline !important; }
+
+/* ========================================
+   Color utilities
+   ======================================== */
+
+.u-text-primary { color: var(--color-text-primary) !important; }
+.u-text-secondary { color: var(--color-text-secondary) !important; }
+.u-text-on-dark { color: var(--color-text-on-dark) !important; }
+
+.u-text-teal { color: var(--color-teal-600) !important; }
+.u-text-gold { color: var(--color-gold-600) !important; }
+.u-text-indigo { color: var(--color-indigo-600) !important; }
+.u-text-pink { color: var(--color-pink-600) !important; }
+
+.u-bg-primary { background-color: var(--color-bg-primary) !important; }
+.u-bg-secondary { background-color: var(--color-bg-secondary) !important; }
+.u-bg-dark { background-color: var(--color-bg-dark) !important; }
+
+.u-bg-teal { background-color: var(--color-teal-600) !important; }
+.u-bg-gold { background-color: var(--color-gold-600) !important; }
+.u-bg-indigo { background-color: var(--color-indigo-600) !important; }
+
+/* ========================================
+   Flexbox utilities
+   ======================================== */
+
+.u-flex-row { flex-direction: row !important; }
+.u-flex-col { flex-direction: column !important; }
+.u-flex-wrap { flex-wrap: wrap !important; }
+.u-flex-nowrap { flex-wrap: nowrap !important; }
+
+.u-items-start { align-items: flex-start !important; }
+.u-items-center { align-items: center !important; }
+.u-items-end { align-items: flex-end !important; }
+.u-items-stretch { align-items: stretch !important; }
+
+.u-justify-start { justify-content: flex-start !important; }
+.u-justify-center { justify-content: center !important; }
+.u-justify-end { justify-content: flex-end !important; }
+.u-justify-between { justify-content: space-between !important; }
+.u-justify-around { justify-content: space-around !important; }
+
+.u-flex-1 { flex: 1 1 0% !important; }
+.u-flex-auto { flex: 1 1 auto !important; }
+.u-flex-none { flex: none !important; }
+
+.u-grow { flex-grow: 1 !important; }
+.u-grow-0 { flex-grow: 0 !important; }
+
+.u-shrink { flex-shrink: 1 !important; }
+.u-shrink-0 { flex-shrink: 0 !important; }
+
+/* ========================================
+   Grid utilities
+   ======================================== */
+
+.u-gap-0 { gap: 0 !important; }
+.u-gap-1 { gap: var(--space-1) !important; }
+.u-gap-2 { gap: var(--space-2) !important; }
+.u-gap-3 { gap: var(--space-3) !important; }
+.u-gap-4 { gap: var(--space-4) !important; }
+.u-gap-6 { gap: var(--space-6) !important; }
+.u-gap-8 { gap: var(--space-8) !important; }
+
+.u-grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
+.u-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+.u-grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+.u-grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+
+/* ========================================
+   Position utilities
+   ======================================== */
+
+.u-relative { position: relative !important; }
+.u-absolute { position: absolute !important; }
+.u-fixed { position: fixed !important; }
+.u-sticky { position: sticky !important; }
+
+.u-top-0 { top: 0 !important; }
+.u-right-0 { right: 0 !important; }
+.u-bottom-0 { bottom: 0 !important; }
+.u-left-0 { left: 0 !important; }
+
+.u-inset-0 { inset: 0 !important; }
+
+/* ========================================
+   Border utilities
+   ======================================== */
+
+.u-border { border: 1px solid var(--color-neutral-50) !important; }
+.u-border-0 { border: 0 !important; }
+.u-border-t { border-top: 1px solid var(--color-neutral-50) !important; }
+.u-border-b { border-bottom: 1px solid var(--color-neutral-50) !important; }
+.u-border-l { border-left: 1px solid var(--color-neutral-50) !important; }
+.u-border-r { border-right: 1px solid var(--color-neutral-50) !important; }
+
+.u-rounded { border-radius: var(--radius-md) !important; }
+.u-rounded-sm { border-radius: var(--radius-sm) !important; }
+.u-rounded-lg { border-radius: var(--radius-lg) !important; }
+.u-rounded-xl { border-radius: var(--radius-xl) !important; }
+.u-rounded-full { border-radius: var(--radius-full) !important; }
+.u-rounded-none { border-radius: 0 !important; }
+
+/* ========================================
+   Width and height utilities
+   ======================================== */
+
+.u-w-full { width: 100% !important; }
+.u-w-auto { width: auto !important; }
+.u-w-fit { width: fit-content !important; }
+
+.u-h-full { height: 100% !important; }
+.u-h-auto { height: auto !important; }
+.u-h-fit { height: fit-content !important; }
+
+.u-max-w-xs { max-width: 320px !important; }
+.u-max-w-sm { max-width: 480px !important; }
+.u-max-w-md { max-width: 640px !important; }
+.u-max-w-lg { max-width: 800px !important; }
+.u-max-w-xl { max-width: 1024px !important; }
+.u-max-w-full { max-width: 100% !important; }
+.u-max-w-none { max-width: none !important; }
+
+/* ========================================
+   Z-index utilities
+   ======================================== */
+
+.u-z-auto { z-index: auto !important; }
+.u-z-0 { z-index: 0 !important; }
+.u-z-10 { z-index: 10 !important; }
+.u-z-20 { z-index: 20 !important; }
+.u-z-30 { z-index: 30 !important; }
+.u-z-40 { z-index: 40 !important; }
+.u-z-50 { z-index: 50 !important; }
+
+/* ========================================
+   Responsive visibility utilities
+   ======================================== */
+
+@media (max-width: 640px) {
+  .u-hidden-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 641px) {
+  .u-visible-mobile {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .u-hidden-tablet {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .u-visible-tablet {
+    display: none !important;
+  }
+  
+  .u-hidden-desktop {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .u-visible-desktop {
+    display: none !important;
+  }
+}
