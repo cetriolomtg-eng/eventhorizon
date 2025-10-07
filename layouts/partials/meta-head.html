@@ -92,7 +92,7 @@
      CSS bundle via Hugo Pipes (single entrypoint)
 ---------------------------------------- */}}
 {{- $sassOpts := dict
-    "targetPath"      "style/bundle.css"
+    "targetPath"      "style/bundle.min.css"
     "outputStyle"     (cond hugo.IsProduction "compressed" "expanded")
     "enableSourceMap" (not hugo.IsProduction)
 -}}
