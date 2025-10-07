@@ -18,6 +18,7 @@ enableRobotsTXT = true
 
 [params]
   siteName = "EventHorizon.mtg"
+  appVer = "2025.09.27"
 
   # Open Graph (fallback globali; sovrascrivibili per pagina con front matter)
   [params.og]
@@ -51,12 +52,6 @@ permalinkable  = true
 
 
 relativeURLs = true
-
-enableGitInfo = true
-
-[security]
-  [security.funcs]
-    getenv = ['^HUGO_', '^CI$', '^GITHUB_', '^COMMIT_SHA$']
 
 
 
