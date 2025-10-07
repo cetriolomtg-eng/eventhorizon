@@ -74,7 +74,7 @@
 {{ end }}
 
 <!-- Fonts (self-hosted) -->
-{{/* NOTE: font-face rules are loaded via assets/style/base/_fonts.css included in the main bundle below. */}}
+{{/* NOTE: font-face rules are loaded via assets/style/01-settings/_fonts.scss included in the main bundle below. */}}
 
 <!-- Preload hero image (opzionale: file sotto /static/assets/...) -->
 {{ with .Site.Params.preloadHero }}
@@ -89,34 +89,22 @@
 {{ end }}
 
 {{/* ---------------------------------------
-     CSS bundle via Hugo Pipes (robusto ai file mancanti)
-     Costruzione lista con Scratch (evita problemi di scope/append)
+     CSS bundle via Hugo Pipes (single entrypoint)
 ---------------------------------------- */}}
-{{- $cssPaths := slice
-    "style/base/_fonts.css"
-    "style/base/_style.css"
-
-    "style/layout/_subhero.css"
-
-    "style/components/_cards.css"
-    "style/components/_portal.css"
-    "style/components/_links.css"
-    "style/components/_contacts.css"
-    "style/components/_privacy-modal.css"
-
+{{- $sassOpts := dict
+    "targetPath"  "style/main.css"
+    "outputStyle" (cond hugo.IsProduction "compressed" "expanded")
+    "sourceMap"   (not hugo.IsProduction)
 -}}
-
-{{- $.Scratch.Set "parts" (slice) -}}
-{{- range $p := $cssPaths -}}
-  {{- with resources.Get $p -}}
-    {{- $.Scratch.Add "parts" (slice .) -}}
+{{- with resources.Get "style/main.scss" -}}
+  {{- $mainCss := . | css.Sass $sassOpts | resources.Fingerprint -}}
+  {{- if hugo.IsProduction -}}
+    <link rel="stylesheet" href="{{ $mainCss.RelPermalink }}" integrity="{{ $mainCss.Data.Integrity }}" crossorigin="anonymous">
+  {{- else -}}
+    <link rel="stylesheet" href="{{ $mainCss.RelPermalink }}">
   {{- end -}}
-{{- end -}}
-{{- $parts := $.Scratch.Get "parts" -}}
-
-{{- if gt (len $parts) 0 -}}
-  {{- $bundle := ($parts | resources.Concat "style/bundle.css") | resources.Minify | resources.Fingerprint -}}
-  <link rel="stylesheet" href="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" crossorigin="anonymous">
+{{- else -}}
+  {{- warnf "style/main.scss non trovato. Verifica il percorso dell'entrypoint SCSS." -}}
 {{- end -}}
 
 <!-- Optional: Preload core WOFF2 fonts (configure in params.fonts.preload) -->
@@ -125,38 +113,5 @@
     <link rel="preload" as="font" href="{{ . | absURL }}" type="font/woff2" crossorigin>
   {{ end }}
 {{ end }}
-
-{{/* ---------------------------------------
-     CSS specifico Archivio (solo per pagine "archivio" / sezione "archive")
-     Percorsi: assets/style/pages/archive.base.css, archive.mobile.css, archive.desktop.css
----------------------------------------- */}}
-{{- if or (eq .Section "archive") (eq .Type "archive") (eq .Type "archivio") -}}
-  {{- $archivePaths := slice
-      "style/pages/archive.base.css"
-      "style/pages/archive.mobile.css"
-      "style/pages/archive.desktop.css"
-  -}}
-  {{- $.Scratch.Set "archiveParts" (slice) -}}
-  {{- range $ap := $archivePaths -}}
-    {{- with resources.Get $ap -}}
-      {{- $.Scratch.Add "archiveParts" (slice .) -}}
-    {{- end -}}
-  {{- end -}}
-  {{- $archiveParts := $.Scratch.Get "archiveParts" -}}
-  {{- if gt (len $archiveParts) 0 -}}
-    {{- $archiveBundle := ($archiveParts | resources.Concat "style/archive-bundle.css") | resources.Minify | resources.Fingerprint -}}
-    <link rel="stylesheet" href="{{ $archiveBundle.RelPermalink }}" integrity="{{ $archiveBundle.Data.Integrity }}" crossorigin="anonymous">
-  {{- end -}}
-{{- end -}}
-
-{{/* ---------------------------------------
-     CSS specifico Articolo (sezione "article")
----------------------------------------- */}}
-{{- if or (eq .Section "article") (eq .Type "article") -}}
-  {{- with resources.Get "style/pages/article.css" -}}
-    {{- $articleCss := . | resources.Minify | resources.Fingerprint -}}
-    <link rel="stylesheet" href="{{ $articleCss.RelPermalink }}">
-  {{- end -}}
-{{- end -}}
 
 

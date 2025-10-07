@@ -23,7 +23,7 @@
 }
 
 .article-title {
-  font-size: clamp(2.2rem, 2vw + 1.8rem, 3.4rem);
+  font-size: unquote("clamp(2.2rem, 2vw + 1.8rem, 3.4rem)");
 }
 
 .article-desc {
@@ -91,3 +91,4 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   margin-block: var(--space-4);
 }
+

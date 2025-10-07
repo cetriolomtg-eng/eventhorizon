@@ -30,7 +30,7 @@
 }
 
 .c-cards__view-all::after {
-  content: "→";
+  content: "\2192";
   transform: translateX(0);
   transition: transform var(--transition-fast);
 }
@@ -231,3 +231,7 @@
     padding: var(--space-5);
   }
 }
+
+
+
+

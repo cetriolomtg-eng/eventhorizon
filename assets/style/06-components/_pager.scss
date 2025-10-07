@@ -136,11 +136,11 @@
       var(--slide-bg-desktop-url, var(--slide-bg-mobile-url, none)),
       linear-gradient(230deg, rgba(5, 6, 15, 0.1) 0%, rgba(5, 6, 15, 0.9) 85%);
     align-content: center;
-    padding: clamp(2.5rem, 3vw, 4rem);
+    padding: unquote("clamp(2.5rem, 3vw, 4rem)");
   }
 
   .c-pager__slide-title {
-    font-size: clamp(2rem, 2vw + 1.2rem, 2.6rem);
+    font-size: unquote("clamp(2rem, 2vw + 1.2rem, 2.6rem)");
   }
 }
 
@@ -149,3 +149,4 @@
     display: none;
   }
 }
+

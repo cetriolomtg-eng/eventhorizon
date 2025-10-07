@@ -35,7 +35,7 @@
   }
 
   .l-subhero__inner > * {
-    width: min(100%, calc(var(--app-max-width) + 2 * var(--app-gutter)));
+    width: unquote("min(100%, calc(var(--app-max-width) + 2 * var(--app-gutter)))");
     padding-inline-start: var(--subhero-align-left, var(--app-gutter));
     padding-inline-end: var(--app-gutter);
   }

@@ -20,8 +20,8 @@
 
 .privacy-modal__content {
   position: relative;
-  width: min(100%, 640px);
-  max-height: min(90vh, 780px);
+  width: unquote("min(100%, 640px)");
+  max-height: unquote("min(90vh, 780px)");
   overflow-y: auto;
   background: var(--color-surface);
   border-radius: var(--app-radius-lg);

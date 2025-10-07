@@ -26,7 +26,7 @@
 }
 
 .archive-hero .page-title {
-  font-size: clamp(2.4rem, 1.5vw + 2rem, 3rem);
+  font-size: unquote("clamp(2.4rem, 1.5vw + 2rem, 3rem)");
 }
 
 .archive-hero .filter-note strong {
@@ -334,7 +334,7 @@
   transform: translateY(100%);
   transition: transform var(--transition-base);
   z-index: 110;
-  max-height: min(90vh, var(--archive-sheet-max));
+  max-height: unquote("min(90vh, var(--archive-sheet-max))");
   overflow-y: auto;
 }
 
@@ -409,3 +409,5 @@
       linear-gradient(180deg, rgba(5, 6, 15, 0.2) 0%, rgba(5, 6, 15, 0.85) 100%);
   }
 }
+
+

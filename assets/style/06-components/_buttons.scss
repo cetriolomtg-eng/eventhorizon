@@ -1,0 +1,95 @@
+@mixin button-gradient($selectors, $from, $to, $text-color, $border-color: transparent) {
+  #{$selectors} {
+    background: linear-gradient(135deg, $from, $to);
+    color: $text-color;
+    border-color: $border-color;
+  }
+}
+
+.btn,
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-family: var(--font-alt);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: var(--text-xs);
+  padding: 0.75rem 1.8rem;
+  border-radius: var(--app-radius-pill);
+  border: 1px solid transparent;
+  transition: transform var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+  cursor: pointer;
+  text-align: center;
+  min-width: 0;
+}
+
+.btn,
+.pill {
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(4, 8, 23, 0.35);
+  }
+}
+
+@include button-gradient(".btn--base, .pill.btn--base", rgba(102, 247, 255, 0.45), rgba(255, 92, 194, 0.55), var(--color-text), rgba(255, 255, 255, 0.18));
+@include button-gradient(".btn--alphab", #7f5bff, #4cd7ff, var(--color-text), rgba(255, 255, 255, 0.22));
+@include button-gradient(".btn--teal, .pill.btn--teal", #3ddad8, #1bb9b5, #031010, rgba(61, 218, 216, 0.6));
+@include button-gradient(".btn--gold, .pill.btn--gold", #f6c55f, #ffde8a, #2f1f00, rgba(255, 222, 138, 0.6));
+@include button-gradient(".pill.primary", #4cd7ff, #9b5cff, var(--color-text), rgba(255, 255, 255, 0.22));
+@include button-gradient(".btn--yt, .pill.btn--yt", #ff5757, #ff1d1d, #fff);
+@include button-gradient(".btn--scry, .pill.btn--scry", #3a76ff, #5db7ff, #fff);
+@include button-gradient(".btn--edh, .pill.btn--edh", #ff9f43, #ff6f20, #1d0c00);
+@include button-gradient(".btn--mox, .pill.btn--mox", #36d6b3, #00a188, #001512);
+@include button-gradient(".btn--archi, .pill.btn--archi", #7a5cff, #b96bff, #fff);
+
+.btn--tealstroke {
+  background: transparent;
+  color: var(--color-primary);
+  border-color: rgba(102, 247, 255, 0.6);
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(102, 247, 255, 0.12);
+    color: var(--color-text);
+  }
+}
+
+.btn--disabled1 {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.35);
+  cursor: not-allowed;
+  box-shadow: none;
+
+  &:hover,
+  &:focus-visible {
+    transform: none;
+  }
+}
+
+.pill {
+  padding: 0.55rem 1.3rem;
+}
+
+.pill + .pill {
+  margin-inline-start: 0;
+}
+
+.btn--yt,
+.btn--scry,
+.btn--edh,
+.btn--mox,
+.btn--archi {
+  &:hover,
+  &:focus-visible {
+    box-shadow: 0 14px 28px rgba(4, 8, 23, 0.5);
+  }
+}
+
+.btn[disabled],
+.btn.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}

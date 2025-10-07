@@ -1,16 +1,16 @@
 .o-container,
 .container {
-  width: min(100%, var(--app-max-width));
+  width: unquote("min(100%, var(--app-max-width))");
   margin: 0 auto;
   padding-inline: var(--app-gutter);
 }
 
 .o-container--narrow {
-  width: min(100%, 900px);
+  width: unquote("min(100%, 900px)");
 }
 
 .o-container--wide {
-  width: min(100%, 1360px);
+  width: unquote("min(100%, 1360px)");
 }
 
 .o-container--full,
