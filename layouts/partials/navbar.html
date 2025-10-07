@@ -1,8 +1,6 @@
 <header class="nav glass-nav" id="site-nav">
   <div class="nav__inner">
-    {{ $mobileBrand := "icons/favicon/favicon.svg" | absURL }}
     <a class="brand" href="{{ "/" | absURL }}" aria-label="Home">
-      <img class="brand__logo" src="{{ $mobileBrand }}" alt="{{ .Site.Title }}" decoding="async" />
       <span class="brand__name">{{ .Site.Title }}</span>
     </a>
 
