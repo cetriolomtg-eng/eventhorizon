@@ -67,6 +67,19 @@
   --btn-border: var(--color-secondary);
 }
 
+// Button Special //
+.btn--special {
+  --btn-bg: var(--gradient-special);
+  --btn-color: var(--color-text);
+  --btn-border: var(--color-special);
+}
+
+.btn--special:hover,
+.btn--special:focus-visible {
+  --btn-bg: linear-gradient(135deg, var(--color-special-500) 0%, var(--color-special-400) 100%);
+  --btn-border: var(--color-special);
+}
+
 // Button Accent //
 .btn--accent, .btn--gold {
   --btn-bg: var(--gradient-accent);
