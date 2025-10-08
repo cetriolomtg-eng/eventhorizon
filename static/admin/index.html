@@ -21,19 +21,41 @@
         return window.setTimeout(() => ensureDateWidgets(retryCount + 1), 150);
       }
 
-      const datetimeWidget = CMS.getWidget("datetime");
+      const existingDateWidget = CMS.getWidget("date");
+      if (existingDateWidget?.control && existingDateWidget?.preview) {
+        return;
+      }
 
-      if (!datetimeWidget?.control || !datetimeWidget?.preview) {
+      const datetimeWidget = CMS.getWidget("datetime");
+      const control =
+        datetimeWidget?.control ||
+        datetimeWidget?.controlComponent ||
+        datetimeWidget?.Widget?.().controlComponent;
+      const preview =
+        datetimeWidget?.preview ||
+        datetimeWidget?.previewComponent ||
+        datetimeWidget?.Widget?.().previewComponent;
+
+      if (!control || !preview) {
         if (retryCount > 20) return;
         return window.setTimeout(() => ensureDateWidgets(retryCount + 1), 150);
       }
 
       const DateControl = (props) => {
-        const field = props.field?.set ? props.field.set("time_format", false) : props.field;
-        return React.createElement(datetimeWidget.control, { ...props, field });
+        const field = props.field?.set
+          ? props.field
+              .set("time_format", false)
+              .set("include_time", false)
+          : props.field;
+
+        return React.createElement(control, {
+          ...props,
+          field,
+          includeTime: false,
+        });
       };
 
-      CMS.registerWidget("date", DateControl, datetimeWidget.preview);
+      CMS.registerWidget("date", DateControl, preview);
     })();
   </script>
 
