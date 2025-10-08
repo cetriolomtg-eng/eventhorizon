@@ -156,20 +156,11 @@
   --btn-shadow: var(--shadow-md);
 }
 
-.btn--edh::first-letter {
-  color: #fde500;
-}
-
 .btn--edh:hover,
 .btn--edh:focus-visible {
   --btn-bg: #000000;
   --btn-border: #fde500;
   --btn-shadow: var(--shadow-md);
-}
-
-.btn--edh:hover::first-letter,
-.btn--edh:focus-visible::first-letter {
-  color: #fde500;
 }
 
 // Button Moxfield //
@@ -358,19 +349,10 @@
   -webkit-backdrop-filter: blur(14px);
 }
 
-.btn--edh-glass::first-letter {
-  color: #fde500;
-}
-
 .btn--edh-glass:hover,
 .btn--edh-glass:focus-visible {
   --btn-bg: color-mix(in srgb, #000000 45%, transparent);
   --btn-border: #fde500;
-}
-
-.btn--edh-glass:hover::first-letter,
-.btn--edh-glass:focus-visible::first-letter {
-  color: #fde500;
 }
 
 .btn--mox-glass {
