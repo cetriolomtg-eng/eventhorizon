@@ -35,7 +35,7 @@ body {
   /* Modern backdrop system */
   background-image:
     radial-gradient(circle at 20% 20%, var(--color-primary-soft) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, var(--color-secondary-soft) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, var(--color-special-soft) 0%, transparent 50%),
     radial-gradient(circle at 40% 70%, var(--color-surface-hover) 0%, transparent 50%);
   background-attachment: fixed;
   

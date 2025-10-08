@@ -258,6 +258,11 @@
   --color-secondary-active: var(--color-secondary-800);
   --color-secondary-soft: rgba(184, 44, 122, 0.18);
 
+  --color-special: var(--color-special-600);
+  --color-special-hover: var(--color-special-500);
+  --color-special-active: var(--color-special-700);
+  --color-special-soft: rgba(51, 159, 255, 0.18);
+
   --color-accent: var(--color-accent-500);
   --color-accent-hover: var(--color-accent-400);
   --color-accent-active: var(--color-accent-600);
@@ -350,11 +355,11 @@
   --hero-padding-inline: clamp(1.25rem, 5vw, 3rem);
   --hero-backdrop:
     radial-gradient(circle at 18% 18%, color-mix(in srgb, var(--color-primary-300) 82%, transparent) 0%, transparent 60%),
-    radial-gradient(circle at 78% 14%, color-mix(in srgb, var(--color-secondary-300) 78%, transparent) 0%, transparent 68%),
+    radial-gradient(circle at 78% 14%, color-mix(in srgb, var(--color-special-300) 78%, transparent) 0%, transparent 68%),
     linear-gradient(205deg,
       color-mix(in srgb, var(--color-primary-600) 88%, var(--color-gray-900) 12%) 0%,
       color-mix(in srgb, var(--color-primary-500) 72%, transparent) 52%,
-      color-mix(in srgb, var(--color-secondary-500) 72%, transparent) 100%);
+      color-mix(in srgb, var(--color-special-500) 72%, transparent) 100%);
   --hero-overlay: linear-gradient(180deg,
     color-mix(in srgb, var(--color-gray-950) 60%, transparent) 0%,
     color-mix(in srgb, var(--color-gray-900) 45%, transparent) 55%,

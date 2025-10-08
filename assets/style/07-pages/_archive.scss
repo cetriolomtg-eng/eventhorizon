@@ -150,8 +150,8 @@
 
 .archive-search__filter-toggle.is-active,
 .archive-search__filter-toggle[aria-pressed="true"] {
-  border-color: var(--color-secondary);
-  background: var(--color-secondary-soft);
+  border-color: var(--color-special);
+  background: var(--color-special-soft);
 }
 
 @media (min-width: 48rem) {
@@ -292,7 +292,7 @@
 }
 
 .archive-item.is-sheet-open article.item {
-  border-color: var(--color-secondary);
+  border-color: var(--color-special);
 }
 
 .item-head {
@@ -305,7 +305,7 @@
   font-size: var(--text-xs);
   letter-spacing: var(--tracking-widest);
   text-transform: uppercase;
-  color: var(--color-secondary);
+  color: var(--color-special);
 }
 
 .item-title {
@@ -338,7 +338,7 @@
 }
 
 .item-thumb.primary {
-  border-color: var(--color-secondary);
+  border-color: var(--color-special);
 }
 
 .item-actions-summary {

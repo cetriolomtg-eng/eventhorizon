@@ -69,7 +69,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: var(--tracking-widest);
-  color: var(--color-secondary);
+  color: var(--color-special);
   margin-block-start: var(--space-2);
 }
 
@@ -178,7 +178,7 @@
 
 .contact--mail:hover {
   background: var(--color-primary);
-  border-color: var(--color-secondary);
+  border-color: var(--color-special);
   box-shadow: var(--shadow-glow);
 }
 
