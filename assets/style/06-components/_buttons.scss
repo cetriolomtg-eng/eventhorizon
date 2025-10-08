@@ -101,6 +101,30 @@
   --btn-shadow: var(--shadow-md);
 }
 
+// Button EDH //
+.btn--edh {
+  --btn-bg: #2a2a2a;
+  --btn-color: #ffffff;
+  --btn-border: #161616;
+  --btn-shadow: var(--shadow-md);
+}
+
+.btn--edh::first-letter {
+  color: #fde500;
+}
+
+.btn--edh:hover,
+.btn--edh:focus-visible {
+  --btn-bg: #000000;
+  --btn-border: #fde500;
+  --btn-shadow: var(--shadow-md);
+}
+
+.btn--edh:hover::first-letter,
+.btn--edh:focus-visible::first-letter {
+  color: #fde500;
+}
+
 // Button YouTube //
 .btn--yt {
   --btn-bg: #b90025;
@@ -166,7 +190,6 @@
 .pill {
   padding: var(--space-2-5) var(--space-5);
 }
-
 
 
 
