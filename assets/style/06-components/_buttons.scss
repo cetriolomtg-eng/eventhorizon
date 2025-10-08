@@ -47,11 +47,13 @@
   --btn-bg: var(--gradient-primary);
   --btn-color: var(--color-text);
   --btn-border: var(--color-primary);
+  --btn-shadow: var(--shadow-md);
 }
 .btn--primary:hover,
 .btn--primary:focus-visible {
   --btn-bg: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-400) 100%);
   --btn-border: var(--color-primary);
+  --btn-shadow: var(--shadow-md);
 }
 
 // Button Secondary //
@@ -59,12 +61,14 @@
   --btn-bg: var(--gradient-secondary);
   --btn-color: var(--color-text);
   --btn-border: var(--color-secondary);
+  --btn-shadow: var(--shadow-md);
 }
 
 .btn--secondary:hover,
 .btn--secondary:focus-visible {
   --btn-bg: linear-gradient(135deg, var(--color-secondary-500) 0%, var(--color-secondary-400) 100%);
   --btn-border: var(--color-secondary);
+  --btn-shadow: var(--shadow-md);
 }
 
 // Button Special //
@@ -72,12 +76,14 @@
   --btn-bg: var(--gradient-special);
   --btn-color: var(--color-text);
   --btn-border: var(--color-special);
+  --btn-shadow: var(--shadow-md);
 }
 
 .btn--special:hover,
 .btn--special:focus-visible {
   --btn-bg: linear-gradient(135deg, var(--color-special-500) 0%, var(--color-special-400) 100%);
   --btn-border: var(--color-special);
+  --btn-shadow: var(--shadow-md);
 }
 
 // Button Accent //
@@ -100,12 +106,14 @@
   --btn-bg: #b90025;
   --btn-color: #ffffff;
   --btn-border: #212121;
+  --btn-shadow: var(--shadow-md);
 }
 
 .btn--yt:hover,
 .btn--yt:focus-visible {
   --btn-bg: #ff0033;
-  --btn-border: #212121;
+  --btn-border: #ffffff;
+  --btn-shadow: var(--shadow-md);
 }
 
 // Button Scryfall //
@@ -120,6 +128,7 @@
     );
   --btn-color: #ffffff;
   --btn-border: #d2d2d2;
+  --btn-shadow: var(--shadow-md);
 }
 
 .btn--scry:hover,
@@ -136,6 +145,7 @@
     );
   --btn-color: #ffffff;
   --btn-border: #d2d2d2;
+  --btn-shadow: var(--shadow-md);
 }
 
 // Button Disabled //
