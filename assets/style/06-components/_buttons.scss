@@ -46,7 +46,7 @@
 .btn--primary, .btn--base {
   --btn-bg: var(--gradient-primary);
   --btn-color: var(--color-text);
-  --btn-border: var(--color-primary-soft);
+  --btn-border: var(--color-primary);
 }
 .btn--primary:hover,
 .btn--primary:focus-visible {
@@ -58,7 +58,7 @@
 .btn--secondary {
   --btn-bg: var(--gradient-secondary);
   --btn-color: var(--color-text);
-  --btn-border: var(--color-secondary-soft);
+  --btn-border: var(--color-secondary);
 }
 
 .btn--secondary:hover,
@@ -67,6 +67,7 @@
   --btn-border: var(--color-secondary);
 }
 
+// Button Accent //
 .btn--accent, .btn--gold {
   --btn-bg: var(--gradient-accent);
   --btn-color: var(--color-text-invert);
