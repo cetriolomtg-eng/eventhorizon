@@ -165,7 +165,7 @@
 
 // Button Moxfield //
 .btn--mox {
-  --btn-bg: linear-gradient(90deg, #3c2161 70%, #d44071 100%);
+  --btn-bg: linear-gradient(90deg, #3c2161 60%, #d44071 100%);
   --btn-color: #ffffff;
   --btn-border: #d44071;
   --btn-shadow: var(--shadow-md);
@@ -175,7 +175,7 @@
 .btn--mox:focus-visible {
   --btn-bg: linear-gradient(
     90deg,
-    color-mix(in srgb, #3c2161 70%, #111 30%) 70%,
+    color-mix(in srgb, #3c2161 70%, #111 30%) 60%,
     color-mix(in srgb, #d44071 70%, #111 30%) 100%
   );
   --btn-border: #f25e8f;
@@ -358,7 +358,7 @@
 .btn--mox-glass {
   --btn-bg: linear-gradient(
     90deg,
-    color-mix(in srgb, #3c2161 30%, transparent) 70%,
+    color-mix(in srgb, #3c2161 30%, transparent) 60%,
     color-mix(in srgb, #d44071 30%, transparent) 100%
   );
   --btn-color: #ffffff;
