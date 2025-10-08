@@ -14,14 +14,14 @@
   scroll-margin-top: calc(var(--nav-height) + var(--space-4));
 }
 
-/* Hero-Cards overlap effect on desktop */
+/* Hero separation */
 .hero-layout + .cards {
-  margin-top: calc(-1 * var(--space-10));
+  margin-top: var(--space-12);
 }
 
 @media (max-width: 47.999rem) {
   .hero-layout + .cards {
-    margin-top: var(--space-2);
+    margin-top: var(--space-8);
   }
 }
 

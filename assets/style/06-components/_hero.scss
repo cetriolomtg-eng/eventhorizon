@@ -4,12 +4,16 @@
    ========================================== */
 
 .hero {
+  --hero-top-padding: calc(var(--hero-padding-block) + var(--nav-height));
+  --hero-bottom-padding: var(--hero-padding-block);
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-block: var(--hero-padding-block);
   padding-inline: var(--hero-padding-inline);
+  padding-block-start: var(--hero-top-padding);
+  padding-block-end: var(--hero-bottom-padding);
   gap: var(--space-6);
   isolation: isolate;
   min-height: var(--hero-min-height, 100vh);
@@ -18,6 +22,8 @@
   background-color: var(--color-bg);
   background-repeat: no-repeat;
   position: relative;
+  margin-top: calc(-1 * var(--nav-height));
+  margin-bottom: var(--space-12);
 }
 
 /* Background image overlay con supporto data-bg */
@@ -113,7 +119,8 @@
 
 @media (max-width: 900px) {
   .hero {
-    padding-block: clamp(2.5rem, 10vh, 4rem);
+    --hero-top-padding: calc(clamp(2.5rem, 10vh, 4rem) + var(--nav-height));
+    --hero-bottom-padding: clamp(2.5rem, 10vh, 4rem);
     padding-inline: clamp(1rem, 6vw, 1.75rem);
     min-height: clamp(360px, 78vh, 700px);
   }
@@ -128,7 +135,8 @@
 
 @media (max-width: 600px) {
   .hero {
-    padding-block: clamp(2rem, 14vh, 3rem);
+    --hero-top-padding: calc(clamp(2rem, 14vh, 3rem) + var(--nav-height));
+    --hero-bottom-padding: clamp(2rem, 14vh, 3rem);
     padding-inline: clamp(0.75rem, 6vw, 1.25rem);
     min-height: clamp(280px, 88vh, 480px);
   }
