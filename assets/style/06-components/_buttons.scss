@@ -67,7 +67,6 @@
   --btn-border: var(--color-secondary);
 }
 
-// Button Accent & Gold //
 .btn--accent, .btn--gold {
   --btn-bg: var(--gradient-accent);
   --btn-color: var(--color-text-invert);
@@ -75,16 +74,22 @@
   --btn-shadow: var(--shadow-lg);
 }
 
+.btn--accent:hover,
+.btn--accent:focus-visible {
+  --btn-bg: linear-gradient(135deg, var(--color-accent-500) 0%, var(--color-accent-300) 100%);
+  --btn-border: var(--color-accent);
+}
+
 // Button YouTube //
 .btn--yt {
-  --btn-bg: #ff0033;
+  --btn-bg: #b90025;
   --btn-color: #ffffff;
   --btn-border: #212121;
 }
 
 .btn--yt:hover,
 .btn--yt:focus-visible {
-  --btn-bg: #b90025;
+  --btn-bg: #ff0033;
   --btn-border: #212121;
 }
 
@@ -136,5 +141,7 @@
 .pill {
   padding: var(--space-2-5) var(--space-5);
 }
+
+
 
 
