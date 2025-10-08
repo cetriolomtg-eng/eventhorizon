@@ -101,73 +101,6 @@
   --btn-shadow: var(--shadow-md);
 }
 
-// Button EDH //
-.btn--edh {
-  --btn-bg: #2a2a2a;
-  --btn-color: #ffffff;
-  --btn-border: #c6c6c6;
-  --btn-shadow: var(--shadow-md);
-}
-
-.btn--edh:hover,
-.btn--edh:focus-visible {
-  --btn-bg: #000000;
-  --btn-border: #fde500;
-  --btn-shadow: var(--shadow-md);
-}
-
-// Button Moxfield //
-.btn--mox {
-  --btn-bg: linear-gradient(90deg, #3c2161 30%, #d44071 100%);
-  --btn-color: #ffffff;
-  --btn-border: #3c2161;
-  --btn-shadow: var(--shadow-md);
-}
-
-.btn--mox:hover,
-.btn--mox:focus-visible {
-  --btn-bg: linear-gradient(
-    90deg,
-    color-mix(in srgb, #d44071 70%, #111 30%) 0%,
-    color-mix(in srgb, #3c2161 70%, #111 30%) 100%
-  );
-  --btn-border: #f25e8f;
-  --btn-shadow: var(--shadow-md);
-}
-
-// Button Archidekt //
-.btn--archi {
-  --btn-bg: linear-gradient(
-    45deg,
-    #d9d9d9 0%,
-    #cbcbcb 10%,
-    #ffa90a 10%,
-    #f79c00 30%,
-    #333333 30%,
-    #292929 100%
-  );
-  --btn-color: #ffffff;
-  --btn-border: #333333;
-  --btn-shadow: var(--shadow-md);
-}
-
-.btn--archi:hover,
-.btn--archi:focus-visible {
-  --btn-bg:
-    linear-gradient(0deg, rgba(42,42,42,0.35) 0%, rgba(42,42,42,0.35) 100%),
-    linear-gradient(
-      45deg,
-      #d9d9d9 0%,
-      #cbcbcb 10%,
-      #ffa90a 10%,
-      #f79c00 30%,
-      #333333 30%,
-      #292929 100%
-    );
-  --btn-border: #ffa90a;
-  --btn-shadow: var(--shadow-md);
-}
-
 // Button YouTube //
 .btn--yt {
   --btn-bg: #b90025;
@@ -215,6 +148,266 @@
   --btn-shadow: var(--shadow-md);
 }
 
+// Button EDH //
+.btn--edh {
+  --btn-bg: #2a2a2a;
+  --btn-color: #ffffff;
+  --btn-border: #161616;
+  --btn-shadow: var(--shadow-md);
+}
+
+.btn--edh:hover,
+.btn--edh:focus-visible {
+  --btn-bg: #000000;
+  --btn-border: #fde500;
+  --btn-shadow: var(--shadow-md);
+}
+
+// Button Moxfield //
+.btn--mox {
+  --btn-bg: linear-gradient(90deg, #3c2161 0%, #d44071 100%);
+  --btn-color: #ffffff;
+  --btn-border: #d44071;
+  --btn-shadow: var(--shadow-md);
+}
+
+.btn--mox:hover,
+.btn--mox:focus-visible {
+  --btn-bg: linear-gradient(
+    90deg,
+    color-mix(in srgb, #3c2161 70%, #111 30%) 0%
+    color-mix(in srgb, #d44071 70%, #111 30%) 100%,
+  );
+  --btn-border: #f25e8f;
+  --btn-shadow: var(--shadow-md);
+}
+
+// Button Archidekt //
+.btn--archi {
+  --btn-bg: linear-gradient(
+    -45deg,
+    #d9d9d9 0%,
+    #cbcbcb 20%,
+    #ffa90a 20%,
+    #f79c00 40%,
+    #333333 40%,
+    #292929 100%
+  );
+  --btn-color: #ffffff;
+  --btn-border: #333333;
+  --btn-shadow: var(--shadow-md);
+}
+
+.btn--archi:hover,
+.btn--archi:focus-visible {
+  --btn-bg:
+    linear-gradient(0deg, rgba(42,42,42,0.35) 0%, rgba(42,42,42,0.35) 100%),
+    linear-gradient(
+      -45deg,
+      #d9d9d9 0%,
+      #cbcbcb 20%,
+      #ffa90a 20%,
+      #f79c00 40%,
+      #333333 40%,
+      #292929 100%
+    );
+  --btn-border: #ffa90a;
+  --btn-shadow: var(--shadow-md);
+}
+
+/* Glass Variants */
+.btn--primary-glass {
+  --btn-bg: linear-gradient(135deg,
+    color-mix(in srgb, var(--color-primary-500) 35%, transparent) 0%,
+    color-mix(in srgb, var(--color-primary-300) 35%, transparent) 100%);
+  --btn-color: var(--color-text);
+  --btn-border: color-mix(in srgb, var(--color-primary-500) 55%, transparent);
+  --btn-shadow: var(--shadow-sm);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.btn--primary-glass:hover,
+.btn--primary-glass:focus-visible {
+  --btn-bg: linear-gradient(135deg,
+    color-mix(in srgb, var(--color-primary-500) 55%, transparent) 0%,
+    color-mix(in srgb, var(--color-primary-300) 55%, transparent) 100%);
+  --btn-border: var(--color-primary);
+}
+
+.btn--secondary-glass {
+  --btn-bg: linear-gradient(135deg,
+    color-mix(in srgb, var(--color-secondary-500) 35%, transparent) 0%,
+    color-mix(in srgb, var(--color-secondary-300) 35%, transparent) 100%);
+  --btn-color: var(--color-text);
+  --btn-border: color-mix(in srgb, var(--color-secondary-500) 55%, transparent);
+  --btn-shadow: var(--shadow-sm);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.btn--secondary-glass:hover,
+.btn--secondary-glass:focus-visible {
+  --btn-bg: linear-gradient(135deg,
+    color-mix(in srgb, var(--color-secondary-500) 55%, transparent) 0%,
+    color-mix(in srgb, var(--color-secondary-300) 55%, transparent) 100%);
+  --btn-border: var(--color-secondary);
+}
+
+.btn--special-glass {
+  --btn-bg: linear-gradient(135deg,
+    color-mix(in srgb, var(--color-special-500) 35%, transparent) 0%,
+    color-mix(in srgb, var(--color-special-300) 35%, transparent) 100%);
+  --btn-color: var(--color-text);
+  --btn-border: color-mix(in srgb, var(--color-special-500) 55%, transparent);
+  --btn-shadow: var(--shadow-sm);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.btn--special-glass:hover,
+.btn--special-glass:focus-visible {
+  --btn-bg: linear-gradient(135deg,
+    color-mix(in srgb, var(--color-special-500) 55%, transparent) 0%,
+    color-mix(in srgb, var(--color-special-300) 55%, transparent) 100%);
+  --btn-border: var(--color-special);
+}
+
+.btn--accent-glass {
+  --btn-bg: linear-gradient(135deg,
+    color-mix(in srgb, var(--color-accent-500) 35%, transparent) 0%,
+    color-mix(in srgb, var(--color-accent-300) 35%, transparent) 100%);
+  --btn-color: var(--color-text-invert);
+  --btn-border: color-mix(in srgb, var(--color-accent-500) 55%, transparent);
+  --btn-shadow: var(--shadow-sm);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.btn--accent-glass:hover,
+.btn--accent-glass:focus-visible {
+  --btn-bg: linear-gradient(135deg,
+    color-mix(in srgb, var(--color-accent-500) 55%, transparent) 0%,
+    color-mix(in srgb, var(--color-accent-300) 55%, transparent) 100%);
+  --btn-border: var(--color-accent);
+}
+
+.btn--yt-glass {
+  --btn-bg: linear-gradient(135deg,
+    color-mix(in srgb, #b90025 35%, transparent) 0%,
+    color-mix(in srgb, #ff0033 35%, transparent) 100%);
+  --btn-color: #ffffff;
+  --btn-border: color-mix(in srgb, #b90025 55%, transparent);
+  --btn-shadow: var(--shadow-sm);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.btn--yt-glass:hover,
+.btn--yt-glass:focus-visible {
+  --btn-bg: linear-gradient(135deg,
+    color-mix(in srgb, #b90025 55%, transparent) 0%,
+    color-mix(in srgb, #ff0033 55%, transparent) 100%);
+  --btn-border: #ff0033;
+}
+
+.btn--scry-glass {
+  --btn-bg: linear-gradient(
+    90deg,
+    color-mix(in srgb, #786076 35%, transparent) 0%,
+    color-mix(in srgb, #947a92 35%, transparent) 25%,
+    color-mix(in srgb, #ae7f9c 35%, transparent) 50%,
+    color-mix(in srgb, #bc979d 35%, transparent) 75%,
+    color-mix(in srgb, #d2d2d2 35%, transparent) 100%
+  );
+  --btn-color: #ffffff;
+  --btn-border: color-mix(in srgb, #bc979d 55%, transparent);
+  --btn-shadow: var(--shadow-sm);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.btn--scry-glass:hover,
+.btn--scry-glass:focus-visible {
+  --btn-bg: linear-gradient(
+    90deg,
+    color-mix(in srgb, #786076 55%, transparent) 0%,
+    color-mix(in srgb, #947a92 55%, transparent) 25%,
+    color-mix(in srgb, #ae7f9c 55%, transparent) 50%,
+    color-mix(in srgb, #bc979d 55%, transparent) 75%,
+    color-mix(in srgb, #d2d2d2 55%, transparent) 100%
+  );
+  --btn-border: #bc979d;
+}
+
+.btn--edh-glass {
+  --btn-bg: color-mix(in srgb, #2a2a2a 30%, transparent);
+  --btn-color: #ffffff;
+  --btn-border: color-mix(in srgb, #fde500 55%, transparent);
+  --btn-shadow: var(--shadow-sm);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.btn--edh-glass:hover,
+.btn--edh-glass:focus-visible {
+  --btn-bg: color-mix(in srgb, #000000 45%, transparent);
+  --btn-border: #fde500;
+}
+
+.btn--mox-glass {
+  --btn-bg: linear-gradient(
+    90deg,
+    color-mix(in srgb, #3c2161 30%, transparent) 0%
+    color-mix(in srgb, #d44071 30%, transparent) 100%,
+  );
+  --btn-color: #ffffff;
+  --btn-border: color-mix(in srgb, #d44071 55%, transparent);
+  --btn-shadow: var(--shadow-sm);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.btn--mox-glass:hover,
+.btn--mox-glass:focus-visible {
+  --btn-bg: linear-gradient(
+    90deg,
+    color-mix(in srgb, #3c2161 50%, transparent) 0%
+    color-mix(in srgb, #d44071 50%, transparent) 100%,
+  );
+  --btn-border: #f25e8f;
+}
+
+.btn--archi-glass {
+  --btn-bg: linear-gradient(
+    -45deg,
+    color-mix(in srgb, #d9d9d9 35%, transparent) 0%,
+    color-mix(in srgb, #cbcbcb 35%, transparent) 20%,
+    color-mix(in srgb, #ffa90a 35%, transparent) 20%,
+    color-mix(in srgb, #f79c00 35%, transparent) 40%,
+    color-mix(in srgb, #333333 35%, transparent) 40%,
+    color-mix(in srgb, #292929 35%, transparent) 100%
+  );
+  --btn-color: #ffffff;
+  --btn-border: color-mix(in srgb, #ffa90a 55%, transparent);
+  --btn-shadow: var(--shadow-sm);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.btn--archi-glass:hover,
+.btn--archi-glass:focus-visible {
+  --btn-bg: linear-gradient(
+    -45deg,
+    color-mix(in srgb, #d9d9d9 55%, transparent) 0%,
+    color-mix(in srgb, #cbcbcb 55%, transparent) 20%,
+    color-mix(in srgb, #ffa90a 55%, transparent) 20%,
+    color-mix(in srgb, #f79c00 55%, transparent) 40%,
+    color-mix(in srgb, #333333 55%, transparent) 40%,
+    color-mix(in srgb, #292929 55%, transparent) 100%
+  );
+  --btn-border: #ffa90a;
+}
 // Button Disabled //
 .btn--disabled1:hover,
 .btn--disabled1:focus-visible {
@@ -233,4 +426,3 @@
 .pill {
   padding: var(--space-2-5) var(--space-5);
 }
-

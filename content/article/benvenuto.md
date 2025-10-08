@@ -44,6 +44,7 @@ Di seguito alcuni esempi dei pulsanti disponibili sul sito:
 <a class="btn btn--edh" href="#">EDHREC</a>
 <a class="btn btn--mox" href="#">Moxfield</a>
 <a class="btn btn--archi" href="#">Archidekt</a>
+<a class="btn btn--disabled1" href="#">Disabled</a>
 ```
 
 Come riutilizzarli:
@@ -65,5 +66,31 @@ Come riutilizzarli:
   <a class="btn btn--edh" href="#">EDHREC</a>
   <a class="btn btn--mox" href="#">Moxfield</a>
   <a class="btn btn--archi" href="#">Archidekt</a>
+  <a class="btn btn--disabled1" href="#">Disabled</a>
 </div>
 
+### Varianti glass/trasparent
+
+```html
+<a class="btn btn--primary-glass" href="#">Primary Glass</a>
+<a class="btn btn--secondary-glass" href="#">Secondary Glass</a>
+<a class="btn btn--special-glass" href="#">Special Glass</a>
+<a class="btn btn--accent-glass" href="#">Accent Glass</a>
+<a class="btn btn--yt-glass" href="#">YouTube Glass</a>
+<a class="btn btn--scry-glass" href="#">Scryfall Glass</a>
+<a class="btn btn--edh-glass" href="#">EDH Glass</a>
+<a class="btn btn--mox-glass" href="#">Moxfield Glass</a>
+<a class="btn btn--archi-glass" href="#">Archidekt Glass</a>
+```
+
+<div class="article-button-demo">
+  <a class="btn btn--primary-glass" href="#">Primary Glass</a>
+  <a class="btn btn--secondary-glass" href="#">Secondary Glass</a>
+  <a class="btn btn--special-glass" href="#">Special Glass</a>
+  <a class="btn btn--accent-glass" href="#">Accent Glass</a>
+  <a class="btn btn--yt-glass" href="#">YouTube Glass</a>
+  <a class="btn btn--scry-glass" href="#">Scryfall Glass</a>
+  <a class="btn btn--edh-glass" href="#">EDH Glass</a>
+  <a class="btn btn--mox-glass" href="#">Moxfield Glass</a>
+  <a class="btn btn--archi-glass" href="#">Archidekt Glass</a>
+</div>
