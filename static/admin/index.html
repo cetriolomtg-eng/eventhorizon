@@ -12,17 +12,30 @@
   <!-- Carica Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   <script src="https://unpkg.com/netlify-cms-widget-date@2.6.3/dist/netlify-cms-widget-date.js"></script>
+  <script src="https://unpkg.com/netlify-cms-widget-datetime@2.6.3/dist/netlify-cms-widget-datetime.js"></script>
   <script>
-    (function registerDateWidget(retryCount = 0) {
+    (function registerDateWidgets(retryCount = 0) {
       const CMS = window.CMS;
       const dateWidgetPkg = window.NetlifyCmsWidgetDate;
-      if (!CMS || !dateWidgetPkg) {
+      const datetimeWidgetPkg = window.NetlifyCmsWidgetDatetime;
+
+      if (!CMS || (!dateWidgetPkg && !datetimeWidgetPkg)) {
         if (retryCount > 20) return;
-        return window.setTimeout(() => registerDateWidget(retryCount + 1), 150);
+        return window.setTimeout(() => registerDateWidgets(retryCount + 1), 150);
       }
-      const widget = dateWidgetPkg.default || dateWidgetPkg;
-      if (widget?.controlComponent && widget?.previewComponent) {
-        CMS.registerWidget("date", widget.controlComponent, widget.previewComponent);
+
+      if (dateWidgetPkg) {
+        const widget = dateWidgetPkg.default || dateWidgetPkg;
+        if (widget?.controlComponent && widget?.previewComponent) {
+          CMS.registerWidget("date", widget.controlComponent, widget.previewComponent);
+        }
+      }
+
+      if (datetimeWidgetPkg) {
+        const widget = datetimeWidgetPkg.default || datetimeWidgetPkg;
+        if (widget?.controlComponent && widget?.previewComponent) {
+          CMS.registerWidget("datetime", widget.controlComponent, widget.previewComponent);
+        }
       }
     })();
   </script>
