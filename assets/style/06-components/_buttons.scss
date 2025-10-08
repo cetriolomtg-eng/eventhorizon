@@ -41,42 +41,36 @@
   box-shadow: none;
 }
 
-.btn--alphab {
-  --btn-bg: var(--gradient-primary);
-  --btn-border: var(--color-primary-soft);
-}
-
-.btn--base {
+.btn--secondary {
   --btn-bg: var(--gradient-secondary);
+  --btn-color: var(--color-text);
   --btn-border: var(--color-secondary-soft);
 }
 
-.btn--teal {
-  --btn-bg: linear-gradient(135deg, var(--color-success-400) 0%, var(--color-secondary-400) 100%);
-  --btn-color: var(--color-text-invert);
-  --btn-border: var(--color-border-strong);
-  --btn-shadow: var(--shadow-lg);
+.btn--secondary:hover,
+.btn--secondary:focus-visible {
+  --btn-bg: linear-gradient(135deg, var(--color-secondary-500) 0%, var(--color-secondary-400) 100%);
+  --btn-border: var(--color-secondary);
 }
 
-.btn--gold {
+
+.btn--primary, .btn--base {
+  --btn-bg: var(--gradient-primary);
+  --btn-color: var(--color-text);
+  --btn-border: var(--color-primary-soft);
+}
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  --btn-bg: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-400) 100%);
+  --btn-border: var(--color-primary);
+}
+
+
+.btn--accent, .btn--gold {
   --btn-bg: var(--gradient-accent);
   --btn-color: var(--color-text-invert);
   --btn-border: var(--color-accent-soft);
   --btn-shadow: var(--shadow-lg);
-}
-
-.btn--tealstroke {
-  --btn-bg: transparent;
-  --btn-color: var(--color-primary);
-  --btn-border: var(--color-border-strong);
-  --btn-shadow: none;
-}
-
-.btn--tealstroke:hover,
-.btn--tealstroke:focus-visible {
-  background: var(--color-surface-selected);
-  color: var(--color-text);
-  border-color: var(--color-primary);
 }
 
 .btn--disabled1 {
@@ -96,3 +90,7 @@
 .pill {
   padding: var(--space-2-5) var(--space-5);
 }
+
+
+
+

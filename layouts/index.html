@@ -26,8 +26,8 @@
             <br>Tutto su un'unica rotta!
           </p>
           <div class="hero__actions">
-            <a class="btn btn--base" href="{{ "/archive/" | absURL }}">Esplora l'Archivio</a>
-            <a class="btn btn--tealstroke" href="{{ "/" | absURL }}#contacts">Contattaci</a>
+            <a class="btn btn--primary" href="{{ "/archive/" | absURL }}">Esplora l'Archivio</a>
+            <a class="btn btn--primary" href="{{ "/" | absURL }}#contacts">Contattaci</a>
           </div>
         </div>
       </div>
@@ -138,11 +138,11 @@
                 </div>
                 <div class="card__actions">
                   {{ if ne $purl "" }}
-                    <a class="btn btn--tealstroke"
+                    <a class="btn btn--primary"
                        href="{{ $purl }}"
                        target="_blank" rel="noopener noreferrer">Apri</a>
                   {{ else }}
-                    <a class="btn btn--tealstroke" href="{{ "/archive/" | absURL }}">Altro</a>
+                    <a class="btn btn--primary" href="{{ "/archive/" | absURL }}">Altro</a>
                   {{ end }}
                 </div>
               {{ end }}
@@ -156,7 +156,7 @@
               <p class="card__desc">Contenuti in arrivo.</p>
             </div>
             <div class="card__actions">
-              <a class="btn btn--tealstroke" href="{{ "/archive/" | absURL }}">Altro</a>
+              <a class="btn btn--primary" href="{{ "/archive/" | absURL }}">Altro</a>
             </div>
           </div>
         {{ end }}

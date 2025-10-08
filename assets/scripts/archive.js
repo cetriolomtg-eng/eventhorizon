@@ -1,4 +1,4 @@
-﻿/**
+/**
  * /script/archive.js â€” EventHorizon.mtg (Archivio)
  * - Bottom-sheet mobile (overlay, focus-trap, drag handle)
  * - Chevron: sheet su mobile, pannello full-width su desktop
@@ -69,7 +69,7 @@
       ctas.innerHTML      = '';
       (payload.links || []).forEach(link => {
         const a = document.createElement('a');
-        a.className   = link.cls || 'pill btn--base';
+        a.className   = link.cls || 'pill btn--primary';
         a.href        = link.url;
         a.target      = '_blank';
         a.rel         = 'noopener';
@@ -396,22 +396,23 @@
   // Pill mapping
   const normalizeBtnVariant = (raw) => {
     const t = lower(trim(raw));
-    if (!t) return 'btn--base';
-    const m = t.match(/\bbtn--[a-z0-9\-]+\b/); if (m) return m[0];
-    const map = {
-      'youtube':'btn--yt','yt':'btn--yt',
+    if (!t) return 'btn--primary';
+    const m = t.match(/\\bbtn--[a-z0-9\\-]+\\b/); if (m) { if (m[0] === 'btn--teal') return 'btn--secondary'; if (m[0] === 'btn--base') return 'btn--primary'; if (m[0] === 'btn--gold') return 'btn--accent'; return m[0]; }
+    const map = {\n      'magenta':'btn--secondary',\n      'youtube':'btn--yt','yt':'btn--yt',
       'scryfall':'btn--scry','scry':'btn--scry',
       'edhrec':'btn--edh','edh':'btn--edh',
       'moxfield':'btn--mox','mox':'btn--mox',
+      
       'archidekt':'btn--archi','archi':'btn--archi',
-      'teal':'btn--teal','gold':'btn--gold',
+      'indigostroke':'btn--base','tealstroke':'btn--base','alphab':'btn--base','acid':'btn--base','pink':'btn--base','orange':'btn--base',
+      'teal':'btn--secondary','gold':'btn--accent','accent':'btn--accent',
       'primary':'primary',
-      'indigo':'btn--base','base':'btn--base','default':'btn--base',
+      'indigo':'btn--primary','base':'btn--primary','default':'btn--primary',
     };
     const parts = t.split(/\s+/);
     for (const p of parts) if (map[p]) return map[p];
     for (const k in map) if (t.includes(k)) return map[k];
-    return 'btn--base';
+    return 'btn--primary';
   };
   const variantFromUrl = (url) => {
     try {
@@ -688,5 +689,11 @@
     bootstrap();
   }
 })();
+
+
+
+
+
+
 
 

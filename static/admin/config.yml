@@ -155,22 +155,16 @@ collections:
             name: btn_class
             widget: select
             required: false
-            default: "btn--base"
+            default: "btn--primary"
             options:
-              - { label: "Base (Indigo)", value: "btn--base" }
+              - { label: "Primary (Indigo)", value: "btn--primary" }
               - { label: "YouTube (Rosso)", value: "btn--yt" }
               - { label: "Scryfall (Indigo scuro)", value: "btn--scry" }
               - { label: "EDH (Teal)", value: "btn--edh" }
-              - { label: "Teal", value: "btn--teal" }
+              - { label: "Secondary (Magenta)", value: "btn--secondary" }
               - { label: "Moxfield (Arancione)", value: "btn--mox" }
               - { label: "Archidekt (Teal scuro)", value: "btn--archi" }
-              - { label: "Gold (Oro)", value: "btn--gold" }
-              - { label: "Alphab (Indigo chiaro)", value: "btn--alphab" }
-              - { label: "Acid (Verde acido)", value: "btn--acid" }
-              - { label: "Pink (Rosa)", value: "btn--pink" }
-              - { label: "Orange (Arancione)", value: "btn--orange" }
-              - { label: "Indigo Stroke (Bordo indigo)", value: "btn--indigostroke" }
-              - { label: "Teal Stroke (Bordo teal)", value: "btn--tealstroke" }
+              - { label: "Accent (Gold)", value: "btn--accent" }
               - { label: "Disabled (Disabilitato)", value: "btn--disabled1" }
             hint: "Stile del pulsante/pill"
 
@@ -186,3 +180,4 @@ collections:
             widget: boolean
             required: false
             default: false
+

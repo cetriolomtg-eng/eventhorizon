@@ -125,18 +125,18 @@
   --color-primary-900: #140821;
   --color-primary-950: #0F061A;
 
-  /* Secondary Palette - Cosmic Azure */
-  --color-secondary-50: #E6F3FF;
-  --color-secondary-100: #CCE7FF;
-  --color-secondary-200: #99CFFF;
-  --color-secondary-300: #66B7FF;
-  --color-secondary-400: #339FFF;
-  --color-secondary-500: #0087E6;
-  --color-secondary-600: #006BB3;
-  --color-secondary-700: #004F80;
-  --color-secondary-800: #00334D;
-  --color-secondary-900: #001A26;
-  --color-secondary-950: #000D13;
+  /* Secondary Palette - Cosmic Magenta */
+  --color-secondary-50: #FFDDFD;
+  --color-secondary-100: #FFB2F2;
+  --color-secondary-200: #FF95E7;
+  --color-secondary-300: #FF78DC;
+  --color-secondary-400: #FF5BD1;
+  --color-secondary-500: #E83FA6;
+  --color-secondary-600: #B82C7A;
+  --color-secondary-700: #7A1B4E;
+  --color-secondary-800: #4A0B2E;
+  --color-secondary-900: #3D0821;
+  --color-secondary-950: #2F061A;
 
   /* Accent Palette - Cosmic Gold */
   --color-accent-50: #FFF9CC;
@@ -151,18 +151,18 @@
   --color-accent-900: #3D2300;
   --color-accent-950: #2F1B00;
 
-  /* Special Palette - Cosmic Magenta (dal logo) */
-  --color-special-50: #FFDDFD;
-  --color-special-100: #FFB2F2;
-  --color-special-200: #FF95E7;
-  --color-special-300: #FF78DC;
-  --color-special-400: #FF5BD1;
-  --color-special-500: #E83FA6;
-  --color-special-600: #B82C7A;
-  --color-special-700: #7A1B4E;
-  --color-special-800: #4A0B2E;
-  --color-special-900: #3D0821;
-  --color-special-950: #2F061A;
+  /* Special Palette - Cosmic Azure */
+  --color-special-50: #E6F3FF;
+  --color-special-100: #CCE7FF;
+  --color-special-200: #99CFFF;
+  --color-special-300: #66B7FF;
+  --color-special-400: #339FFF;
+  --color-special-500: #0087E6;
+  --color-special-600: #006BB3;
+  --color-special-700: #004F80;
+  --color-special-800: #00334D;
+  --color-special-900: #001A26;
+  --color-special-950: #000D13;
 
   /* Semantic Colors */
   --color-success-50: #ECFDF5;
@@ -256,7 +256,7 @@
   --color-secondary: var(--color-secondary-700);
   --color-secondary-hover: var(--color-secondary-600);
   --color-secondary-active: var(--color-secondary-800);
-  --color-secondary-soft: rgba(0, 135, 230, 0.18);
+  --color-secondary-soft: rgba(184, 44, 122, 0.18);
 
   --color-accent: var(--color-accent-500);
   --color-accent-hover: var(--color-accent-400);
@@ -382,4 +382,7 @@
     --app-gutter: clamp(1.5rem, calc(1rem + 2vw), 4rem);
   }
 }
+
+
+
 
