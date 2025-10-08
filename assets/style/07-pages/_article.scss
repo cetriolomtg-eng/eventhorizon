@@ -154,16 +154,31 @@
   text-decoration-color: var(--color-special);
 }
 
-.article-body a.btn {
+.article-body a.btn,
+.article-body span.btn,
+.article-body button.btn {
   text-decoration: none;
   color: var(--btn-color);
   font-weight: inherit;
+  display: inline-flex;
 }
 
 .article-body a.btn:hover,
-.article-body a.btn:focus-visible {
+.article-body span.btn:hover,
+.article-body button.btn:hover,
+.article-body a.btn:focus-visible,
+.article-body span.btn:focus-visible,
+.article-body button.btn:focus-visible {
   text-decoration: none;
   color: var(--btn-color);
+}
+
+.article-body .article-button-demo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  margin-block: var(--space-4);
 }
 
 /* Lists */
@@ -323,3 +338,4 @@
     gap: var(--space-6);
   }
 }
+

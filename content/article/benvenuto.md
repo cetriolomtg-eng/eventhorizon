@@ -1,4 +1,4 @@
-+++
+﻿+++
 title = "Benvenuto su EventHorizon.mtg"
 date = "2025-09-27T12:00:00.000Z"
 draft = false
@@ -42,6 +42,20 @@ Di seguito alcuni esempi dei pulsanti disponibili sul sito:
 <a class="btn btn--scry" href="#">Scryfall</a>
 ```
 
-Incolla queste righe dove vuoi mostrare i pulsanti. Ricorda che, se usi l’editor “Visual” di Hugo/Decap, potresti dover passare alla modalità “Markdown/Code” per inserirli come HTML.
+Come riutilizzarli:
 
-Puoi riutilizzarli nelle pagine e negli articoli semplicemente applicando la combinazione di classi `btn` + `btn--variant`.
+1. Copia il blocco HTML qui sopra e incollalo nel punto desiderato dell'articolo.
+2. Sostituisci la variante (`btn--primary`, `btn--yt`, ecc.) e personalizza testo e link.
+3. Se usi l'editor "Visual" di Decap, passa alla vista Markdown/Code per incollare il codice HTML.
+4. Non servono shortcode: la combinazione `btn` + `btn--variant` funziona direttamente grazie al renderer HTML abilitato.
+
+#### Anteprima diretta
+
+<div class="article-button-demo">
+  <a class="btn btn--primary" href="#">Primary</a>
+  <a class="btn btn--secondary" href="#">Secondary</a>
+  <a class="btn btn--accent" href="#">Accent</a>
+  <a class="btn btn--yt" href="#">YouTube</a>
+  <a class="btn btn--scry" href="#">Scryfall</a>
+</div>
+

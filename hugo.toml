@@ -34,14 +34,19 @@ enableRobotsTXT = true
   preloadHero = "images/bg_image.webp"
 
   # Fonts (self-hosted) preload list (WOFF2)
-  [params.fonts]
-    preload = [
-      "fonts/LexendDeca-Regular.woff2",
-      "fonts/LexendGiga-Regular.woff2",
-      "fonts/Merriweather-Light.woff2",
-      "fonts/Roboto-Regular.woff2",
-      "fonts/Roboto-Italic.woff2"
-    ]
+[params.fonts]
+  preload = [
+    "fonts/LexendDeca-Regular.woff2",
+    "fonts/LexendGiga-Regular.woff2",
+    "fonts/Merriweather-Light.woff2",
+    "fonts/Roboto-Regular.woff2",
+    "fonts/Roboto-Italic.woff2"
+  ]
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
 
 [outputFormats.ArchiveList]
 mediaType    = "application/json"
