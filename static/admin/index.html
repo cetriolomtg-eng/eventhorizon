@@ -26,14 +26,18 @@
 
       if (dateWidgetPkg) {
         const widget = dateWidgetPkg.default || dateWidgetPkg;
-        if (widget?.controlComponent && widget?.previewComponent) {
+        if (widget?.Widget) {
+          CMS.registerWidget(widget.Widget());
+        } else if (widget?.controlComponent && widget?.previewComponent) {
           CMS.registerWidget("date", widget.controlComponent, widget.previewComponent);
         }
       }
 
       if (datetimeWidgetPkg) {
         const widget = datetimeWidgetPkg.default || datetimeWidgetPkg;
-        if (widget?.controlComponent && widget?.previewComponent) {
+        if (widget?.Widget) {
+          CMS.registerWidget(widget.Widget());
+        } else if (widget?.controlComponent && widget?.previewComponent) {
           CMS.registerWidget("datetime", widget.controlComponent, widget.previewComponent);
         }
       }
