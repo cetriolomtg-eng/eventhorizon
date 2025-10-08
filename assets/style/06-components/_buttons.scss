@@ -42,6 +42,19 @@
   box-shadow: none;
 }
 
+// Button Primary //
+.btn--primary, .btn--base {
+  --btn-bg: var(--gradient-primary);
+  --btn-color: var(--color-text);
+  --btn-border: var(--color-primary-soft);
+}
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  --btn-bg: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-400) 100%);
+  --btn-border: var(--color-primary);
+}
+
+// Button Secondary //
 .btn--secondary {
   --btn-bg: var(--gradient-secondary);
   --btn-color: var(--color-text);
@@ -54,24 +67,62 @@
   --btn-border: var(--color-secondary);
 }
 
-
-.btn--primary, .btn--base {
-  --btn-bg: var(--gradient-primary);
-  --btn-color: var(--color-text);
-  --btn-border: var(--color-primary-soft);
-}
-.btn--primary:hover,
-.btn--primary:focus-visible {
-  --btn-bg: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-400) 100%);
-  --btn-border: var(--color-primary);
-}
-
-
+// Button Accent & Gold //
 .btn--accent, .btn--gold {
   --btn-bg: var(--gradient-accent);
   --btn-color: var(--color-text-invert);
   --btn-border: var(--color-accent-soft);
   --btn-shadow: var(--shadow-lg);
+}
+
+// Button YouTube //
+.btn--yt {
+  --btn-bg: #ff0000;
+  --btn-color: #ffffff;
+  --btn-border: #212121;
+}
+
+.btn--yt:hover,
+.btn--yt:focus-visible {
+  --btn-bg: #cc0000;
+  --btn-border: #212121;
+}
+
+// Button Scryfall //
+.btn--scry {
+  --btn-bg: linear-gradient(
+      90deg,
+      #786076 0%,
+      #947a92 33%,
+      #ae7f9c 66%,
+      #bc979d 66%,
+      #d2d2d2 100%
+    );
+  --btn-color: #ffffff;
+  --btn-border: #d2d2d2;
+}
+
+.btn--scry:hover,
+.btn--scry:focus-visible {
+  --btn-bg:
+    linear-gradient(0deg, rgba(42, 42, 42, 0.35) 0%, rgba(42, 42, 42, 0.35) 100%),
+    linear-gradient(
+      90deg,
+      #786076 0%,
+      #947a92 33%,
+      #ae7f9c 66%,
+      #bc979d 66%,
+      #d2d2d2 100%
+    );
+  --btn-color: #ffffff;
+  --btn-border: #d2d2d2;
+}
+
+// Button Disabled //
+.btn--disabled1:hover,
+.btn--disabled1:focus-visible {
+  transform: none;
+  box-shadow: none;
 }
 
 .btn--disabled1 {
@@ -80,12 +131,6 @@
   --btn-border: var(--color-border-soft);
   --btn-shadow: none;
   cursor: not-allowed;
-}
-
-.btn--disabled1:hover,
-.btn--disabled1:focus-visible {
-  transform: none;
-  box-shadow: none;
 }
 
 .pill {

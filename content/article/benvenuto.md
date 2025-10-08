@@ -29,3 +29,17 @@ Puoi inserire immagini dal tuo `static/images/...`:
 Oppure, meglio, organizza le immagini per ogni articolo in `static/images/articles/<slug>/` e referenziale come `images/articles/<slug>/file.webp`.
 
 Buona scrittura!
+
+### Esempi di pulsanti
+
+Di seguito alcuni esempi dei pulsanti disponibili sul sito:
+
+<div class="button-demo">
+  <a class="btn btn--primary" href="#">Primary</a>
+  <a class="btn btn--secondary" href="#">Secondary</a>
+  <a class="btn btn--accent" href="#">Accent</a>
+  <a class="btn btn--yt" href="#">YouTube</a>
+  <a class="btn btn--scry" href="#">Scryfall</a>
+</div>
+
+Puoi riutilizzarli nelle pagine e negli articoli semplicemente applicando la combinazione di classi `btn` + `btn--variant`.
