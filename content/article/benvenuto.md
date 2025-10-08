@@ -58,7 +58,7 @@ Come riutilizzarli:
 <div class="article-button-demo">
   <a class="btn btn--primary" href="#">Primary</a>
   <a class="btn btn--secondary" href="#">Secondary</a>
-   <a class="btn btn--special" href="#">Special</a>
+  <a class="btn btn--special" href="#">Special</a>
   <a class="btn btn--accent" href="#">Accent</a>
   <a class="btn btn--yt" href="#">YouTube</a>
   <a class="btn btn--scry" href="#">Scryfall</a>
