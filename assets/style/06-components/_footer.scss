@@ -13,6 +13,9 @@
   border-top: 1px solid var(--color-border);
   padding-block: var(--space-10) var(--space-8);
   margin-block-start: var(--space-16);
+  font-family: "Open Sans", var(--font-sans);
+  font-size: var(--text-xs);
+  letter-spacing: 0.01em;
 
   /* Subtle shadow for depth */
   box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
@@ -47,19 +50,20 @@
   display: block;
   line-height: 1.8;
   color: var(--color-text-muted);
-  font-size: var(--text-xs);
+  font-size: clamp(0.75rem, 0.7vw, 0.85rem);
   max-width: 72ch;
   margin-inline: auto;
 
   /* Subtle fade effect */
   opacity: 0.9;
+  font-feature-settings: "liga" 1, "kern" 1;
 }
 
 .site-footer__disclaimer a,
 .privacy-link {
   position: relative;
   color: var(--color-primary);
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: underline;
   text-decoration-thickness: 0.1em;
   text-underline-offset: 0.2em;
@@ -107,6 +111,6 @@
 /* Tablet and up: horizontal layout */
 @media (min-width: 48rem) {
   .site-footer__disclaimer {
-    font-size: var(--text-sm);
+    font-size: clamp(0.75rem, 0.5vw, 0.9rem);
   }
 }
