@@ -29,6 +29,8 @@
 .btn:focus-visible,
 .pill:hover,
 .pill:focus-visible {
+  color: var(--btn-color);
+  background: var(--btn-bg);
   box-shadow: none;
 }
 
