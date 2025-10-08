@@ -398,7 +398,9 @@
     const t = lower(trim(raw));
     if (!t) return 'btn--primary';
     const m = t.match(/\\bbtn--[a-z0-9\\-]+\\b/); if (m) { if (m[0] === 'btn--teal') return 'btn--secondary'; if (m[0] === 'btn--base') return 'btn--primary'; if (m[0] === 'btn--gold') return 'btn--accent'; return m[0]; }
-    const map = {\n      'magenta':'btn--secondary',\n      'youtube':'btn--yt','yt':'btn--yt',
+    const map = {
+      'magenta':'btn--secondary',
+      'youtube':'btn--yt','yt':'btn--yt',
       'scryfall':'btn--scry','scry':'btn--scry',
       'edhrec':'btn--edh','edh':'btn--edh',
       'moxfield':'btn--mox','mox':'btn--mox',
@@ -689,6 +691,11 @@
     bootstrap();
   }
 })();
+
+
+
+
+
 
 
 
