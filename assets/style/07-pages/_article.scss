@@ -154,6 +154,18 @@
   text-decoration-color: var(--color-special);
 }
 
+.article-body a.btn {
+  text-decoration: none;
+  color: var(--btn-color);
+  font-weight: inherit;
+}
+
+.article-body a.btn:hover,
+.article-body a.btn:focus-visible {
+  text-decoration: none;
+  color: var(--btn-color);
+}
+
 /* Lists */
 .article-body ul,
 .article-body ol {
