@@ -84,14 +84,15 @@
 .btn--accent, .btn--gold {
   --btn-bg: var(--gradient-accent);
   --btn-color: var(--color-text-invert);
-  --btn-border: var(--color-accent-soft);
-  --btn-shadow: var(--shadow-lg);
+  --btn-border: var(--color-accent);
+  --btn-shadow: var(--shadow-md);
 }
 
 .btn--accent:hover,
 .btn--accent:focus-visible {
   --btn-bg: linear-gradient(135deg, var(--color-accent-500) 0%, var(--color-accent-300) 100%);
   --btn-border: var(--color-accent);
+  --btn-shadow: var(--shadow-md);
 }
 
 // Button YouTube //
