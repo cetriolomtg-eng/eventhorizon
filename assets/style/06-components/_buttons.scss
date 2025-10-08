@@ -156,11 +156,20 @@
   --btn-shadow: var(--shadow-md);
 }
 
+.btn--edh::first-letter {
+  color: #fde500;
+}
+
 .btn--edh:hover,
 .btn--edh:focus-visible {
   --btn-bg: #000000;
   --btn-border: #fde500;
   --btn-shadow: var(--shadow-md);
+}
+
+.btn--edh:hover::first-letter,
+.btn--edh:focus-visible::first-letter {
+  color: #fde500;
 }
 
 // Button Moxfield //
@@ -176,7 +185,7 @@
   --btn-bg: linear-gradient(
     90deg,
     color-mix(in srgb, #3c2161 70%, #111 30%) 70%,
-    color-mix(in srgb, #d44071 70%, #111 30%) 100%,
+    color-mix(in srgb, #d44071 70%, #111 30%) 100%
   );
   --btn-border: #f25e8f;
   --btn-shadow: var(--shadow-md);
@@ -349,17 +358,26 @@
   -webkit-backdrop-filter: blur(14px);
 }
 
+.btn--edh-glass::first-letter {
+  color: #fde500;
+}
+
 .btn--edh-glass:hover,
 .btn--edh-glass:focus-visible {
   --btn-bg: color-mix(in srgb, #000000 45%, transparent);
   --btn-border: #fde500;
 }
 
+.btn--edh-glass:hover::first-letter,
+.btn--edh-glass:focus-visible::first-letter {
+  color: #fde500;
+}
+
 .btn--mox-glass {
   --btn-bg: linear-gradient(
     90deg,
     color-mix(in srgb, #3c2161 30%, transparent) 70%,
-    color-mix(in srgb, #d44071 30%, transparent) 100%,
+    color-mix(in srgb, #d44071 30%, transparent) 100%
   );
   --btn-color: #ffffff;
   --btn-border: color-mix(in srgb, #d44071 55%, transparent);
@@ -373,7 +391,7 @@
   --btn-bg: linear-gradient(
     90deg,
     color-mix(in srgb, #3c2161 50%, transparent) 70%,
-    color-mix(in srgb, #d44071 50%, transparent) 100%,
+    color-mix(in srgb, #d44071 50%, transparent) 100%
   );
   --btn-border: #f25e8f;
 }
