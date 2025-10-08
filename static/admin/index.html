@@ -11,36 +11,29 @@
 
   <!-- Carica Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  <script src="https://unpkg.com/netlify-cms-widget-date@2.6.3/dist/netlify-cms-widget-date.js"></script>
-  <script src="https://unpkg.com/netlify-cms-widget-datetime@2.6.3/dist/netlify-cms-widget-datetime.js"></script>
   <script>
-    (function registerDateWidgets(retryCount = 0) {
+    (function ensureDateWidgets(retryCount = 0) {
       const CMS = window.CMS;
-      const dateWidgetPkg = window.NetlifyCmsWidgetDate;
-      const datetimeWidgetPkg = window.NetlifyCmsWidgetDatetime;
+      const React = window.React;
 
-      if (!CMS || (!dateWidgetPkg && !datetimeWidgetPkg)) {
+      if (!CMS || !React || typeof CMS.getWidget !== "function") {
         if (retryCount > 20) return;
-        return window.setTimeout(() => registerDateWidgets(retryCount + 1), 150);
+        return window.setTimeout(() => ensureDateWidgets(retryCount + 1), 150);
       }
 
-      if (dateWidgetPkg) {
-        const widget = dateWidgetPkg.default || dateWidgetPkg;
-        if (widget?.Widget) {
-          CMS.registerWidget(widget.Widget());
-        } else if (widget?.controlComponent && widget?.previewComponent) {
-          CMS.registerWidget("date", widget.controlComponent, widget.previewComponent);
-        }
+      const datetimeWidget = CMS.getWidget("datetime");
+
+      if (!datetimeWidget?.control || !datetimeWidget?.preview) {
+        if (retryCount > 20) return;
+        return window.setTimeout(() => ensureDateWidgets(retryCount + 1), 150);
       }
 
-      if (datetimeWidgetPkg) {
-        const widget = datetimeWidgetPkg.default || datetimeWidgetPkg;
-        if (widget?.Widget) {
-          CMS.registerWidget(widget.Widget());
-        } else if (widget?.controlComponent && widget?.previewComponent) {
-          CMS.registerWidget("datetime", widget.controlComponent, widget.previewComponent);
-        }
-      }
+      const DateControl = (props) => {
+        const field = props.field?.set ? props.field.set("time_format", false) : props.field;
+        return React.createElement(datetimeWidget.control, { ...props, field });
+      };
+
+      CMS.registerWidget("date", DateControl, datetimeWidget.preview);
     })();
   </script>
 
