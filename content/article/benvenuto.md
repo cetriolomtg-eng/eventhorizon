@@ -34,12 +34,24 @@ Buona scrittura!
 
 Di seguito alcuni esempi dei pulsanti disponibili sul sito:
 
-<div class="button-demo">
-  <a class="btn btn--primary" href="#">Primary</a>
-  <a class="btn btn--secondary" href="#">Secondary</a>
-  <a class="btn btn--accent" href="#">Accent</a>
-  <a class="btn btn--yt" href="#">YouTube</a>
-  <a class="btn btn--scry" href="#">Scryfall</a>
-</div>
+{{< button-examples >}}
+
+Per inserirli in un articolo puoi usare il markup HTML direttamente nel Markdown, ad esempio:
+
+```html
+<a class="btn btn--primary" href="#">Primary</a>
+<a class="btn btn--secondary" href="#">Secondary</a>
+<a class="btn btn--accent" href="#">Accent</a>
+<a class="btn btn--yt" href="#">YouTube</a>
+<a class="btn btn--scry" href="#">Scryfall</a>
+```
+
+Oppure riutilizzare il shortcode:
+
+```go
+{{</* button-examples */>}}
+```
+
+Entrambi i metodi funzionano negli articoli: il primo ti consente di scegliere solo le varianti che ti servono, il secondo include il set completo già pronto.
 
 Puoi riutilizzarli nelle pagine e negli articoli semplicemente applicando la combinazione di classi `btn` + `btn--variant`.
