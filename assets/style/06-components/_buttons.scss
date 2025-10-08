@@ -140,10 +140,10 @@
   --btn-bg: linear-gradient(
     90deg,
     #d9d9d9 0%,
-    #cbcbcb 25%,
-    #ffa90a 25%,
-    #f79c00 50%,
-    #333333 50%,
+    #cbcbcb 10%,
+    #ffa90a 10%,
+    #f79c00 30%,
+    #333333 30%,
     #292929 100%
   );
   --btn-color: #ffffff;
@@ -154,7 +154,7 @@
 .btn--archi:hover,
 .btn--archi:focus-visible {
   --btn-bg:
-    linear-gradient(0deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.25) 100%),
+    linear-gradient(0deg, rgba(42,42,42,0.35) 0%, rgba(42,42,42,0.35) 100%),
     linear-gradient(
       90deg,
       #d9d9d9 0%,
