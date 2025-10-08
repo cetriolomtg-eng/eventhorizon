@@ -3,7 +3,7 @@
   --btn-bg: var(--gradient-primary);
   --btn-color: var(--color-text);
   --btn-border: transparent;
-  --btn-shadow: var(--shadow-lg);
+  --btn-shadow: none;
 
   display: inline-flex;
   align-items: center;
@@ -19,7 +19,7 @@
   background: var(--btn-bg);
   color: var(--btn-color);
   box-shadow: var(--btn-shadow);
-  transition: var(--transition-transform), var(--transition-colors);
+  transition: var(--transition-colors);
   cursor: pointer;
   text-align: center;
   white-space: nowrap;
@@ -29,8 +29,7 @@
 .btn:focus-visible,
 .pill:hover,
 .pill:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-elevated);
+  box-shadow: none;
 }
 
 .btn[disabled],
