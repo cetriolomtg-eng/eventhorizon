@@ -14,14 +14,22 @@
   scroll-margin-top: calc(var(--nav-height) + var(--space-4));
 }
 
+.hero-layout {
+  margin-top: calc(-1 * var(--nav-height));
+}
+
 /* Hero separation */
 .hero-layout + .cards {
   margin-top: var(--space-12);
 }
 
 @media (max-width: 47.999rem) {
+  .hero-layout {
+    margin-top: calc(-1 * var(--nav-height));
+  }
+
   .hero-layout + .cards {
-    margin-top: var(--space-8);
+    margin-top: var(--space-12);
   }
 }
 
