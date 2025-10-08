@@ -92,9 +92,11 @@ collections:
 
       - label: "Data"
         name: date
-        widget: date
+        widget: datetime
         required: true
         format: "YYYY-MM-DD"
+        date_format: "DD/MM/YYYY"
+        time_format: false
 
       - label: "Titolo"
         name: title
