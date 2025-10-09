@@ -113,6 +113,30 @@
   pointer-events: none;
 }
 
+/* 6) Wave (SVG mask) */
+.cards[data-sep="wave"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(2.75rem, 9vw, 6rem);
+  transform: translateY(-55%);
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.00) 80%);
+  pointer-events: none;
+  /* Mask the gradient with a wave silhouette */
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none"><path fill="%23fff" d="M0 60c120 40 240-20 360-12s240 64 360 52 240-72 360-52 240 64 360 34V0H0z"/></svg>');
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: top center;
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none"><path fill="%23fff" d="M0 60c120 40 240-20 360-12s240 64 360 52 240-72 360-52 240 64 360 34V0H0z"/></svg>');
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  mask-position: top center;
+}
+
 .cards__inner {
   position: relative;
   z-index: 1;
