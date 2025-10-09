@@ -137,6 +137,21 @@
   mask-position: top center;
 }
 
+/* 7) Minimal rule */
+.cards[data-sep="minimal"]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 88%;
+  max-width: var(--container-max);
+  height: 1px;
+  transform: translate(-50%, -50%);
+  background: var(--color-border-soft);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
 .cards__inner {
   position: relative;
   z-index: 1;
