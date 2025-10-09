@@ -20,7 +20,7 @@
 
 /* Hero separation */
 .hero-layout + .cards {
-  margin-top: var(--space-12);
+  margin-top: var(--nav-height);
 }
 
 @media (max-width: 47.999rem) {
@@ -29,7 +29,7 @@
   }
 
   .hero-layout + .cards {
-    margin-top: var(--space-12);
+    margin-top: var(--nav-height);
   }
 }
 
