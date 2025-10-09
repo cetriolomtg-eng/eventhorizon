@@ -16,6 +16,7 @@
     const descEl = section.querySelector('.cards__details-desc');
 
     let current = 0;
+    let expanded = false;
     let ticking = false;
 
     function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
@@ -62,6 +63,12 @@
       }
     }
 
+    function setExpanded(flag) {
+      expanded = !!flag;
+      slides.forEach(s => s.classList.remove('is-expanded'));
+      if (expanded && slides[current]) slides[current].classList.add('is-expanded');
+    }
+
     function nearestToCenter() {
       const vpRect = viewport.getBoundingClientRect();
       const vpCenter = vpRect.left + vpRect.width / 2;
@@ -90,8 +97,8 @@
       ticking = true;
     }, { passive: true });
 
-    btnPrev && btnPrev.addEventListener('click', () => setCurrent(current - 1));
-    btnNext && btnNext.addEventListener('click', () => setCurrent(current + 1));
+    btnPrev && btnPrev.addEventListener('click', () => { setCurrent(current - 1); setExpanded(true); });
+    btnNext && btnNext.addEventListener('click', () => { setCurrent(current + 1); setExpanded(true); });
 
     // Keyboard navigation
     viewport.addEventListener('keydown', (e) => {
@@ -104,7 +111,14 @@
       const slide = e.target.closest('.slide');
       if (!slide) return;
       const index = slides.indexOf(slide);
-      if (index >= 0) setCurrent(index);
+      if (index < 0) return;
+      if (index === current) {
+        // toggle expand if clicking the active slide
+        setExpanded(!expanded);
+      } else {
+        setCurrent(index);
+        setExpanded(true);
+      }
     });
 
     // Resize handling keeps active centered
@@ -115,6 +129,7 @@
     viewport.setAttribute('tabindex', '0');
     applyState(current);
     centerFor(current, false);
+    setExpanded(false);
   }
 
   function ready(fn){
@@ -126,4 +141,3 @@
     document.querySelectorAll('.js-cards-carousel').forEach(initCarousel);
   });
 })();
-

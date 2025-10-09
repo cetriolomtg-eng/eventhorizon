@@ -82,15 +82,16 @@
 
 .cards--slider .cards__viewport {
   position: relative;
-  overflow: hidden;
-  /* add subtle edge fade on large screens */
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
 }
 
 .cards--slider .cards__track {
   display: flex;
   gap: var(--space-4);
   padding-inline: clamp(1rem, 8vw, 5rem);
-  scroll-snap-type: x mandatory;
 }
 
 .cards--slider .cards__track > .slide {
@@ -314,6 +315,112 @@
 }
 .cards--slider .card--featured .card__media {
   aspect-ratio: 16 / 9;
+}
+
+/* ==========================================================
+   PANELS VARIANT — expanding columns with overlay preview
+   ========================================================== */
+
+.cards--slider.cards--panels .cards__track {
+  align-items: stretch;
+}
+
+.cards--slider.cards--panels .cards__track > .slide {
+  /* collapsed column width */
+  flex: 0 0 clamp(10rem, 22vw, 14rem);
+  opacity: 0.95;
+  transform: none;
+}
+
+.cards--slider.cards--panels .cards__track > .slide.is-active {
+  opacity: 1;
+}
+
+.cards--slider.cards--panels .cards__track > .slide.is-expanded {
+  /* expanded fills the viewport width */
+  flex: 1 0 100%;
+}
+
+.cards--panels .card {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.cards--panels .card::before,
+.cards--panels .card:hover::before,
+.cards--panels .card:focus-within::before {
+  display: none;
+}
+
+.cards--panels .card:hover,
+.cards--panels .card:focus-within {
+  transform: none;
+  box-shadow: none;
+}
+
+.cards--panels .card__media {
+  aspect-ratio: 3 / 4;
+}
+
+.cards--panels .slide.is-expanded .card__media {
+  aspect-ratio: 16 / 9;
+}
+
+/* overlay readability in collapsed state */
+.cards--panels .card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 100%);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity var(--transition-base);
+}
+
+.cards--panels .slide.is-expanded .card__media::after {
+  opacity: 0.35;
+}
+
+/* body as overlay in collapsed; structured in expanded */
+.cards--panels .card__body {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: var(--space-4);
+  display: grid;
+  gap: var(--space-2);
+}
+
+.cards--panels .slide.is-expanded .card__body {
+  position: static;
+  padding: var(--space-5);
+  background: var(--color-surface-glass);
+  border-top: 1px solid var(--color-border-soft);
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+}
+
+.cards--panels .card__desc,
+.cards--panels .card__actions {
+  display: none;
+}
+
+.cards--panels .slide.is-expanded .card__desc,
+.cards--panels .slide.is-expanded .card__actions {
+  display: block;
+}
+
+.cards--panels .card__title {
+  color: var(--color-white);
+  text-shadow: var(--shadow-sm);
+}
+
+.cards--panels .slide.is-expanded .card__title {
+  color: var(--color-text);
+  text-shadow: none;
+}
+
+.cards--panels .card__overline {
+  color: var(--color-special);
 }
 
 .card--empty {
