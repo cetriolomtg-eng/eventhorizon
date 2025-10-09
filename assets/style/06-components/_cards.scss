@@ -9,7 +9,8 @@
   position: absolute;
   top: 0;
   left: 50%;
-  width: min(88%, var(--container-max));
+  width: 88%;
+  max-width: var(--container-max);
   height: clamp(1.5rem, 6vw, 3.5rem);
   transform: translate(-50%, -50%);
   background:
@@ -27,7 +28,8 @@
   position: absolute;
   top: 0;
   left: 50%;
-  width: min(72%, var(--container-max));
+  width: 72%;
+  max-width: var(--container-max);
   height: 1px;
   transform: translate(-50%, -50%);
   background: linear-gradient(
