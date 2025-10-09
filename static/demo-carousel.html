@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8">
+    <title>Carousel Cards Demo</title>
+    <style>
+:root{
+  --bg:#0e0f1a; --text:#eaeef8; --muted:#9aa4c7;
+  --acc:#6c5ce7; --border:#2a2f44;
+  --radius:20px; --gap:24px; --pad:18px;
+  --dur:420ms; --ease:cubic-bezier(.22,.61,.36,1);
+  --shadow:0 10px 25px rgba(0,0,0,.35);
+  --shadow-strong:0 18px 40px rgba(0,0,0,.55);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Helvetica,Arial,sans-serif}
+body{display:flex;justify-content:center;align-items:flex-start;padding:48px 0}
+
+.carousel{ position:relative; max-width:1080px; margin:0 auto; padding:0 16px; width:100%; }
+.nav{ position:absolute; inset:-12px 0 auto 0; display:flex; justify-content:space-between; pointer-events:none; }
+.btn{ pointer-events:auto; width:42px; height:42px; border-radius:50%;
+      background:#101423; border:1px solid rgba(255,255,255,.08);
+      display:grid; place-items:center; color:#cfd4ff; box-shadow:var(--shadow); cursor:pointer;
+      transition: transform 140ms var(--ease), background 140ms var(--ease); }
+.btn:hover{ transform:translateY(-1px); background:#0f1322; }
+.btn:focus-visible{ outline:2px solid #6c5ce7; outline-offset:3px; }
+
+.track{
+  display:flex; align-items:stretch; gap:var(--gap);
+  overflow-x:auto; overscroll-behavior-x:contain;
+  scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+  padding:8px 8px 24px; margin:0 -8px; perspective:1200px;
+  scrollbar-width:none;
+}
+.track::-webkit-scrollbar{display:none;}
+.track:focus-visible{outline:2px solid rgba(108,92,231,.6); outline-offset:6px;}
+
+.card{
+  position:relative; flex:0 0 auto;
+  width: clamp(240px, 62vw, 360px);
+  border-radius:var(--radius); overflow:hidden;
+  background:linear-gradient(160deg,#1b1f33 0%, #121424 100%);
+  outline:1px solid rgba(108,92,231,.08); box-shadow:var(--shadow);
+  scroll-snap-align:center; scroll-snap-stop:always;
+  transform-origin:center;
+  transform: translateZ(0) scale(var(--scale,.86)) rotateY(var(--tilt,0deg));
+  opacity:var(--alpha,.65);
+  filter: saturate(var(--sat,.9)) blur(var(--blur,0px));
+  transition: transform var(--dur) var(--ease),
+             opacity var(--dur) var(--ease),
+             filter var(--dur) var(--ease),
+             box-shadow var(--dur) var(--ease);
+  cursor:grab; user-select:none;
+}
+.card:active{ cursor:grabbing; }
+.media{ height:200px; background:
+  radial-gradient(1200px 300px at -10% -30%, rgba(108,92,231,.35), transparent),
+  radial-gradient(800px 260px at 120% 130%, rgba(0,173,177,.25), transparent),
+  conic-gradient(from 210deg at 70% 40%, #1e2237, #111425, #1a1e33);
+}
+.content{ padding:var(--pad); display:grid; gap:10px; }
+.eyebrow{ font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+.title{ font-size:clamp(18px,2.2vw,22px); margin:0; }
+.meta{ display:flex; flex-wrap:wrap; gap:10px; color:var(--muted); font-size:14px; }
+.cta{ display:inline-flex; align-items:center; gap:8px; margin-top:6px;
+     background:linear-gradient(90deg,var(--acc),#00adb1); color:#fff;
+     border:0; padding:10px 14px; border-radius:14px; text-decoration:none; font-weight:600;
+     box-shadow:0 6px 16px rgba(108,92,231,.35);
+     transition: transform 160ms var(--ease), box-shadow 160ms var(--ease);}
+.cta:hover{ transform:translateY(-1px); box-shadow:0 10px 22px rgba(108,92,231,.45);}
+.cta:focus-visible{outline:2px solid #fff; outline-offset:3px;}
+
+.dots{ display:flex; gap:8px; justify-content:center; margin-top:14px; }
+.dot{ width:7px; height:7px; border-radius:50%; background:#2a2f44;
+      transition: transform var(--dur) var(--ease), background var(--dur) var(--ease);
+      border:0; padding:0; cursor:pointer; }
+.dot.is-active{ transform:scale(1.6); background:linear-gradient(90deg,var(--acc),#00adb1); }
+
+.hidden{display:none !important;}
+
+@media (min-width:900px){ .media{ height:220px; } }
+    </style>
+  </head>
+  <body>
+    <div class="carousel" id="carousel">
+      <div class="nav">
+        <button class="btn" data-dir="-1" aria-label="Previous" type="button">&lsaquo;</button>
+        <button class="btn" data-dir="1" aria-label="Next" type="button">&rsaquo;</button>
+      </div>
+
+      <div class="track" id="track" tabindex="0" aria-label="Expanding card carousel">
+        <article class="card" role="group" aria-roledescription="slide">
+          <div class="media" aria-hidden="true"></div>
+          <div class="content">
+            <div class="eyebrow">In evidenza</div>
+            <h3 class="title">Nuove strategie Commander</h3>
+            <div class="meta">Deck tech · 12 min read</div>
+            <a class="cta" href="#0">Scopri di più</a>
+          </div>
+        </article>
+        <article class="card" role="group" aria-roledescription="slide">
+          <div class="media" aria-hidden="true"></div>
+          <div class="content">
+            <div class="eyebrow">Community</div>
+            <h3 class="title">Eventi di ottobre</h3>
+            <div class="meta">Live meetup · Torino</div>
+            <a class="cta" href="#0">Registrati</a>
+          </div>
+        </article>
+        <article class="card" role="group" aria-roledescription="slide">
+          <div class="media" aria-hidden="true"></div>
+          <div class="content">
+            <div class="eyebrow">Video</div>
+            <h3 class="title">Gameplay multicolor</h3>
+            <div class="meta">YouTube · 38 minuti</div>
+            <a class="cta" href="#0">Guarda ora</a>
+          </div>
+        </article>
+        <article class="card" role="group" aria-roledescription="slide">
+          <div class="media" aria-hidden="true"></div>
+          <div class="content">
+            <div class="eyebrow">Guide</div>
+            <h3 class="title">Budget deckbuilding</h3>
+            <div class="meta">Articolo · 8 min read</div>
+            <a class="cta" href="#0">Leggi la guida</a>
+          </div>
+        </article>
+        <article class="card" role="group" aria-roledescription="slide">
+          <div class="media" aria-hidden="true"></div>
+          <div class="content">
+            <div class="eyebrow">Podcast</div>
+            <h3 class="title">Meta game breakdown</h3>
+            <div class="meta">Spotify · 52 minuti</div>
+            <a class="cta" href="#0">Ascolta ora</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="dots" id="dots" aria-hidden="true"></div>
+    </div>
+
+    <script>
+(function(){
+  const carousel = document.getElementById('carousel');
+  if(!carousel) return;
+  const track = document.getElementById('track');
+  if(!track) return;
+  const cards = Array.from(track.querySelectorAll('.card'));
+  const dotsContainer = document.getElementById('dots');
+  const buttons = Array.from(carousel.querySelectorAll('.nav .btn'));
+  const total = cards.length;
+
+  cards.forEach((card, idx) => {
+    card.setAttribute('aria-label', `Elemento ${idx + 1} di ${total}`);
+  });
+
+  const dots = [];
+  if(dotsContainer){
+    dotsContainer.innerHTML = '';
+    cards.forEach((_, idx) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'dot';
+      dot.dataset.index = String(idx);
+      dotsContainer.appendChild(dot);
+      dots.push(dot);
+    });
+  }
+
+  if(total <= 1){
+    buttons.forEach(btn => btn.setAttribute('hidden',''));
+    if(dotsContainer) dotsContainer.setAttribute('hidden','');
+  }
+
+  let activeIndex = 0;
+  let scrollEndTimer = null;
+  let rafId = null;
+
+  function clamp(num, min, max){
+    return Math.max(min, Math.min(max, num));
+  }
+
+  function setActiveIndex(idx){
+    activeIndex = clamp(idx, 0, cards.length - 1);
+    dots.forEach((dot, i) => {
+      if(i === activeIndex) dot.classList.add('is-active');
+      else dot.classList.remove('is-active');
+    });
+  }
+
+  function updateCards(){
+    if(cards.length === 0) return;
+    const trackRect = track.getBoundingClientRect();
+    const center = trackRect.left + trackRect.width / 2;
+    let nearestIdx = activeIndex;
+    let nearestDist = Infinity;
+
+    cards.forEach((card, idx) => {
+      const rect = card.getBoundingClientRect();
+      const cardCenter = rect.left + rect.width / 2;
+      const dist = Math.abs(center - cardCenter);
+      if(dist < nearestDist){
+        nearestDist = dist;
+        nearestIdx = idx;
+      }
+      const n = Math.min(dist / (trackRect.width * 0.8), 1);
+      const scale = 1 - n * 0.22;
+      const alpha = 1 - n * 0.45;
+      const sat = 1 - n * 0.25;
+      const blur = n * 1.6;
+      const tilt = (cardCenter < center ? 1 : -1) * n * 7;
+
+      card.style.setProperty('--scale', scale.toFixed(3));
+      card.style.setProperty('--alpha', alpha.toFixed(3));
+      card.style.setProperty('--sat', sat.toFixed(3));
+      card.style.setProperty('--blur', blur.toFixed(2) + 'px');
+      card.style.setProperty('--tilt', tilt.toFixed(2) + 'deg');
+      card.style.boxShadow = n < 0.18 ? 'var(--shadow-strong)' : 'var(--shadow)';
+    });
+
+    if(nearestIdx !== activeIndex){
+      setActiveIndex(nearestIdx);
+    }
+  }
+
+  function snapTo(idx){
+    idx = clamp(idx, 0, cards.length - 1);
+    const card = cards[idx];
+    if(!card) return;
+    const trackRect = track.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    const cardCenter = cardRect.left + cardRect.width / 2;
+    const trackCenter = trackRect.left + trackRect.width / 2;
+    const delta = cardCenter - trackCenter;
+    track.scrollBy({ left: delta, behavior: 'smooth' });
+    setActiveIndex(idx);
+  }
+
+  function handleScroll(){
+    if(scrollEndTimer) clearTimeout(scrollEndTimer);
+    scrollEndTimer = setTimeout(() => {
+      snapTo(activeIndex);
+    }, 80);
+  }
+
+  track.addEventListener('scroll', handleScroll, { passive: true });
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const dir = Number(btn.dataset.dir || 0);
+      if(!dir) return;
+      const next = clamp(activeIndex + dir, 0, cards.length - 1);
+      snapTo(next);
+    });
+  });
+
+  if(dotsContainer){
+    dotsContainer.addEventListener('click', (event) => {
+      const target = event.target;
+      if(!(target instanceof HTMLElement)) return;
+      const idxAttr = target.dataset.index;
+      if(typeof idxAttr === 'undefined') return;
+      const dotIndex = Number(idxAttr);
+      if(Number.isNaN(dotIndex)) return;
+      snapTo(dotIndex);
+    });
+  }
+
+  track.addEventListener('keydown', (event) => {
+    if(event.key === 'ArrowRight'){
+      event.preventDefault();
+      snapTo(clamp(activeIndex + 1, 0, cards.length - 1));
+    }
+    if(event.key === 'ArrowLeft'){
+      event.preventDefault();
+      snapTo(clamp(activeIndex - 1, 0, cards.length - 1));
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    updateCards();
+  });
+
+  function loop(){
+    updateCards();
+    rafId = window.requestAnimationFrame(loop);
+  }
+  loop();
+
+  window.addEventListener('beforeunload', () => {
+    if(rafId) cancelAnimationFrame(rafId);
+    if(scrollEndTimer) clearTimeout(scrollEndTimer);
+  });
+
+  setActiveIndex(0);
+  updateCards();
+  snapTo(0);
+})();
+    </script>
+  </body>
+</html>
