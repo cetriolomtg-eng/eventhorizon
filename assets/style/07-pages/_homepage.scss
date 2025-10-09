@@ -16,20 +16,22 @@
 
 .hero-layout {
   margin-top: calc(-1 * var(--nav-height));
+  margin-bottom: calc(-1 * var(--space-4));
 }
 
 /* Hero separation */
 .hero-layout + .cards {
-  margin-top: var(--space-12);
+  margin-top: 0;
 }
 
 @media (max-width: 47.999rem) {
   .hero-layout {
     margin-top: calc(-1 * var(--nav-height));
+    margin-bottom: calc(-1 * var(--space-4));
   }
 
   .hero-layout + .cards {
-    margin-top: var(--space-12);
+    margin-top: 0;
   }
 }
 
