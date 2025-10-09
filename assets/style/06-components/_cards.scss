@@ -76,6 +76,116 @@
   transition: transform var(--transition-base), border-color var(--transition-fast), box-shadow var(--transition-base);
 }
 
+/* ==========================================================
+   CARDS SLIDER (carousel-like) — homepage specific
+   ========================================================== */
+
+.cards--slider .cards__viewport {
+  position: relative;
+  overflow: hidden;
+  /* add subtle edge fade on large screens */
+}
+
+.cards--slider .cards__track {
+  display: flex;
+  gap: var(--space-4);
+  padding-inline: clamp(1rem, 8vw, 5rem);
+  scroll-snap-type: x mandatory;
+}
+
+.cards--slider .cards__track > .slide {
+  /* slide base sizing */
+  flex: 0 0 clamp(18rem, 60vw, 24rem);
+  scroll-snap-align: center;
+  transform-origin: center bottom;
+  /* compositing via CSS vars so hover/active can combine */
+  --slide-scale: 0.92;
+  --slide-ty: 0px;
+  transform: translateY(var(--slide-ty)) scale(var(--slide-scale));
+  transition: transform var(--transition-slow),
+              box-shadow var(--transition-base),
+              opacity var(--transition-fast);
+  opacity: 0.78;
+}
+
+.cards--slider .cards__track > .slide.is-active {
+  --slide-scale: 1;
+  opacity: 1;
+  z-index: 2;
+  box-shadow: var(--shadow-elevated);
+}
+
+.cards--slider .cards__track > .slide.is-prev,
+.cards--slider .cards__track > .slide.is-next {
+  --slide-scale: 0.96;
+  opacity: 0.9;
+  z-index: 1;
+}
+
+.cards--slider .cards__track > .slide:hover {
+  --slide-ty: -4px;
+}
+
+@media (min-width: 64rem) {
+  .cards--slider .cards__track {
+    gap: var(--space-5);
+  }
+  .cards--slider .cards__track > .slide {
+    flex-basis: clamp(20rem, 40vw, 26rem);
+  }
+}
+
+.cards--slider .cards__controls {
+  margin-top: var(--space-3);
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.cards--slider .cards__nav {
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface-glass);
+  color: var(--color-text);
+  line-height: 1;
+  transition: var(--transition-all);
+}
+.cards--slider .cards__nav:hover,
+.cards--slider .cards__nav:focus-visible {
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-focus);
+}
+
+.cards--slider .cards__details {
+  margin-top: var(--space-4);
+  display: grid;
+  gap: var(--space-2);
+  text-align: center;
+}
+.cards--slider .cards__details-over {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--color-special);
+}
+.cards--slider .cards__details-title {
+  font-size: var(--text-xl);
+}
+.cards--slider .cards__details-desc {
+  color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cards--slider .cards__track > .slide {
+    transition: none;
+  }
+}
+
 .card::before {
   content: "";
   position: absolute;
@@ -198,6 +308,14 @@
   aspect-ratio: 20 / 9;
 }
 
+/* Normalize featured variant inside slider */
+.cards--slider .card--featured {
+  display: block;
+}
+.cards--slider .card--featured .card__media {
+  aspect-ratio: 16 / 9;
+}
+
 .card--empty {
   align-items: center;
   text-align: center;
@@ -213,4 +331,3 @@
     padding: var(--space-5);
   }
 }
-

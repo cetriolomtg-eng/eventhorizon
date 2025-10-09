@@ -37,7 +37,7 @@
   <!-- <<< END HERO -->
 
   <!-- >>> START CARDS SECTION -->
-  <section id="cards" class="cards" aria-labelledby="cards-title">
+  <section id="cards" class="cards cards--slider" aria-labelledby="cards-title">
     <div class="cards__inner">
       <div class="cards__header">
         <h2 id="cards-title" class="cards__title">Ultimi Contenuti</h2>
@@ -46,7 +46,8 @@
         </a>
       </div>
 
-      <div class="cards__grid">
+      <div id="cards-carousel" class="cards__viewport js-cards-carousel" aria-roledescription="carousel" aria-label="Carousel ultimi contenuti">
+      <div class="cards__grid cards__track" role="list">
         {{/* Ultime 4 dal data archive: solo directory data/archive/items/*.yml */}}
         {{ $items := slice }}
         {{ with .Site.Data.archive.items }}
@@ -91,7 +92,7 @@
             {{ end }}
 
             {{ $isFeatured := eq $i 0 }}
-            <article class="card {{ if $isVideo }}is-video{{ else }}is-content{{ end }}{{ if $isFeatured }} card--featured{{ end }}" data-kind="{{ if $isVideo }}video{{ else }}content{{ end }}">
+            <article class="card slide {{ if $isVideo }}is-video{{ else }}is-content{{ end }}{{ if $isFeatured }} card--featured{{ end }}" role="listitem" data-kind="{{ if $isVideo }}video{{ else }}content{{ end }}" data-title="{{ $tit }}" data-desc="{{ $desc }}" data-overline="{{ $over }}">
               {{ if and $isVideo (ne $purl "") }}
                 <div class="card__media">
                   <img
@@ -160,6 +161,16 @@
             </div>
           </div>
         {{ end }}
+      </div>
+      </div>
+      <div class="cards__controls" aria-label="Controlli carousel">
+        <button class="cards__nav cards__nav--prev" type="button" aria-controls="cards-carousel" aria-label="Elemento precedente">‹</button>
+        <button class="cards__nav cards__nav--next" type="button" aria-controls="cards-carousel" aria-label="Elemento successivo">›</button>
+      </div>
+      <div class="cards__details" aria-live="polite">
+        <p class="cards__details-over"></p>
+        <h3 class="cards__details-title"></h3>
+        <p class="cards__details-desc"></p>
       </div>
     </div>
   </section>
